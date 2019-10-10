@@ -37,7 +37,11 @@
       "json",
       "jsx",
       "node"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!react-native|react-router-native)/"
     ]
+
   },
   "private": true,
   "eslint.validate": [
