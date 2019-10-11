@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import { StyleSheet, View, Button } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class LoginView extends Component {
   
@@ -11,7 +12,13 @@ export default class LoginView extends Component {
   render() {
     return(
       <View style={styles.container}>
-        <Button title="Login with Google" onPress={this.handleLogin} color="red" />
+        <Icon.Button
+          name="google"
+          backgroundColor="#DD4B39"
+          onPress={this.handleLogin}
+        >
+          Login with Google
+        </Icon.Button>
       </View>
     );
   }

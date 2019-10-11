@@ -9,7 +9,7 @@ import PrivateRoute from './src/PrivateRoute'
 export default class App extends Component {
   
   // TODO: Handle authentication
-  
+
   render() {
     return (
       <NativeRouter>
