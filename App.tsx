@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { NativeRouter, Route, Redirect, Switch } from 'react-router-native';
+import { Linking } from 'react-native';
 import LoginView from './src/components/LoginView';
 import MainView from './src/components/MainView';
 import MyReservationsView from './src/components/MyReservationsView';
@@ -19,7 +20,11 @@ export default class App extends Component<{}, MainState> {
       user: "",
       error: {},
       isAuthenticated: false
-    }
+		}
+		this.checkIfAuthenticated = this.checkIfAuthenticated.bind(this);
+    this.updateAuthState = this.updateAuthState.bind(this);
+    this.loginSuccessRedirect = this.loginSuccessRedirect.bind(this);
+    this.loginFailureRedirect = this.loginFailureRedirect.bind(this);
 	}
 	
 
@@ -42,10 +47,27 @@ export default class App extends Component<{}, MainState> {
 
 
   componentDidMount() {
+		Linking.addEventListener('/login/success', this.loginSuccessRedirect);
+    Linking.addEventListener('/login/failure', this.loginFailureRedirect);
     this.checkIfAuthenticated();
+	}
+	
+
+	loginSuccessRedirect() {
+    this.updateAuthState();
+    return(
+      <Redirect to='/main' />
+    );
   }
 
-	
+
+  loginFailureRedirect() {
+    return(
+      <Redirect to='/login' />
+    );
+  }
+
+
   render() {
     return (
       <NativeRouter>
