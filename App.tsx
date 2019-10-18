@@ -20,8 +20,32 @@ export default class App extends Component<{}, MainState> {
       error: {},
       isAuthenticated: false
     }
+	}
+	
+
+	checkIfAuthenticated() {
+    console.log("checking auth status from backend..");
+
+    // if authenticated 
+    // this.updateAuthState();
+	}
+	
+
+  updateAuthState() {
+    this.setState({
+      user: "TestUser",
+      error: {},
+      isAuthenticated: true
+    });
+    console.log(this.state);
   }
 
+
+  componentDidMount() {
+    this.checkIfAuthenticated();
+  }
+
+	
   render() {
     return (
       <NativeRouter>
