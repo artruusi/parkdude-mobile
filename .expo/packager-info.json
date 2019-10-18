@@ -2,8 +2,8 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 5900,
+  "packagerPid": 7000,
   "expoServerNgrokUrl": "https://fa-3fm.anonymous.parkdude-mobile-client.exp.direct",
   "packagerNgrokUrl": "https://packager.fa-3fm.anonymous.parkdude-mobile-client.exp.direct",
-  "ngrokPid": 5944
+  "ngrokPid": 7112
 }

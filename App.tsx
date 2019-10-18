@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
-import { NativeRouter, Route, Redirect } from 'react-router-native';
+import { NativeRouter, Route, Redirect, Switch } from 'react-router-native';
 import LoginView from './src/components/LoginView';
 import MainView from './src/components/MainView';
 import MyReservationsView from './src/components/MyReservationsView';
-import MakeReservationView from './src/components/MakeReservationView';
 import PrivateRoute from './src/PrivateRoute';
 
 interface MainState {
@@ -27,10 +26,15 @@ export default class App extends Component<{}, MainState> {
     return (
       <NativeRouter>
         <Redirect exact from="/" to="/main" />
-        <Route path="/login" component={LoginView} />
-        <PrivateRoute path="/main" component={MainView} />
-        <PrivateRoute path="/my_reservations" component={MyReservationsView} />
-        <PrivateRoute path="/make_reservation" component={MakeReservationView} />
+				<Switch>
+					<Route path="/login" component={LoginView} />
+					<PrivateRoute path="/main" isAuthenticated={this.state.isAuthenticated}>
+						<MainView />
+					</PrivateRoute>
+					<PrivateRoute path="/my_reservations" isAuthenticated={this.state.isAuthenticated}>
+						<MyReservationsView />
+					</PrivateRoute>
+				</Switch>
       </NativeRouter>
     );
   }
