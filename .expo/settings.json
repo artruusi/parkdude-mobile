@@ -1,6 +1,6 @@
 {
   "urlRandomness": "fa-3fm",
-  "hostType": "lan",
+  "hostType": "tunnel",
   "lanType": "ip",
   "dev": true,
   "minify": false,
