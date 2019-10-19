@@ -20,7 +20,10 @@
 - run tests: ```npm test```
 
 ### Android:
-- #TODO
+- Running application opens Metro Bundler in a browser window.
+- If your mobile device is in same local network select connection type "LAN" otherwise change the connection type to "Tunnel"
+- Open Expo app on your mobile device and navigate to "Projects" view.
+- Scan the QR code and parkdude-mobile-client app should open in the Expo mobile app.
 
 ### iOS:
 - Running application opens Metro Bundler in a browser window. 
