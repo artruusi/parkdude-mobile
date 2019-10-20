@@ -1,20 +1,24 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {Component} from 'react';
+import { NativeRouter, Route, Redirect } from "react-router-native";
+import LoginView from './src/components/LoginView'
+import MainView from './src/components/MainView'
+import MyReservationsView from './src/components/MyReservationsView'
+import MakeReservationView from './src/components/MakeReservationView'
+import PrivateRoute from './src/PrivateRoute'
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Hello World!</Text>
-      <Text>Parkdude mobile client is running succesfully!</Text>
-    </View>
-  );
+export default class App extends Component {
+  
+  // TODO: Handle authentication
+
+  render() {
+    return (
+      <NativeRouter>
+        <Redirect exact from="/" to="main" />
+        <Route path="/login" component={LoginView} />
+        <PrivateRoute name="main" path="/main" component={MainView} />
+        <PrivateRoute path="/my_reservations" component={MyReservationsView} />
+        <PrivateRoute path="/make_reservation" component={MakeReservationView} />
+      </NativeRouter>
+    );
+  }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
