@@ -1,6 +1,6 @@
 {
   "urlRandomness": "p4-nm6",
-  "hostType": "tunnel",
+  "hostType": "lan",
   "lanType": "ip",
   "dev": true,
   "minify": false,
