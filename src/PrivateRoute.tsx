@@ -1,18 +1,21 @@
-import React from 'react'
-import { Redirect, Route } from 'react-router-native'
+import React from "react";
+import { Redirect, Route } from "react-router-native";
 
-export default function PrivateRoute ({ children, isAuthenticated, ...rest }) {
-
+export default function PrivateRoute({ render, isAuthenticated, ...rest }) {
   // https://reacttraining.com/react-router/web/example/auth-workflow
-
   return (
     <Route
       {...rest}
-      render={(props: any) =>
+      render={props =>
         isAuthenticated ? (
-          children
+          render(props)
         ) : (
-          <Redirect to={{pathname: '/login', state: {from: props.location}}} />
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: props.location }
+            }}
+          />
         )
       }
     />

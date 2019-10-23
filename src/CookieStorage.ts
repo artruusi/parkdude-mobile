@@ -10,7 +10,7 @@ async function setCookie(cookie: string) {
 
 async function getCookie() {
   try {
-    const cookie = await AsyncStorage.getItem('cookie');
+    const cookie = await AsyncStorage.getItem('cookie').catch(e => undefined);
     return cookie;
   } catch (error) {
     console.log(error);
