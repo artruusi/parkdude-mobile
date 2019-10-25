@@ -1,20 +1,19 @@
 import React, { Component } from "react";
 import { NativeRouter, Route, Redirect, Switch } from "react-router-native";
-import { ActivityIndicator } from "react-native";
 import LoginView from "./src/components/LoginView";
 import MainView from "./src/components/MainView";
 import MyReservationsView from "./src/components/MyReservationsView";
+import LoadingView from "./src/components/LoadingView";
 import PrivateRoute from "./src/PrivateRoute";
 
 import { LOGOUT_URL, LOGIN_STATE_URL } from "react-native-dotenv";
 import { UserRole } from "./src/Enums";
 import { apiFetch } from "./src/Utils";
 import { setCookie } from "./src/CookieStorage";
-import { LoadingView } from "./src/components/LoadingView";
 
 interface MainState {
   user: string;
-  error?: Object;
+  error?: string;
   isAuthenticated: boolean;
   userRole?: UserRole;
   loading: boolean;
@@ -25,7 +24,7 @@ export default class App extends Component<{}, MainState> {
     super(props);
     this.state = {
       user: "",
-      error: {},
+      error: "",
       isAuthenticated: false,
       loading: true
     };
@@ -47,7 +46,9 @@ export default class App extends Component<{}, MainState> {
         loading: false
       });
     } catch (err) {
-      // TODO: Better error handling
+      this.setState({
+        error: "Parkdude cannot connect to the server."
+      });
       console.log(err);
     }
   }
@@ -72,7 +73,9 @@ export default class App extends Component<{}, MainState> {
 
   render() {
     if (this.state.loading) {
-      return <LoadingView />;
+      return (
+        <LoadingView error={this.state.error}/>
+      );
     }
 
     return (
