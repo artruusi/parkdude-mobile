@@ -35,6 +35,7 @@
     "eslint-plugin-jest": "^23.0.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.16.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest-expo": "^35.0.0",
     "jetifier": "^1.6.4",
     "typescript": "^3.4.5"
@@ -51,7 +52,10 @@
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!react-native|react-router-native)/"
-    ]
+    ],
+    "moduleNameMapper": {
+      ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "identity-obj-proxy"
+    }
   },
   "private": true,
   "eslint.validate": [
