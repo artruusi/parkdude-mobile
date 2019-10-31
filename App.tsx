@@ -10,6 +10,7 @@ import { LOGOUT_URL, LOGIN_STATE_URL } from "react-native-dotenv";
 import { UserRole } from "./src/Enums";
 import { apiFetch } from "./src/Utils";
 import { setCookie } from "./src/CookieStorage";
+import { CONNECTION_ERROR } from "./src/Constants";
 
 interface MainState {
   user: string;
@@ -47,7 +48,7 @@ export default class App extends Component<{}, MainState> {
       });
     } catch (err) {
       this.setState({
-        error: "Parkdude cannot connect to the server."
+        error: CONNECTION_ERROR
       });
       console.log(err);
     }
