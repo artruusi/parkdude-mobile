@@ -2,10 +2,16 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 interface Props {
-  logout: () => void;
+  logout: () => void,
+  navigation: any
 }
 
 export default class MainView extends Component<Props> {
+  
+  static navigationOptions = {
+    drawerLabel: 'MainView' // TODO change this. Home? Reservations?
+  };
+
   render() {
     // TODO: Find better place for logout button
     return (
