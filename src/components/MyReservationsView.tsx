@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 
 export default class MyReservationsView extends Component {
   render() {
-    return(
+    return (
       <View style={styles.container}>
         <Text>My reservations</Text>
       </View>

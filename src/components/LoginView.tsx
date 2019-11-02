@@ -1,16 +1,15 @@
 import React, {Component} from 'react';
-import { StyleSheet, View } from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class LoginView extends Component {
-  
   handleLogin() {
     // event handler triggered by Login-button
     // TODO: Add Login functionality
   }
-  
+
   render() {
-    return(
+    return (
       <View style={styles.container}>
         <Icon.Button
           name="google"
@@ -29,6 +28,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
-  },
+    justifyContent: 'center'
+  }
 });

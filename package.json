@@ -5,7 +5,8 @@
     "ios": "react-native run-ios",
     "web": "expo start --web",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint --ext .ts,.tsx,.js,.jsx src/ __tests__/"
   },
   "dependencies": {
     "expo": "^35.0.0",
@@ -25,7 +26,16 @@
     "@types/react": "^16.8.23",
     "@types/react-native": "^0.57.65",
     "@types/react-native-vector-icons": "^6.4.4",
+    "@typescript-eslint/eslint-plugin": "^2.6.0",
+    "@typescript-eslint/parser": "^2.6.0",
     "babel-preset-expo": "^7.0.0",
+    "eslint": "^6.6.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^23.0.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.16.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest-expo": "^35.0.0",
     "jetifier": "^1.6.4",
     "typescript": "^3.4.5"
@@ -42,7 +52,10 @@
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!react-native|react-router-native)/"
-    ]
+    ],
+    "moduleNameMapper": {
+      ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "identity-obj-proxy"
+    }
   },
   "private": true,
   "eslint.validate": [
