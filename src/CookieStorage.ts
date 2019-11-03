@@ -1,25 +1,25 @@
 import { AsyncStorage } from 'react-native';
 
-async function setCookie(cookie: string) {
+const setCookie = async (cookie: string, storage=AsyncStorage) => {
   try {
-    await AsyncStorage.setItem('cookie', cookie)
+    await storage.setItem('cookie', cookie)
   } catch (error) {
     console.log(error);
   }
 }
 
-async function getCookie() {
+const getCookie = async (storage=AsyncStorage) => {
   try {
-    const cookie = await AsyncStorage.getItem('cookie').catch(e => undefined);
+    const cookie = await storage.getItem('cookie').catch(e => undefined);
     return cookie;
   } catch (error) {
     console.log(error);
   }
 }
 
-async function removeCookie() {
+const removeCookie = async (storage=AsyncStorage) => {
   try {
-    await AsyncStorage.removeItem('cookie');
+    await storage.removeItem('cookie');
   } catch (error) {
     console.log(error);
   }
