@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { StyleSheet, View } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
-import { AuthSession } from "expo";
-import { LOGIN_URL } from "react-native-dotenv";
-import { setCookie } from "../CookieStorage";
-import { getAuthState } from "../actions/authActions"
-import { connect } from "react-redux";
+import React, {Component} from 'react';
+import {StyleSheet, View} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {AuthSession} from 'expo';
+import {LOGIN_URL} from 'react-native-dotenv';
+import {setCookie} from '../CookieStorage';
+import {getAuthState} from '../actions/authActions';
+import {connect} from 'react-redux';
 
 interface Props {
-  getAuthState: () => void,
-  navigation: any
+  getAuthState: () => void;
+  navigation: any;
 }
 
 class LoginView extends Component<Props> {
@@ -28,9 +28,9 @@ class LoginView extends Component<Props> {
         authUrl: LOGIN_URL + `?redirectUrl=${redirectUrl}`
       });
 
-      console.log("Returned from browser", result);
+      console.log('Returned from browser', result);
 
-      if (result.type === "success") {
+      if (result.type === 'success') {
         const sessionId = result.params.sessionId;
         await setCookie(`sessionId=${sessionId}`);
         this.props.getAuthState();
@@ -43,7 +43,7 @@ class LoginView extends Component<Props> {
 
   componentWillReceiveProps(receivedProps) {
     if (receivedProps.isAuthenticated) {
-      this.props.navigation.navigate("App");
+      this.props.navigation.navigate('App');
     }
   }
 
@@ -66,15 +66,15 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated
 });
 
-const mapDispatchToProps = { getAuthState }
+const mapDispatchToProps = {getAuthState};
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });

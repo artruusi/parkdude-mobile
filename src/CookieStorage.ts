@@ -1,21 +1,21 @@
-import { AsyncStorage } from 'react-native';
+import {AsyncStorage} from 'react-native';
 
 const setCookie = async (cookie: string, storage=AsyncStorage) => {
   try {
-    await storage.setItem('cookie', cookie)
+    await storage.setItem('cookie', cookie);
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 const getCookie = async (storage=AsyncStorage) => {
   try {
-    const cookie = await storage.getItem('cookie').catch(e => undefined);
+    const cookie = await storage.getItem('cookie').catch((e) => undefined);
     return cookie;
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 const removeCookie = async (storage=AsyncStorage) => {
   try {
@@ -23,6 +23,6 @@ const removeCookie = async (storage=AsyncStorage) => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
-export { setCookie, getCookie, removeCookie };
+export {setCookie, getCookie, removeCookie};

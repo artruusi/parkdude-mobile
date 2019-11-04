@@ -1,8 +1,8 @@
-import React, {Component} from "react";
-import { StyleSheet, ActivityIndicator, View, Text } from "react-native";
+import React, {Component} from 'react';
+import {StyleSheet, ActivityIndicator, View, Text} from 'react-native';
 
 interface LoadingProps {
-  error: string
+  error: string;
 }
 
 export default class LoadingView extends Component<LoadingProps, {}> {
@@ -10,8 +10,8 @@ export default class LoadingView extends Component<LoadingProps, {}> {
     super(props);
   }
 
-  render()  {
-    return(
+  render() {
+    return (
       <View style={styles.container}>
         <Text>{this.props.error}</Text>
         <ActivityIndicator size="large" color="#0000ff" />
@@ -23,8 +23,8 @@ export default class LoadingView extends Component<LoadingProps, {}> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
