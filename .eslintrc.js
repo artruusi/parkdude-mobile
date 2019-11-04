@@ -34,7 +34,6 @@ module.exports = {
     'no-unused-vars': 'off',
     'require-jsdoc': 'off',
     'valid-jsdoc': 'off',
-    'no-undef': 2,
     indent: ['error', 2]
   }
 };

@@ -20,7 +20,6 @@ export const getAuthState = () => {
 };
 
 export const setAuthState = (result) => {
-  console.log(result);
   return {
     type: GET_AUTHSTATE,
     payload: result
