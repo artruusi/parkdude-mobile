@@ -1,12 +1,5 @@
 import {GET_AUTHSTATE, LOG_OUT} from '../actions/actionTypes';
-import {UserRole} from '../Enums';
-
-export interface LoginState {
-  isAuthenticated: boolean;
-  userRole?: UserRole;
-  name?: string;
-  loading: true;
-}
+import {LoginState} from '../types';
 
 const initialState: LoginState = {
   isAuthenticated: false,

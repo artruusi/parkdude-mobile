@@ -1,6 +1,7 @@
 import {NETWORK_ERROR} from '../actions/actionTypes';
+import {ErrorState} from '../types';
 
-const initialState = {
+const initialState: ErrorState = {
   hasErrors: false,
   error: ''
 };

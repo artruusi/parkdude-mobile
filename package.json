@@ -6,7 +6,8 @@
     "web": "expo start --web",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint --ext .ts,.tsx,.js,.jsx src/ __tests__/"
+    "lint": "eslint --ext .ts,.tsx,.js,.jsx src/ __tests__/",
+    "fix": "eslint --fix --ext .ts,.tsx,.js,.jsx src/ __tests__/"
   },
   "dependencies": {
     "@types/react-native-vector-icons": "^6.4.4",
