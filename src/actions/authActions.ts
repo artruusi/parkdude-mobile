@@ -3,6 +3,7 @@ import {LOGIN_STATE_URL, LOGOUT_URL} from 'react-native-dotenv';
 import {gotNetworkError} from './errorActions';
 import {CONNECTION_ERROR} from '../Constants';
 import {apiFetch} from '../Utils';
+import {removeCookie} from '../CookieStorage';
 
 // url for mocking request
 // "https://jsonplaceholder.typicode.com/todos/1"
@@ -31,6 +32,7 @@ export const logOut = () => {
     try {
       const authResponse = await apiFetch(LOGOUT_URL);
       const result = await authResponse.json();
+      await removeCookie();
       dispatch(setLogOutState(result));
     } catch (error) {
       dispatch(gotNetworkError(CONNECTION_ERROR));

@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 8368,
-  "expoServerNgrokUrl": "https://p4-nm6.anonymous.parkdude-mobile-client.exp.direct",
-  "packagerNgrokUrl": "https://packager.p4-nm6.anonymous.parkdude-mobile-client.exp.direct",
-  "ngrokPid": 15468
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }

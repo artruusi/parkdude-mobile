@@ -20,7 +20,7 @@ export const authReducer = (state = initialState, action ) => {
       isAuthenticated: false,
       userRole: null,
       name: null,
-      loading: false
+      loading: true
     };
   default:
     return state;

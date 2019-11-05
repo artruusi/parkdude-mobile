@@ -1,6 +1,6 @@
 import {authReducer} from '../../src/reducers/authReducer';
 import {GET_AUTHSTATE, LOG_OUT} from '../../src/actions/actionTypes';
-import {UserRole} from '../../src/Enums';
+import {UserRole} from '../../src/types';
 
 const serverResultAuthenticated = {
   isAuthenticated: true,
@@ -56,7 +56,7 @@ describe('authReducer', () => {
       isAuthenticated: false,
       userRole: null,
       name: null,
-      loading: false
+      loading: true
     });
   });
 });
