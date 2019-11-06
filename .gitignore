@@ -1,6 +1,9 @@
+# expo
+#
+.expo/packager-info.json
+
 # ENV FILES
 #
-
 .env
 .env.development
 .env.production
