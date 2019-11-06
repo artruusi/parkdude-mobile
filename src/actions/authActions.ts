@@ -32,7 +32,7 @@ export const logOut = () => {
   return async (dispatch) => {
     try {
       // TODO: if GET /auth/logout is deprecated, change to POST
-      const authResponse = await apiFetch(HttpMethod.GET, LOGOUT_URL);
+      const authResponse = await apiFetch(LOGOUT_URL, {method: HttpMethod.GET});
       const result = await authResponse.json();
       await removeCookie();
       dispatch(setLogOutState(result));
