@@ -4,6 +4,7 @@ import {gotNetworkError} from './errorActions';
 import {CONNECTION_ERROR} from '../Constants';
 import {apiFetch} from '../Utils';
 import {removeCookie} from '../CookieStorage';
+import {HttpMethod} from '../types';
 
 // url for mocking request
 // "https://jsonplaceholder.typicode.com/todos/1"
@@ -11,7 +12,7 @@ import {removeCookie} from '../CookieStorage';
 export const getAuthState = () => {
   return async (dispatch) => {
     try {
-      const authResponse = await apiFetch(LOGIN_STATE_URL);
+      const authResponse = await apiFetch(LOGIN_STATE_URL, {method: HttpMethod.GET});
       const result = await authResponse.json();
       dispatch(setAuthState(result));
     } catch (error) {
@@ -30,7 +31,8 @@ export const setAuthState = (result) => {
 export const logOut = () => {
   return async (dispatch) => {
     try {
-      const authResponse = await apiFetch(LOGOUT_URL);
+      // TODO: if GET /auth/logout is deprecated, change to POST
+      const authResponse = await apiFetch(HttpMethod.GET, LOGOUT_URL);
       const result = await authResponse.json();
       await removeCookie();
       dispatch(setLogOutState(result));

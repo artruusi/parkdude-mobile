@@ -1,13 +1,10 @@
-import {Action} from 'redux';
-import {ThunkDispatch} from 'redux-thunk';
-
 // Interfaces for reducers
 
 export interface LoginState {
   isAuthenticated: boolean;
   userRole?: UserRole;
   name?: string;
-  loading: true;
+  loading: boolean;
 }
 
 export interface ErrorState{
@@ -24,6 +21,9 @@ export enum UserRole {
   SLACK = 'slack'
 }
 
-// Types
-
-export type Dispatch = ThunkDispatch<{}, void, Action>;
+export enum HttpMethod {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE'
+}
