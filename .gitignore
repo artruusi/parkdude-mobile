@@ -1,6 +1,6 @@
 # expo
 #
-.expo/packager-info.json
+*.packager-info.json
 
 # ENV FILES
 #
