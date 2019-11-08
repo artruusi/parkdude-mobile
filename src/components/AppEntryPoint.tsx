@@ -3,6 +3,7 @@ import LoginView from './LoginView';
 import {getAuthState} from '../actions/authActions';
 import {connect} from 'react-redux';
 import LoadingView from './LoadingView';
+import {UserRole} from '../types';
 
 interface DispatchProps {
   navigation: any;
@@ -26,7 +27,12 @@ class AppEntryPoint extends Component<Props> {
 
   componentWillReceiveProps(receivedProps) {
     if (receivedProps.isAuthenticated) {
-      this.props.navigation.navigate('App');
+      if (receivedProps.userRole == UserRole.UNVERIFIED) {
+        this.props.navigation.navigate('WaitForConfirmationView');
+      }
+      if (receivedProps.userRole == UserRole.VERIFIED) {
+        this.props.navigation.navigate('App');
+      }
     }
   }
 
@@ -45,6 +51,7 @@ class AppEntryPoint extends Component<Props> {
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
+  userRole: state.auth.userRole,
   loading: state.auth.loading,
   hasErrors: state.error.hasErrors,
   error: state.error.error
