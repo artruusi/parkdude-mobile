@@ -1,24 +1,19 @@
-import React, {Component} from 'react';
-import { NativeRouter, Route, Redirect } from "react-router-native";
-import LoginView from './src/components/LoginView'
-import MainView from './src/components/MainView'
-import MyReservationsView from './src/components/MyReservationsView'
-import MakeReservationView from './src/components/MakeReservationView'
-import PrivateRoute from './src/PrivateRoute'
+import React, { Component } from "react";
+import { Provider } from "react-redux";
+import AppContainer from './src/navigation';
+import store from "./src/store";
 
-export default class App extends Component {
-  
-  // TODO: Handle authentication
+export default class App extends Component<{}, {}> {
+  constructor(props: {}) {
+    super(props);
+  }
 
   render() {
+
     return (
-      <NativeRouter>
-        <Redirect exact from="/" to="main" />
-        <Route path="/login" component={LoginView} />
-        <PrivateRoute name="main" path="/main" component={MainView} />
-        <PrivateRoute path="/my_reservations" component={MyReservationsView} />
-        <PrivateRoute path="/make_reservation" component={MakeReservationView} />
-      </NativeRouter>
+      <Provider store={store}>
+        <AppContainer />
+      </Provider>
     );
   }
 }

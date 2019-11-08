@@ -7,13 +7,17 @@ module.exports = {
     jsx: true
   },
   env: {
-    jest: true
+    jest: true,
+    node: true
   },
   settings: {
     react: {
       pragma: 'React',
       version: 'detect'
     }
+  },
+  globals: {
+    fetch: false
   },
   rules: {
     '@typescript-eslint/explicit-function-return-type': 'off',

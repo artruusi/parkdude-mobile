@@ -1,7 +1,16 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
-export default class MainView extends Component {
+interface Props {
+  logout: () => void;
+  navigation: any;
+}
+
+export default class MainView extends Component<Props> {
+  static navigationOptions = {
+    drawerLabel: 'MainView' // TODO change this. Home? Reservations?
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -17,6 +26,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
+  logoutButton: {
+    margin: 10,
+    padding: 10,
+    backgroundColor: '#DDD'
+  }
 });
