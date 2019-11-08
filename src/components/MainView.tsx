@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {NavigationScreenProp} from 'react-navigation';
+import {Calendar} from 'react-native-calendars';
 
 interface Props {
   logout: () => void;
@@ -17,6 +18,7 @@ export default class MainView extends Component<Props> {
       <View style={styles.container}>
         <Text>Hello World!</Text>
         <Text>Parkdude mobile client is running succesfully!</Text>
+        <Calendar/>
       </View>
     );
   }
