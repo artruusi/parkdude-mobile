@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {AuthSession} from 'expo';
 import {LOGIN_URL} from 'react-native-dotenv';
@@ -50,6 +50,7 @@ class LoginView extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
+        <Image source={require('../../assets/images/parkdude-logo/drawable-hdpi/parkdude.png')}/>
         <Icon.Button
           name="google"
           backgroundColor="#DD4B39"
