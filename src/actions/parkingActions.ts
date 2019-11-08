@@ -4,10 +4,16 @@ import {MY_PARKINGS, SIMULATE} from './actionTypes';
 export const getMyParkings = () => {
   return async (dispatch) => {
     try {
-      dispatch({type: MY_PARKINGS});
+      dispatch(setMyParkings());
     } catch (error) {
       console.log(error);
     }
+  };
+};
+
+export const setMyParkings = () => {
+  return {
+    type: MY_PARKINGS
   };
 };
 

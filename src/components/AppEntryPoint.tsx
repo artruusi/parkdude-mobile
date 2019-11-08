@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import LoginView from './LoginView';
-import {getAuthState} from '../actions/authActions';
+import {getAuthState, setSimulatedAuthState} from '../actions/authActions';
 import {connect} from 'react-redux';
 import LoadingView from './LoadingView';
 import {UserRole} from '../types';
@@ -8,6 +8,7 @@ import {UserRole} from '../types';
 interface DispatchProps {
   navigation: any;
   getAuthState: () => void;
+  setSimulatedAuthState: () => void;
   isAuthenticated: boolean;
   loading: boolean;
   hasErrors: boolean;
@@ -22,7 +23,11 @@ class AppEntryPoint extends Component<Props> {
   }
 
   componentDidMount() {
+    // TO ENABLE SIMULATION OF AUTHENTICATION FLOW:
+    // // CHANGE PLACE OF COMMENTS ON FOLLOWING CODE LINES
+
     this.props.getAuthState();
+    // this.props.setSimulatedAuthState();
   }
 
   componentWillReceiveProps(receivedProps) {
@@ -57,6 +62,6 @@ const mapStateToProps = (state) => ({
   error: state.error.error
 });
 
-const mapDispatchToProps = {getAuthState};
+const mapDispatchToProps = {getAuthState, setSimulatedAuthState};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppEntryPoint);

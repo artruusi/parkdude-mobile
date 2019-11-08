@@ -10,10 +10,20 @@ interface Props {
 }
 
 class WaitForConfirmationView extends Component<Props> {
+  constructor(props: Props) {
+    super(props);
+    this.refresh = this.refresh.bind(this);
+  }
+
   componentWillReceiveProps(receivedProps) {
     if (receivedProps.isAuthenticated && receivedProps.userRole == UserRole.VERIFIED) {
       this.props.navigation.navigate('App');
     }
+  }
+
+  refresh() {
+    console.log('joo o');
+    this.props.navigation.navigate('OnboardingView');
   }
 
   render() {
@@ -27,8 +37,8 @@ class WaitForConfirmationView extends Component<Props> {
           <Text style={styles.text}>{WAITING_CONFIRMATION_TEXT1}</Text>
           <Text style={styles.text}>{WAITING_CONFIRMATION_TEXT2}</Text>
         </View>
-        <TouchableOpacity style={styles.button} onPress={null}>
-          <Text>OK</Text>
+        <TouchableOpacity style={styles.button} onPress={this.refresh}>
+          <Text>Refresh</Text>
         </TouchableOpacity>
       </View>
     );

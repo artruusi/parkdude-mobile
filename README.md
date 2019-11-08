@@ -35,6 +35,5 @@ Rename .env.development-example to .env.development
 
 ## Development
 Use app without connection to backend:
-1) authActions.getAuthState: replace LOGIN_STATE_URL with "https://jsonplaceholder.typicode.com/todos/1"
-so that the request won't fail in network error.
-2) authReducer: case GET_AUTHSTATE: set property isAuthenticated as true and userRole as UserRole.VERIFIED or UserRole.UNVERIFIED
+- Go to components/AppEntryPoint.tsx
+- On componentDidMount() function: you need to swap the commenting on the two codelines. The action creator to call needs to be setSimulatedAuthState()

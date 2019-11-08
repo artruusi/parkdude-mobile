@@ -4,11 +4,13 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {AuthSession} from 'expo';
 import {LOGIN_URL} from 'react-native-dotenv';
 import {setCookie} from '../CookieStorage';
-import {getAuthState} from '../actions/authActions';
+import {getAuthState, setSimulateVerified, setSimulateUnVerified} from '../actions/authActions';
 import {connect} from 'react-redux';
 
 interface Props {
   getAuthState: () => void;
+  setSimulateVerified: () => void;
+  setSimulateUnVerified: () => void;
   navigation: any;
 }
 
@@ -16,6 +18,8 @@ class LoginView extends Component<Props> {
   constructor(props: Props) {
     super(props);
     this.loginGoogle = this.loginGoogle.bind(this);
+    this.simulateLoginVerified = this.simulateLoginVerified.bind(this);
+    this.simulateLoginUnVerified = this.simulateLoginUnVerified.bind(this);
   }
 
   async loginGoogle() {
@@ -41,6 +45,16 @@ class LoginView extends Component<Props> {
     }
   }
 
+  simulateLoginVerified() {
+    this.props.setSimulateVerified();
+    this.props.navigation.navigate('App');
+  }
+
+  simulateLoginUnVerified() {
+    this.props.setSimulateUnVerified();
+    this.props.navigation.navigate('WaitForConfirmationView');
+  }
+
   componentWillReceiveProps(receivedProps) {
     if (receivedProps.isAuthenticated) {
       this.props.navigation.navigate('App');
@@ -51,13 +65,33 @@ class LoginView extends Component<Props> {
     return (
       <View style={styles.container}>
         <Image source={require('../../assets/images/parkdude-logo/drawable-hdpi/parkdude.png')}/>
-        <Icon.Button
-          name="google"
-          backgroundColor="#DD4B39"
-          onPress={this.loginGoogle}
-        >
-          Login with Google
-        </Icon.Button>
+        <View style={styles.button}>
+          <Icon.Button
+            name="google"
+            backgroundColor="#DD4B39"
+            onPress={this.loginGoogle}
+          >
+            Login with Google
+          </Icon.Button>
+        </View>
+        <View style={styles.button}>
+          <Icon.Button
+            name="google"
+            backgroundColor="#DD4B39"
+            onPress={this.simulateLoginVerified}
+          >
+            SIMULATE LOGIN (VERIFIED)
+          </Icon.Button>
+        </View>
+        <View style={styles.button}>
+          <Icon.Button
+            name="google"
+            backgroundColor="#DD4B39"
+            onPress={this.simulateLoginUnVerified}
+          >
+            SIMULATE LOGIN (UNVERIFIED)
+          </Icon.Button>
+        </View>
       </View>
     );
   }
@@ -67,7 +101,7 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated
 });
 
-const mapDispatchToProps = {getAuthState};
+const mapDispatchToProps = {getAuthState, setSimulateVerified, setSimulateUnVerified};
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
 
@@ -77,5 +111,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  button: {
+    margin: 20
   }
 });
