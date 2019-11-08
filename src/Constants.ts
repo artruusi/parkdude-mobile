@@ -15,6 +15,13 @@ export const WAITING_CONFIRMATION_TEXT1 = `Your sign up has been received and is
 
 export const WAITING_CONFIRMATION_TEXT2 = `When your signup has been accepted, you will ne notified by e-mail.`;
 
+// Parking
+
+export const YOUR_PARKINGS = 'Your parkings';
+export const NO_PARKINGS_TITLE = 'No parkings';
+export const NO_PARKINGS_TEXT = 'Reservations made from the Park-tab will appear here';
+
+
 // Errors
 
 export const CONNECTION_ERROR = 'Parkdude cannot connect to the server.';
