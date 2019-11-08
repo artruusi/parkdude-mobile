@@ -29,9 +29,12 @@ Rename .env.development-example to .env.development
 - Scan the QR code and parkdude-mobile-client app should open in the Expo mobile app.
 
 ### iOS:
-- Running application opens Metro Bundler in a browser window. 
-- The given QR-code needs to be scanned with iOS camera application. 
+- Running application opens Metro Bundler in a browser window.
+- The given QR-code needs to be scanned with iOS camera application.
 - The parkdude-mobile-client application will open up in the Expo mobile app.
 
-
-
+## Development
+Use app without connection to backend:
+1) authActions.getAuthState: replace LOGIN_STATE_URL with "https://jsonplaceholder.typicode.com/todos/1"
+so that the request won't fail in network error.
+2) authReducer: case GET_AUTHSTATE: set property isAuthenticated as true and userRole as UserRole.VERIFIED or UserRole.UNVERIFIED
