@@ -2,9 +2,10 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {WELCOME_TITLE, WELCOME_TEXT1, WELCOME_TEXT2, WELCOME_TEXT3} from '../Constants';
 import {Colors} from '../../assets/colors';
+import {NavigationScreenProp} from 'react-navigation';
 
 interface Props {
-  navigation: any;
+  navigation: NavigationScreenProp<any, any>;
 }
 
 export default class OnboardingView extends Component<Props> {

@@ -10,17 +10,15 @@ export const WELCOME_TEXT3 = '... Release your parking spot when you know you\'r
 // Waiting for confirmation
 
 export const WAITING_CONFIRMATION_TITLE = 'Waiting for confirmation';
-export const WAITING_CONFIRMATION_TEXT1 = `Your sign up has been received and is waiting for \
-                                          confirmation by one of our admins.`;
-
-export const WAITING_CONFIRMATION_TEXT2 = `When your signup has been accepted, you will ne notified by e-mail.`;
+export const WAITING_CONFIRMATION_TEXT1 = 'Your sign up has been received and is waiting for ' +
+                                          'confirmation by one of our admins.';
+export const WAITING_CONFIRMATION_TEXT2 = 'When your signup has been accepted, you will ne notified by e-mail.';
 
 // Parking
 
 export const YOUR_PARKINGS = 'Your parkings';
 export const NO_PARKINGS_TITLE = 'No parkings';
 export const NO_PARKINGS_TEXT = 'Reservations made from the Park-tab will appear here';
-
 
 // Errors
 

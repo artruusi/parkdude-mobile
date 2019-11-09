@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {logOut, simulateLogout} from '../actions/authActions';
 import {connect} from 'react-redux';
+import {NavigationScreenProp} from 'react-navigation';
 
 interface Props {
   logOut: () => void;
   simulateLogout: () => void;
-  navigation: any;
+  navigation: NavigationScreenProp<any, any>;
 }
 
 class LogOut extends Component<Props> {

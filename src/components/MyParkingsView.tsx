@@ -5,12 +5,13 @@ import {connect} from 'react-redux';
 import {getMyParkings, simulateGetMyParkings} from '../actions/parkingActions';
 import {ParkingSpotEvent} from '../types';
 import {Colors} from '../../assets/colors';
+import {NavigationScreenProp} from 'react-navigation';
 
 interface Props {
   getMyParkings: () => void;
   simulateGetMyParkings: () => void;
-  navigation: any;
-  myParkings: any;
+  navigation: NavigationScreenProp<any, any>;
+  myParkings: ParkingSpotEvent[];
 }
 
 interface ItemProps extends ParkingSpotEvent {
@@ -68,7 +69,7 @@ class MyParkingsView extends Component<Props> {
           <Image style={styles.image} source={require('../../assets/icons/ic-parking/drawable-hdpi/ic_parking.png')}/>
           <Text style={styles.emptyTitle}>{NO_PARKINGS_TITLE}</Text>
           <Text style={styles.text}>{NO_PARKINGS_TEXT}</Text>
-          <TouchableOpacity style={styles.button} onPress={this.simulate}>
+          <TouchableOpacity style={styles.simbutton} onPress={this.simulate}>
             <Text>Simulate getting parkings</Text>
           </TouchableOpacity>
         </View>
@@ -138,12 +139,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  button: {
+  simbutton: {
     width: 327,
     height: 43,
     borderRadius: 21.7,
     backgroundColor: Colors.YELLOW,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    margin: 20
   }
 });

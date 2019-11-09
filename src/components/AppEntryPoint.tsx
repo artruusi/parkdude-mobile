@@ -4,9 +4,10 @@ import {getAuthState, setSimulatedAuthState} from '../actions/authActions';
 import {connect} from 'react-redux';
 import LoadingView from './LoadingView';
 import {UserRole} from '../types';
+import {NavigationScreenProp} from 'react-navigation';
 
-interface DispatchProps {
-  navigation: any;
+interface Props {
+  navigation: NavigationScreenProp<any, any>;
   getAuthState: () => void;
   setSimulatedAuthState: () => void;
   isAuthenticated: boolean;
@@ -14,8 +15,6 @@ interface DispatchProps {
   hasErrors: boolean;
   error: string;
 }
-
-type Props = DispatchProps;
 
 class AppEntryPoint extends Component<Props> {
   constructor(props: Props) {
@@ -32,10 +31,10 @@ class AppEntryPoint extends Component<Props> {
 
   componentWillReceiveProps(receivedProps) {
     if (receivedProps.isAuthenticated) {
-      if (receivedProps.userRole == UserRole.UNVERIFIED) {
+      if (receivedProps.userRole === UserRole.UNVERIFIED) {
         this.props.navigation.navigate('WaitForConfirmationView');
       }
-      if (receivedProps.userRole == UserRole.VERIFIED) {
+      if (receivedProps.userRole === UserRole.VERIFIED || receivedProps.userRole === UserRole.ADMIN) {
         this.props.navigation.navigate('App');
       }
     }

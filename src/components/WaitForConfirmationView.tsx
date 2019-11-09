@@ -4,25 +4,26 @@ import {connect} from 'react-redux';
 import {UserRole} from '../types';
 import {WAITING_CONFIRMATION_TITLE, WAITING_CONFIRMATION_TEXT1, WAITING_CONFIRMATION_TEXT2} from '../Constants';
 import {Colors} from '../../assets/colors';
+import {NavigationScreenProp} from 'react-navigation';
 
 interface Props {
-  navigation: any;
+  navigation: NavigationScreenProp<any, any>;
 }
 
 class WaitForConfirmationView extends Component<Props> {
   constructor(props: Props) {
     super(props);
-    this.refresh = this.refresh.bind(this);
+    this.restart = this.restart.bind(this);
   }
 
   componentWillReceiveProps(receivedProps) {
-    if (receivedProps.isAuthenticated && receivedProps.userRole == UserRole.VERIFIED) {
+    if (receivedProps.isAuthenticated &&
+      (receivedProps.userRole === UserRole.VERIFIED || receivedProps.userRole === UserRole.ADMIN)) {
       this.props.navigation.navigate('App');
     }
   }
 
-  refresh() {
-    console.log('joo o');
+  restart() {
     this.props.navigation.navigate('OnboardingView');
   }
 
@@ -37,8 +38,8 @@ class WaitForConfirmationView extends Component<Props> {
           <Text style={styles.text}>{WAITING_CONFIRMATION_TEXT1}</Text>
           <Text style={styles.text}>{WAITING_CONFIRMATION_TEXT2}</Text>
         </View>
-        <TouchableOpacity style={styles.button} onPress={this.refresh}>
-          <Text>Refresh</Text>
+        <TouchableOpacity style={styles.button} onPress={this.restart}>
+          <Text>Restart</Text>
         </TouchableOpacity>
       </View>
     );

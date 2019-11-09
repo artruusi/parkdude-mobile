@@ -1,17 +1,19 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import {StyleSheet, View, Image, Button, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {AuthSession} from 'expo';
 import {LOGIN_URL} from 'react-native-dotenv';
 import {setCookie} from '../CookieStorage';
 import {getAuthState, setSimulateVerified, setSimulateUnVerified} from '../actions/authActions';
 import {connect} from 'react-redux';
+import {NavigationScreenProp} from 'react-navigation';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 interface Props {
   getAuthState: () => void;
   setSimulateVerified: () => void;
   setSimulateUnVerified: () => void;
-  navigation: any;
+  navigation: NavigationScreenProp<any, any>;
 }
 
 class LoginView extends Component<Props> {
@@ -75,22 +77,20 @@ class LoginView extends Component<Props> {
           </Icon.Button>
         </View>
         <View style={styles.button}>
-          <Icon.Button
-            name="google"
-            backgroundColor="#DD4B39"
+          <TouchableOpacity
             onPress={this.simulateLoginVerified}
+            style={styles.button}
           >
-            SIMULATE LOGIN (VERIFIED)
-          </Icon.Button>
+            <Text>SIMULATE LOGIN (VERIFIED)</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.button}>
-          <Icon.Button
-            name="google"
-            backgroundColor="#DD4B39"
+          <TouchableOpacity
             onPress={this.simulateLoginUnVerified}
+            style={styles.button}
           >
-            SIMULATE LOGIN (UNVERIFIED)
-          </Icon.Button>
+            <Text>SIMULATE LOGIN (UNVERIFIED)</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   button: {
+    backgroundColor: '#DDD',
     margin: 20
   }
 });
