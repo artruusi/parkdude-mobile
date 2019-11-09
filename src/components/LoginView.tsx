@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Image, Button, Text} from 'react-native';
+import {StyleSheet, View, Image, TouchableOpacity, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {AuthSession} from 'expo';
 import {LOGIN_URL} from 'react-native-dotenv';
@@ -7,7 +7,6 @@ import {setCookie} from '../CookieStorage';
 import {getAuthState, setSimulateVerified, setSimulateUnVerified} from '../actions/authActions';
 import {connect} from 'react-redux';
 import {NavigationScreenProp} from 'react-navigation';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 interface Props {
   getAuthState: () => void;
