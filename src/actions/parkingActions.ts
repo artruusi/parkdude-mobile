@@ -1,4 +1,8 @@
-import {MY_PARKINGS, SIMULATE} from './actionTypes';
+import {GET_CALENDAR_DATA, MY_PARKINGS, SIMULATE} from './actionTypes';
+import {gotNetworkError} from './errorActions';
+import {CONNECTION_ERROR} from '../Constants';
+import {apiFetch} from '../Utils';
+import {HttpMethod} from '../types';
 
 
 export const getMyParkings = () => {
@@ -24,5 +28,26 @@ export const simulateGetMyParkings = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+};
+
+export const CALENDAR_URL = 'http://localhost:3000/api/parking-reservations/calendar'
+
+export const getCalendarSpots = () => {
+  return async (dispatch) => {
+    try {
+      const calendarResponse = await apiFetch(CALENDAR_URL + '?startDate=2019-11-01&endDate=2019-11-30', {method: HttpMethod.GET});
+      const result = await calendarResponse.json();
+      dispatch(setCalendarState(result));
+    } catch (error) {
+      dispatch(gotNetworkError(CONNECTION_ERROR));
+    }
+  };
+};
+
+export const setCalendarState = (result) => {
+  return {
+    type: GET_CALENDAR_DATA,
+    payload: result
   };
 };
