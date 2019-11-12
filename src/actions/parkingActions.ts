@@ -1,4 +1,5 @@
 import {GET_CALENDAR_DATA, MY_PARKINGS, SIMULATE} from './actionTypes';
+import {CALENDAR_URL} from 'react-native-dotenv';
 import {gotNetworkError} from './errorActions';
 import {CONNECTION_ERROR} from '../Constants';
 import {apiFetch} from '../Utils';
@@ -30,8 +31,6 @@ export const simulateGetMyParkings = () => {
     }
   };
 };
-
-export const CALENDAR_URL = 'http://localhost:3000/api/parking-reservations/calendar'
 
 export const getCalendarSpots = () => {
   return async (dispatch) => {
