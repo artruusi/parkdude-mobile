@@ -5,6 +5,7 @@ import {getCalendarSpots} from '../actions/parkingActions';
 import {NavigationScreenProp} from 'react-navigation';
 import {Calendar} from 'react-native-calendars';
 import { ParkingSpotEvent } from '../types';
+import { typeAlias } from '@babel/types';
 
 interface Props {
   getCalendarSpots: () => void;
@@ -26,9 +27,10 @@ class MainView extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Hello World!</Text>
-        <Text>Parkdude mobile client is running succesfully!</Text>
-        <Calendar/>
+        <Text style={styles.heading}>Book your parking</Text>
+        <Calendar
+          firstDay={1}
+          style={styles.calendar}/>
       </View>
     );
   }
@@ -56,5 +58,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#DDD'
   },
   calendar: {
+    alignSelf: 'stretch',
   }
 });
