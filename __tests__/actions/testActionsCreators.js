@@ -22,6 +22,15 @@ describe('Action Creators', () => {
     expect(authActions.setLogOutState(mockPayload)).toEqual(expectedAction);
   });
 
+  it('should create GET_CALENDAR_DATA action', () => {
+    const mockPayload = {};
+    const expectedAction = {
+      type: types.GET_CALENDAR_DATA,
+      payload: mockPayload
+    };
+    expect(parkingActions.setCalendarState(mockPayload)).toEqual(expectedAction);
+  });
+
   it('should create MY_PARKINGS action', () => {
     const expectedAction = {
       type: types.MY_PARKINGS
