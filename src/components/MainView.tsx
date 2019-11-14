@@ -4,8 +4,8 @@ import {connect} from 'react-redux';
 import {getCalendarSpots} from '../actions/parkingActions';
 import {NavigationScreenProp} from 'react-navigation';
 import {Calendar} from 'react-native-calendars';
-import { ParkingSpotEvent } from '../types';
-import { typeAlias } from '@babel/types';
+import {ParkingSpotEvent} from '../types';
+import {typeAlias} from '@babel/types';
 
 interface Props {
   getCalendarSpots: () => void;

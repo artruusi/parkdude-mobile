@@ -13,7 +13,7 @@ export const parkingReducer = (state = initialState, action ) => {
         calendar: action.payload.calendar,
         ownedSpots: action.payload.ownedSpots
       }
-    ]
+    ];
   case MY_PARKINGS:
     return [
       ...state
