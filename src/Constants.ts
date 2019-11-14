@@ -20,6 +20,10 @@ export const YOUR_PARKINGS = 'Your parkings';
 export const NO_PARKINGS_TITLE = 'No parkings';
 export const NO_PARKINGS_TEXT = 'Reservations made from the Park-tab will appear here';
 
+// Calendar
+
+export const CALENDAR_TITLE = 'Book your parking';
+
 // Errors
 
 export const CONNECTION_ERROR = 'Parkdude cannot connect to the server.';

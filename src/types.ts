@@ -39,3 +39,8 @@ export enum ParkingSpotEventType {
   PARKING = 'Parking',
   RELEASE = 'Release'
 }
+
+export enum Marking {
+  SIMPLE = 'simple',
+  PERIOD = 'period'
+}
