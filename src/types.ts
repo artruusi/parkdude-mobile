@@ -12,6 +12,13 @@ export interface ErrorState{
   error: string;
 }
 
+export interface ParkingSpotEvent {
+  type: ParkingSpotEventType;
+  id: number;
+  // startDate: Date,
+  // endDate: Date
+}
+
 // Enums
 
 export enum UserRole {
@@ -26,4 +33,9 @@ export enum HttpMethod {
   POST = 'POST',
   PUT = 'PUT',
   DELETE = 'DELETE'
+}
+
+export enum ParkingSpotEventType {
+  PARKING = 'Parking',
+  RELEASE = 'Release'
 }

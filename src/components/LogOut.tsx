@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {logOut} from '../actions/authActions';
+import {logOut, simulateLogout} from '../actions/authActions';
 import {connect} from 'react-redux';
+import {NavigationScreenProp} from 'react-navigation';
 
 interface Props {
   logOut: () => void;
-  navigation: any;
+  simulateLogout: () => void;
+  navigation: NavigationScreenProp<any, any>;
 }
 
 class LogOut extends Component<Props> {
@@ -28,6 +30,12 @@ class LogOut extends Component<Props> {
         >
           <Text>Log out</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          onPress={this.props.simulateLogout}
+          style={styles.logoutButton}
+        >
+          <Text>Simulate Log out</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -37,7 +45,7 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated
 });
 
-const mapDispatchToProps = {logOut};
+const mapDispatchToProps = {logOut, simulateLogout};
 
 export default connect(mapStateToProps, mapDispatchToProps)(LogOut);
 

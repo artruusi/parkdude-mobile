@@ -1,4 +1,4 @@
-import {GET_AUTHSTATE, LOG_OUT} from './actionTypes';
+import {GET_AUTHSTATE, LOG_OUT, SIMULATED_LOGIN_VERIFIED, SIMULATED_LOGIN_UNVERIFIED} from './actionTypes';
 import {LOGIN_STATE_URL, LOGOUT_URL} from 'react-native-dotenv';
 import {gotNetworkError} from './errorActions';
 import {CONNECTION_ERROR} from '../Constants';
@@ -6,8 +6,38 @@ import {apiFetch} from '../Utils';
 import {removeCookie} from '../CookieStorage';
 import {HttpMethod} from '../types';
 
-// url for mocking request
-// "https://jsonplaceholder.typicode.com/todos/1"
+
+export const setSimulatedAuthState = () => {
+  return async (dispatch) => {
+    try {
+      dispatch(setAuthState({
+        isAuthenticated: false
+      }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const setSimulateVerified = () => {
+  return async (dispatch) => {
+    try {
+      dispatch(setAuthState({type: SIMULATED_LOGIN_VERIFIED}));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const setSimulateUnVerified = () => {
+  return async (dispatch) => {
+    try {
+      dispatch(setAuthState({type: SIMULATED_LOGIN_UNVERIFIED}));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 
 export const getAuthState = () => {
   return async (dispatch) => {
@@ -37,6 +67,16 @@ export const logOut = () => {
       dispatch(setLogOutState(result));
     } catch (error) {
       dispatch(gotNetworkError(CONNECTION_ERROR));
+    }
+  };
+};
+
+export const simulateLogout = () => {
+  return async (dispatch) => {
+    try {
+      dispatch(setLogOutState(''));
+    } catch (error) {
+      console.log(error);
     }
   };
 };

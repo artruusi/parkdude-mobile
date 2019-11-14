@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {NavigationScreenProp} from 'react-navigation';
 
 interface Props {
   logout: () => void;
-  navigation: any;
+  navigation: NavigationScreenProp<any, any>;
 }
 
 export default class MainView extends Component<Props> {

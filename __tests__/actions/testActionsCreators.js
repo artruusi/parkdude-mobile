@@ -1,5 +1,6 @@
 import * as authActions from '../../src/actions/authActions';
 import * as errorActions from '../../src/actions/errorActions';
+import * as parkingActions from '../../src/actions/parkingActions';
 import * as types from '../../src/actions/actionTypes';
 
 describe('Action Creators', () => {
@@ -19,6 +20,13 @@ describe('Action Creators', () => {
       payload: mockPayload
     };
     expect(authActions.setLogOutState(mockPayload)).toEqual(expectedAction);
+  });
+
+  it('should create MY_PARKINGS action', () => {
+    const expectedAction = {
+      type: types.MY_PARKINGS
+    };
+    expect(parkingActions.setMyParkings()).toEqual(expectedAction);
   });
 
   it('should create NETWORK_ERROR action', () => {
