@@ -1,3 +1,5 @@
+import {Color} from 'csstype';
+
 // Interfaces for reducers
 
 export interface LoginState {
@@ -17,6 +19,18 @@ export interface ParkingSpotEvent {
   id: number;
   // startDate: Date,
   // endDate: Date
+}
+
+export interface CalendarReservations {
+  calendar: CalendarEntry[];
+  totalSpaces: number;
+  userOwnsSpace: boolean;
+}
+
+export interface CalendarEntry {
+  date: string;
+  spacesReservedByUser: any[];
+  availableSpaces: number;
 }
 
 // Enums
@@ -43,4 +57,10 @@ export enum ParkingSpotEventType {
 export enum Marking {
   SIMPLE = 'simple',
   PERIOD = 'period'
+}
+
+export enum MonthSelector {
+  CURRENT = 'current',
+  PREVIOUS = 'provious',
+  NEXT = 'next'
 }

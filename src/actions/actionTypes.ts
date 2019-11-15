@@ -4,8 +4,10 @@ export const LOG_OUT = 'LOG_OUT';
 export const SIMULATED_LOGIN_VERIFIED = 'SIMULATED_LOGIN_VERIFIED';
 export const SIMULATED_LOGIN_UNVERIFIED = 'SIMULATED_LOGIN_UNVERIFIED';
 
-// Parking spots
+// Calendar
 export const GET_CALENDAR_DATA = 'GET_CALENDAR_DATA';
+
+// Parking spots
 export const MY_PARKINGS = 'MY_PARKINGS';
 export const SIMULATE = 'SIMULATE';
 
