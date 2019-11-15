@@ -23,8 +23,7 @@ export interface ParkingSpotEvent {
 
 export interface CalendarReservations {
   calendar: CalendarEntry[];
-  totalSpaces: number;
-  userOwnsSpace: boolean;
+  ownedSpots: any[];
 }
 
 export interface CalendarEntry {
