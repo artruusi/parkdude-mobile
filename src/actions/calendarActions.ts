@@ -88,6 +88,5 @@ const calendarTestData = {
       availableSpaces: 3
     },
   ],
-  totalSpaces: 0,
-  userOwnsSpace: false
+  ownedSpots: []
 };
