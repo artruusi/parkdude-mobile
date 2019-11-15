@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
-import {connect} from 'react-redux';
-import {getCalendarSpots} from '../actions/parkingActions';
 import {NavigationScreenProp} from 'react-navigation';
 import {Calendar} from 'react-native-calendars';
 import {Colors} from '../../assets/colors';
 import {Marking, MonthSelector} from '../types';
 import {CALENDAR_TITLE} from '../Constants';
-import { createMarkedDatesObject } from '../Utils';
+import {connect} from 'react-redux';
+import {getCalendarSpots} from '../actions/calendarActions';
+import {createMarkedDatesObject} from '../Utils';
 
 interface Props {
   getCalendarSpots: (string) => void;
@@ -29,6 +29,7 @@ class MainView extends Component<Props, State> {
       markingType: Marking.SIMPLE // simple/period
     };
     this.toggleSelectedDay = this.toggleSelectedDay.bind(this);
+    this.fetchDataForMonth = this.fetchDataForMonth.bind(this);
   }
 
   static navigationOptions = {
@@ -64,7 +65,7 @@ class MainView extends Component<Props, State> {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>{CALENDAR_TITLE}</Text>
-        <Text>{this.props.error}</Text>
+        <Text style={styles.error}>{this.props.error}</Text>
         <Calendar
           markingType={this.state.markingType}
           onDayPress={(day) => {
@@ -124,6 +125,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontStyle: 'normal',
     letterSpacing: 0,
-    textAlign: 'center',
+    textAlign: 'center'
+  },
+  error: {
+    color: Colors.RED,
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center'
   }
 });

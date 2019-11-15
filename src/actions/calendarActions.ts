@@ -88,5 +88,10 @@ const calendarTestData = {
       availableSpaces: 3
     },
   ],
+<<<<<<< HEAD
   ownedSpots: []
+=======
+  totalSpaces: 0,
+  userOwnsSpace: false
+>>>>>>> Added own actions and reducer for calendar, implemented simulated data fetching, added functions to arrow buttons
 };
