@@ -23,8 +23,7 @@ export interface ParkingSpotEvent {
 
 export interface CalendarReservations {
   calendar: CalendarEntry[];
-  totalSpaces: number;
-  userOwnsSpace: boolean;
+  ownedSpots: any[];
 }
 
 export interface CalendarEntry {
@@ -61,6 +60,6 @@ export enum Marking {
 
 export enum MonthSelector {
   CURRENT = 'current',
-  PREVIOUS = 'provious',
+  PREVIOUS = 'previous',
   NEXT = 'next'
 }
