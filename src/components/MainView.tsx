@@ -3,12 +3,17 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {NavigationScreenProp} from 'react-navigation';
 import {Calendar} from 'react-native-calendars';
 import {Colors} from '../../assets/colors';
-import {Marking} from '../types';
+import {Marking, MonthSelector} from '../types';
 import {CALENDAR_TITLE} from '../Constants';
+import {connect} from 'react-redux';
+import {getCalendarSpots} from '../actions/calendarActions';
+import {createMarkedDatesObject} from '../Utils';
 
 interface Props {
-  logout: () => void;
+  getCalendarSpots: (string) => void;
   navigation: NavigationScreenProp<any, any>;
+  calendarList: any;
+  error: any;
 }
 
 interface State {
@@ -16,7 +21,7 @@ interface State {
   markingType: Marking;
 }
 
-export default class MainView extends Component<Props, State> {
+class MainView extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -24,11 +29,29 @@ export default class MainView extends Component<Props, State> {
       markingType: Marking.SIMPLE // simple/period
     };
     this.toggleSelectedDay = this.toggleSelectedDay.bind(this);
+    this.fetchDataForMonth = this.fetchDataForMonth.bind(this);
   }
 
   static navigationOptions = {
     drawerLabel: 'MainView' // TODO change this. Home? Reservations?
   };
+
+  componentDidMount() {
+    this.fetchDataForMonth(MonthSelector.CURRENT);
+  }
+
+  fetchDataForMonth(monthSelector: MonthSelector) {
+    if (monthSelector === MonthSelector.CURRENT) {
+      const templateUrlParams = '?startDate=2019-11-01&endDate=2019-11-30';
+      this.props.getCalendarSpots(templateUrlParams);
+    }
+    if (monthSelector === MonthSelector.PREVIOUS) {
+      // get date range by month
+    }
+    if (monthSelector === MonthSelector.NEXT) {
+      // get date range by month
+    }
+  }
 
   toggleSelectedDay(day) {
     if (this.state.selectedDate === day.dateString) {
@@ -42,21 +65,42 @@ export default class MainView extends Component<Props, State> {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>{CALENDAR_TITLE}</Text>
+        <Text style={styles.error}>{this.props.error}</Text>
         <Calendar
           markingType={this.state.markingType}
           onDayPress={(day) => {
             this.toggleSelectedDay(day);
           }}
           minDate={new Date().toISOString().slice(0, 10)}
-          markedDates={{
-            [this.state.selectedDate]: {selected: true, selectedColor: Colors.YELLOW}
-          }}
+          markedDates={
+            Object.assign(
+              {[this.state.selectedDate]: {selected: true, selectedColor: Colors.YELLOW}},
+              createMarkedDatesObject(this.props.calendarList)
+            )
+          }
           firstDay={1}
-          style={styles.calendar}/>
+          hideExtraDays={true}
+          onPressArrowLeft={(substractMonth) => {
+            this.fetchDataForMonth(MonthSelector.PREVIOUS), substractMonth();
+          }}
+          onPressArrowRight={(addMonth) => {
+            this.fetchDataForMonth(MonthSelector.NEXT), addMonth();
+          }}
+          style={styles.calendar}
+        />
       </View>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  calendarList: state.calendar.calendar,
+  error: state.error.error
+});
+
+const mapDispatchToProps = {getCalendarSpots};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainView);
 
 const styles = StyleSheet.create({
   container: {
@@ -81,6 +125,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontStyle: 'normal',
     letterSpacing: 0,
-    textAlign: 'center',
+    textAlign: 'center'
+  },
+  error: {
+    color: Colors.RED,
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center'
   }
 });
