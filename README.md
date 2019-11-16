@@ -16,7 +16,7 @@
 - run application on mobile: ```expo start```
 
 ### Environment variables
-Rename .env.development-example to .env.development
+Rename .test.env to .env
 
 ### Tests:
 - Jest is used for testing the application
