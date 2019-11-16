@@ -18,6 +18,8 @@
 ### Environment variables
 Rename .test.env to .env
 
+If changes in .env don't reflect to code run ```expo r -c``` to clear cache.
+
 ### Tests:
 - Jest is used for testing the application
 - run tests: ```npm test```
