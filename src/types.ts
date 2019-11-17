@@ -1,5 +1,3 @@
-import {Color} from 'csstype';
-
 // Interfaces for reducers
 
 export interface LoginState {

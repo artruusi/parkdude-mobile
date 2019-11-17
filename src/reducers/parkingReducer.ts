@@ -1,4 +1,4 @@
-import {GET_CALENDAR_DATA, MY_PARKINGS, SIMULATE} from '../actions/actionTypes';
+import {MY_PARKINGS, SIMULATE} from '../actions/actionTypes';
 import {ParkingSpotEventType, ParkingSpotEvent} from '../types';
 
 
@@ -7,13 +7,6 @@ const initialState: ParkingSpotEvent[] = [];
 
 export const parkingReducer = (state = initialState, action ) => {
   switch (action.type) {
-  case GET_CALENDAR_DATA:
-    return [
-      {
-        calendar: action.payload.calendar,
-        ownedSpots: action.payload.ownedSpots
-      }
-    ];
   case MY_PARKINGS:
     return [
       ...state

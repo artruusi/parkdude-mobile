@@ -1,6 +1,7 @@
 import * as authActions from '../../src/actions/authActions';
 import * as errorActions from '../../src/actions/errorActions';
 import * as parkingActions from '../../src/actions/parkingActions';
+import * as calendarActions from '../../src/actions/calendarActions';
 import * as types from '../../src/actions/actionTypes';
 
 describe('Action Creators', () => {
@@ -28,7 +29,7 @@ describe('Action Creators', () => {
       type: types.GET_CALENDAR_DATA,
       payload: mockPayload
     };
-    expect(parkingActions.setCalendarState(mockPayload)).toEqual(expectedAction);
+    expect(calendarActions.setCalendarState(mockPayload)).toEqual(expectedAction);
   });
 
   it('should create MY_PARKINGS action', () => {

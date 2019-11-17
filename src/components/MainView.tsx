@@ -87,6 +87,11 @@ class MainView extends Component<Props, State> {
             this.fetchDataForMonth(MonthSelector.NEXT), addMonth();
           }}
           style={styles.calendar}
+          theme={{
+            textDayFontWeight: 'bold',
+            textDayHeaderFontWeight: 'bold',
+            textMonthFontWeight: 'bold',
+          }}
         />
       </View>
     );

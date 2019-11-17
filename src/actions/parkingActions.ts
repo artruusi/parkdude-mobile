@@ -32,22 +32,3 @@ export const simulateGetMyParkings = () => {
   };
 };
 
-export const getCalendarSpots = () => {
-  return async (dispatch) => {
-    try {
-      const calendarResponse = await apiFetch(CALENDAR_URL +
-        '?startDate=2019-11-01&endDate=2019-11-30', {method: HttpMethod.GET});
-      const result = await calendarResponse.json();
-      dispatch(setCalendarState(result));
-    } catch (error) {
-      dispatch(gotNetworkError(CONNECTION_ERROR));
-    }
-  };
-};
-
-export const setCalendarState = (result) => {
-  return {
-    type: GET_CALENDAR_DATA,
-    payload: result
-  };
-};
