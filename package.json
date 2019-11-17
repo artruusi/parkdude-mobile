@@ -4,7 +4,8 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "web": "expo start --web",
-    "start": "react-native start",
+    "start": "expo start",
+    "nativestart": "react-native start",
     "test": "jest",
     "lint": "eslint --ext .ts,.tsx,.js,.jsx src/ __tests__/",
     "fix": "eslint --fix --ext .ts,.tsx,.js,.jsx src/ __tests__/"
