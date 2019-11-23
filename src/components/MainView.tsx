@@ -7,7 +7,7 @@ import {Marking, MonthSelector} from '../types';
 import {CALENDAR_TITLE} from '../Constants';
 import {connect} from 'react-redux';
 import {getCalendarSpots} from '../actions/calendarActions';
-import {createMarkedDatesObject} from '../Utils';
+import {createMarkedDatesObject, getMonthRangeForURL} from '../Utils';
 
 interface Props {
   getCalendarSpots: (string) => void;
@@ -30,8 +30,6 @@ class MainView extends Component<Props, State> {
     };
     this.toggleSelectedDay = this.toggleSelectedDay.bind(this);
     this.fetchDataForMonth = this.fetchDataForMonth.bind(this);
-    // remove this
-    this.templateMonthDateRangeFunction = this.templateMonthDateRangeFunction.bind(this);
   }
 
   static navigationOptions = {
@@ -47,15 +45,8 @@ class MainView extends Component<Props, State> {
   fetchDataForMonth(calendarDateObject: any) {
     const year = calendarDateObject.year;
     const month = calendarDateObject.month-1;
-
-    console.log('YEAR: ' + year + ', MONTH: ' + month);
-
-    const urlQuery = this.templateMonthDateRangeFunction(year, month);
+    const urlQuery = getMonthRangeForURL(year, month);
     this.props.getCalendarSpots(urlQuery);
-  }
-
-  templateMonthDateRangeFunction(year: number, month: number) {
-    return '?startDate=2019-11-01&endDate=2019-11-30';
   }
 
   toggleSelectedDay(day: any) {
