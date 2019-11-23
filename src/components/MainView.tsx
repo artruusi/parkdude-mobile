@@ -3,7 +3,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import {NavigationScreenProp} from 'react-navigation';
 import {Calendar} from 'react-native-calendars';
 import {Colors} from '../../assets/colors';
-import {Marking} from '../types';
+import {Marking, CalendarEntry, CalendarDateObject} from '../types';
 import {CALENDAR_TITLE} from '../Constants';
 import {connect} from 'react-redux';
 import {getCalendarSpots} from '../actions/calendarActions';
@@ -12,8 +12,8 @@ import {createMarkedDatesObject, getMonthRangeForURL} from '../Utils';
 interface Props {
   getCalendarSpots: (string) => void;
   navigation: NavigationScreenProp<any, any>;
-  calendarList: any;
-  error: any;
+  calendarList: CalendarEntry[];
+  error: string;
 }
 
 interface State {
@@ -38,26 +38,33 @@ class MainView extends Component<Props, State> {
 
   componentDidMount() {
     const date = new Date();
-    const dateObject = {year: date.getFullYear(), month: date.getMonth()+1};
+    const dateObject = {
+      dateString: undefined,
+      day: undefined,
+      month: date.getMonth()+1,
+      timestamp: undefined,
+      year: date.getFullYear()
+
+    };
     this.fetchDataForMonth(dateObject);
   }
 
-  fetchDataForMonth(calendarDateObject: any) {
+  fetchDataForMonth(calendarDateObject: CalendarDateObject) {
     const year = calendarDateObject.year;
     const month = calendarDateObject.month-1;
     const urlQuery = getMonthRangeForURL(year, month);
     this.props.getCalendarSpots(urlQuery);
   }
 
-  toggleSelectedDay(day: any) {
+  toggleSelectedDay(day: CalendarDateObject) {
     if (day.dateString in this.state.userSelectedDates) {
-      const newDates = this.state.userSelectedDates;
+      const newDates = {...this.state.userSelectedDates};
       delete newDates[day.dateString];
       this.setState({
         userSelectedDates: newDates,
       });
     } else {
-      const newDates = this.state.userSelectedDates;
+      const newDates = {...this.state.userSelectedDates};
       newDates[day.dateString] = {selected: true, selectedColor: Colors.YELLOW};
       this.setState({
         userSelectedDates: newDates,
@@ -72,13 +79,13 @@ class MainView extends Component<Props, State> {
           <Text style={styles.title}>{CALENDAR_TITLE}</Text>
           <Text style={styles.error}>{this.props.error}</Text>
         </View>
-        <View style={{height: '80%', margin: 10}}>
+        <View style={{height: '80%'}}>
           <Calendar
             markingType={this.state.markingType}
             onDayPress={(day) => {
               this.toggleSelectedDay(day);
             }}
-            minDate={new Date().toISOString().slice(0, 10)}
+            minDate={new Date()}
             markedDates={
               createMarkedDatesObject(this.props.calendarList, this.state.userSelectedDates)
             }

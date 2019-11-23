@@ -12,22 +12,33 @@ export interface ErrorState{
   error: string;
 }
 
+export interface BasicParkingSpotData {
+  id: string;
+  name: string;
+}
+
 export interface ParkingSpotEvent {
   type: ParkingSpotEventType;
   id: number;
-  // startDate: Date,
-  // endDate: Date
 }
 
 export interface CalendarReservations {
   calendar: CalendarEntry[];
-  ownedSpots: any[];
+  ownedSpots: BasicParkingSpotData[];
 }
 
 export interface CalendarEntry {
   date: string;
-  spacesReservedByUser: any[];
+  spacesReservedByUser: BasicParkingSpotData[];
   availableSpaces: number;
+}
+
+export interface CalendarDateObject {
+  dateString: string;
+  day: number;
+  month: number;
+  timestamp: number;
+  year: number;
 }
 
 // Enums

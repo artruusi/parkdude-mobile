@@ -9,7 +9,7 @@ describe('createMarkedDatesObject function', () => {
   it('should return empty object', () => {
     const expectedResult = {};
     const actualResult = createMarkedDatesObject([], {});
-    expect(expectedResult).toEqual(actualResult);
+    expect(actualResult).toEqual(expectedResult);
   });
 
   it('no reservations', () => {
@@ -24,7 +24,7 @@ describe('createMarkedDatesObject function', () => {
       [{date: testDay, spacesReservedByUser: [], availableSpaces: 2}],
       {}
     );
-    expect(expectedResult).toEqual(actualResult);
+    expect(actualResult).toEqual(expectedResult);
   });
 
   it('user has reservation', () => {
@@ -39,7 +39,7 @@ describe('createMarkedDatesObject function', () => {
       [{date: testDay, spacesReservedByUser: testUserReservations, availableSpaces: 2}],
       {}
     );
-    expect(expectedResult).toEqual(actualResult);
+    expect(actualResult).toEqual(expectedResult);
   });
 
   it('no available spots for day', () => {
@@ -54,7 +54,7 @@ describe('createMarkedDatesObject function', () => {
       [{date: testDay, spacesReservedByUser: [], availableSpaces: 0}],
       {}
     );
-    expect(expectedResult).toEqual(actualResult);
+    expect(actualResult).toEqual(expectedResult);
   });
 
   it('user has reservations and there is no other available spots', () => {
@@ -69,7 +69,7 @@ describe('createMarkedDatesObject function', () => {
       [{date: testDay, spacesReservedByUser: testUserReservations, availableSpaces: 0}],
       {}
     );
-    expect(expectedResult).toEqual(actualResult);
+    expect(actualResult).toEqual(expectedResult);
   });
 
   it('User has active selection on calendar', () => {
@@ -84,7 +84,7 @@ describe('createMarkedDatesObject function', () => {
       [],
       {[testDay]: {selected: true, selectedColor: Colors.YELLOW}}
     );
-    expect(expectedResult).toEqual(actualResult);
+    expect(actualResult).toEqual(expectedResult);
   });
 
   it('User has active selection on calendar and own reservations', () => {
@@ -104,7 +104,7 @@ describe('createMarkedDatesObject function', () => {
       [{date: testDay, spacesReservedByUser: testUserReservations, availableSpaces: 3}],
       {[testDay2]: {selected: true, selectedColor: Colors.YELLOW}}
     );
-    expect(expectedResult).toEqual(actualResult);
+    expect(actualResult).toEqual(expectedResult);
   });
 
   it('User tries to select a day where is his own active reservation', () => {
@@ -119,7 +119,7 @@ describe('createMarkedDatesObject function', () => {
       [{date: testDay, spacesReservedByUser: testUserReservations, availableSpaces: 3}],
       {[testDay]: {selected: true, selectedColor: Colors.YELLOW}}
     );
-    expect(expectedResult).toEqual(actualResult);
+    expect(actualResult).toEqual(expectedResult);
   });
 
   it('User tries to select a day where is no spots available', () => {
@@ -134,6 +134,6 @@ describe('createMarkedDatesObject function', () => {
       [{date: testDay, spacesReservedByUser: [], availableSpaces: 0}],
       {[testDay]: {selected: true, selectedColor: Colors.YELLOW}}
     );
-    expect(expectedResult).toEqual(actualResult);
+    expect(actualResult).toEqual(expectedResult);
   });
 });

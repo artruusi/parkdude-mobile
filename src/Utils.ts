@@ -43,8 +43,7 @@ export const createMarkedDatesObject = (entries: CalendarEntry[], userSelectedDa
       disabled: entry.availableSpaces === 0
     };
   });
-  const keys = Object.keys(userSelectedDates);
-  keys.forEach((key) => {
+  Object.keys(userSelectedDates).forEach((key) => {
     if (key in result) {
       if (result[key].selectedColor != Colors.GREEN && result[key].disabled == false) {
         result[key].selected = true;
