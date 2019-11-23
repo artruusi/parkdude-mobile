@@ -17,7 +17,7 @@ interface Props {
 }
 
 interface State {
-  selectedDate: string;
+  userSelectedDates: Record<string, any>;
   markingType: Marking;
 }
 
@@ -25,7 +25,7 @@ class MainView extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      selectedDate: '',
+      userSelectedDates: {},
       markingType: Marking.SIMPLE // simple/period
     };
     this.toggleSelectedDay = this.toggleSelectedDay.bind(this);
@@ -54,10 +54,18 @@ class MainView extends Component<Props, State> {
   }
 
   toggleSelectedDay(day) {
-    if (this.state.selectedDate === day.dateString) {
-      this.setState({selectedDate: ''});
+    if (day.dateString in this.state.userSelectedDates) {
+      const newDates = this.state.userSelectedDates;
+      delete newDates[day.dateString];
+      this.setState({
+        userSelectedDates: newDates,
+      });
     } else {
-      this.setState({selectedDate: day.dateString});
+      const newDates = this.state.userSelectedDates;
+      newDates[day.dateString] = {selected: true, selectedColor: Colors.YELLOW};
+      this.setState({
+        userSelectedDates: newDates,
+      });
     }
   }
 
@@ -73,10 +81,7 @@ class MainView extends Component<Props, State> {
           }}
           minDate={new Date().toISOString().slice(0, 10)}
           markedDates={
-            Object.assign(
-              {[this.state.selectedDate]: {selected: true, selectedColor: Colors.YELLOW}},
-              createMarkedDatesObject(this.props.calendarList)
-            )
+            createMarkedDatesObject(this.props.calendarList, this.state.userSelectedDates)
           }
           firstDay={1}
           hideExtraDays={true}
