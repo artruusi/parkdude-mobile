@@ -30,6 +30,8 @@ class MainView extends Component<Props, State> {
     };
     this.toggleSelectedDay = this.toggleSelectedDay.bind(this);
     this.fetchDataForMonth = this.fetchDataForMonth.bind(this);
+    // remove this
+    this.templateMonthDateRangeFunction = this.templateMonthDateRangeFunction.bind(this);
   }
 
   static navigationOptions = {
@@ -37,23 +39,26 @@ class MainView extends Component<Props, State> {
   };
 
   componentDidMount() {
-    this.fetchDataForMonth(MonthSelector.CURRENT);
+    const date = new Date();
+    const dateObject = {year: date.getFullYear(), month: date.getMonth()+1};
+    this.fetchDataForMonth(dateObject);
   }
 
-  fetchDataForMonth(monthSelector: MonthSelector) {
-    if (monthSelector === MonthSelector.CURRENT) {
-      const templateUrlParams = '?startDate=2019-11-01&endDate=2019-11-30';
-      this.props.getCalendarSpots(templateUrlParams);
-    }
-    if (monthSelector === MonthSelector.PREVIOUS) {
-      // get date range by month
-    }
-    if (monthSelector === MonthSelector.NEXT) {
-      // get date range by month
-    }
+  fetchDataForMonth(calendarDateObject: any) {
+    const year = calendarDateObject.year;
+    const month = calendarDateObject.month-1;
+
+    console.log('YEAR: ' + year + ', MONTH: ' + month);
+
+    const urlQuery = this.templateMonthDateRangeFunction(year, month);
+    this.props.getCalendarSpots(urlQuery);
   }
 
-  toggleSelectedDay(day) {
+  templateMonthDateRangeFunction(year: number, month: number) {
+    return '?startDate=2019-11-01&endDate=2019-11-30';
+  }
+
+  toggleSelectedDay(day: any) {
     if (day.dateString in this.state.userSelectedDates) {
       const newDates = this.state.userSelectedDates;
       delete newDates[day.dateString];
@@ -85,12 +90,15 @@ class MainView extends Component<Props, State> {
           }
           firstDay={1}
           hideExtraDays={true}
-          onPressArrowLeft={(substractMonth) => {
+          onMonthChange={(calendarDateObject) => {
+            this.fetchDataForMonth(calendarDateObject);
+          }}
+          /* onPressArrowLeft={(substractMonth) => {
             this.fetchDataForMonth(MonthSelector.PREVIOUS), substractMonth();
           }}
           onPressArrowRight={(addMonth) => {
             this.fetchDataForMonth(MonthSelector.NEXT), addMonth();
-          }}
+          }}*/
           style={styles.calendar}
           theme={{
             textDayFontWeight: 'bold',
