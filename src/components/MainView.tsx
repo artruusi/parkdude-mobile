@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {NavigationScreenProp} from 'react-navigation';
 import {Calendar} from 'react-native-calendars';
 import {Colors} from '../../assets/colors';
-import {Marking, MonthSelector} from '../types';
+import {Marking} from '../types';
 import {CALENDAR_TITLE} from '../Constants';
 import {connect} from 'react-redux';
 import {getCalendarSpots} from '../actions/calendarActions';
@@ -33,7 +33,7 @@ class MainView extends Component<Props, State> {
   }
 
   static navigationOptions = {
-    drawerLabel: 'MainView' // TODO change this. Home? Reservations?
+    drawerLabel: 'Parkings'
   };
 
   componentDidMount() {
@@ -68,35 +68,33 @@ class MainView extends Component<Props, State> {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>{CALENDAR_TITLE}</Text>
-        <Text style={styles.error}>{this.props.error}</Text>
-        <Calendar
-          markingType={this.state.markingType}
-          onDayPress={(day) => {
-            this.toggleSelectedDay(day);
-          }}
-          minDate={new Date().toISOString().slice(0, 10)}
-          markedDates={
-            createMarkedDatesObject(this.props.calendarList, this.state.userSelectedDates)
-          }
-          firstDay={1}
-          hideExtraDays={true}
-          onMonthChange={(calendarDateObject) => {
-            this.fetchDataForMonth(calendarDateObject);
-          }}
-          /* onPressArrowLeft={(substractMonth) => {
-            this.fetchDataForMonth(MonthSelector.PREVIOUS), substractMonth();
-          }}
-          onPressArrowRight={(addMonth) => {
-            this.fetchDataForMonth(MonthSelector.NEXT), addMonth();
-          }}*/
-          style={styles.calendar}
-          theme={{
-            textDayFontWeight: 'bold',
-            textDayHeaderFontWeight: 'bold',
-            textMonthFontWeight: 'bold',
-          }}
-        />
+        <View style={{height: '20%', alignItems: 'center', justifyContent: 'center'}}>
+          <Text style={styles.title}>{CALENDAR_TITLE}</Text>
+          <Text style={styles.error}>{this.props.error}</Text>
+        </View>
+        <View style={{height: '80%', margin: 10}}>
+          <Calendar
+            markingType={this.state.markingType}
+            onDayPress={(day) => {
+              this.toggleSelectedDay(day);
+            }}
+            minDate={new Date().toISOString().slice(0, 10)}
+            markedDates={
+              createMarkedDatesObject(this.props.calendarList, this.state.userSelectedDates)
+            }
+            firstDay={1}
+            hideExtraDays={true}
+            onMonthChange={(calendarDateObject) => {
+              this.fetchDataForMonth(calendarDateObject);
+            }}
+            style={styles.calendar}
+            theme={{
+              textDayFontWeight: 'bold',
+              textDayHeaderFontWeight: 'bold',
+              textMonthFontWeight: 'bold',
+            }}
+          />
+        </View>
       </View>
     );
   }
@@ -114,14 +112,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(MainView);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    backgroundColor: '#fbfbfb',
     justifyContent: 'center'
-  },
-  logoutButton: {
-    margin: 10,
-    padding: 10,
-    backgroundColor: '#DDD'
   },
   calendar: {
     alignSelf: 'stretch',
@@ -129,7 +121,6 @@ const styles = StyleSheet.create({
   title: {
     width: 299,
     height: 42,
-    // fontFamily: "Exo2",
     fontSize: 34.8,
     fontWeight: 'bold',
     fontStyle: 'normal',

@@ -56,8 +56,3 @@ export enum Marking {
   PERIOD = 'period'
 }
 
-export enum MonthSelector {
-  CURRENT = 'current',
-  PREVIOUS = 'previous',
-  NEXT = 'next'
-}
