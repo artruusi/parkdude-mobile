@@ -8,10 +8,9 @@ export async function apiFetch(url: string, params: RequestInit = {}) {
 /**
  * Returns url parameter string containing daterange of of month given as parameter
  */
-
-export function getDateRangeForURL(dateObject: Date) {
-  const firstOfMonth = new Date(dateObject.getFullYear(), dateObject.getMonth(), 1);
-  const firstOfNextMonth = new Date(dateObject.getFullYear(), dateObject.getMonth() + 1, 1);
+export function getMonthRangeForURL(year: number, month: number ) {
+  const firstOfMonth = new Date(year, month, 1);
+  const firstOfNextMonth = new Date(year, month + 1, 1);
   const lastOfMonth = new Date(firstOfNextMonth.setDate(0));
 
   return `?startDate=${toDateString(firstOfMonth)}&endDate=${toDateString(lastOfMonth)}`;
