@@ -1,29 +1,70 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import {YOUR_PARKINGS, NO_PARKINGS_TITLE, NO_PARKINGS_TEXT} from '../Constants';
+import {StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView} from 'react-native';
+import {YOUR_PARKINGS, NO_PARKINGS_TITLE, NO_PARKINGS_TEXT, PERMANENT_SPOT, NEW_RELEASE} from '../Constants';
 import {connect} from 'react-redux';
 import {getMyParkings, simulateGetMyParkings} from '../actions/parkingActions';
-import {ParkingSpotEvent} from '../types';
+import {MyReservations, ParkingEvent, ParkingSpotEventType, BasicParkingSpotData} from '../types';
 import {Colors} from '../../assets/colors';
-import {NavigationScreenProp} from 'react-navigation';
+import {NavigationScreenProp, ScrollView} from 'react-navigation';
+import {prettierDateOutput} from '../Utils';
 
 interface Props {
   getMyParkings: () => void;
   simulateGetMyParkings: () => void;
   navigation: NavigationScreenProp<any, any>;
-  myParkings: ParkingSpotEvent[];
+  myReservations: MyReservations;
 }
 
-interface ItemProps extends ParkingSpotEvent {
+interface ItemProps extends ParkingEvent {
+  key: number;
+  color: Colors;
+  type: ParkingSpotEventType;
+}
+
+interface PermanentSpotProps extends BasicParkingSpotData {
   key: number;
 }
 
 class ParkingItem extends Component<ItemProps> {
   render() {
     return (
-      <View style={styles.item}>
-        <Text style={{fontWeight: 'bold'}}>{this.props.type}</Text>
-        <Text>Spot: {this.props.id}</Text>
+      <View style={styles.itemContainer}>
+        <View style={styles.column1}>
+          <View style={styles.row1}>
+            <View style={{...styles.spotCircle, backgroundColor: this.props.color}}>
+              <Text style={{fontWeight: 'bold'}}>{this.props.parkingSpot.name}</Text>
+            </View>
+          </View>
+          <View style={styles.row2}>
+            <Text style={{fontWeight: 'bold'}}>Spot</Text>
+          </View>
+        </View>
+        <View style={styles.column2}>
+          <Text style={{fontWeight: 'bold'}}>{this.props.type}</Text>
+          <Text style={{fontWeight: 'bold'}}>{prettierDateOutput(this.props.date)}</Text>
+        </View>
+        <View style={styles.column3}>
+          <View style={styles.row3}>
+            <Image source={require('../../assets/icons/ic-delete/drawable-hdpi/ic_delete.png')}/>
+          </View>
+          <View style={styles.row4}>
+            <Image source={require('../../assets/icons/ic-edit/drawable-hdpi/ic_edit.png')}/>
+          </View>
+        </View>
+      </View>
+    );
+  }
+}
+
+class PermanentSpotItem extends Component<PermanentSpotProps> {
+  render() {
+    return (
+      <View style={styles.permanentSpotContainer}>
+        <Text style={{fontWeight: 'bold', fontSize: 25}}>{PERMANENT_SPOT}</Text>
+        <Text style={{fontWeight: 'bold', fontSize: 25}}>{this.props.name}</Text>
+        <TouchableOpacity style={styles.releaseButton} onPress={null}>
+          <Text style={{fontWeight: 'bold', fontSize: 18}}>{NEW_RELEASE}</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -48,20 +89,46 @@ class MyParkingsView extends Component<Props> {
   }
 
   render() {
-    const parkings = this.props.myParkings.map((parking: ParkingSpotEvent, keyIndex: number) => (
-      <ParkingItem
+    const ownedSpots = this.props.myReservations.ownedSpots.map((spot: BasicParkingSpotData, keyIndex: number) => (
+      <PermanentSpotItem
         key={keyIndex}
-        type={parking.type}
-        id={parking.id}
+        id={spot.id}
+        name={spot.name}
       />
     ));
 
-    if (this.props.myParkings.length > 0) {
+    const reservations = this.props.myReservations.reservations.map((reservation: ParkingEvent, keyIndex: number) => (
+      <ParkingItem
+        key={keyIndex}
+        color={Colors.GREEN}
+        date={reservation.date}
+        parkingSpot={reservation.parkingSpot}
+        type={ParkingSpotEventType.PARKING}
+      />
+    ));
+
+    const releases = this.props.myReservations.releases.map((release: ParkingEvent, keyIndex: number) => (
+      <ParkingItem
+        key={keyIndex}
+        color={Colors.RED}
+        date={release.date}
+        parkingSpot={release.parkingSpot}
+        type={ParkingSpotEventType.RELEASE}
+      />
+    ));
+
+    if (this.props.myReservations.reservations.length > 0 && this.props.myReservations.releases.length > 0) {
       return (
-        <View style={styles.container}>
-          <Text style={styles.title}>{YOUR_PARKINGS}</Text>
-          {parkings}
-        </View>
+        <SafeAreaView style={styles.container}>
+          <ScrollView>
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+              <Text style={styles.title}>{YOUR_PARKINGS}</Text>
+            </View>
+            {ownedSpots}
+            {reservations}
+            {releases}
+          </ScrollView>
+        </SafeAreaView>
       );
     } else {
       return (
@@ -79,7 +146,7 @@ class MyParkingsView extends Component<Props> {
 }
 
 const mapStateToProps = (state) => ({
-  myParkings: state.parking
+  myReservations: state.myReservations
 });
 
 const mapDispatchToProps = {getMyParkings, simulateGetMyParkings};
@@ -92,6 +159,33 @@ const styles = StyleSheet.create({
     backgroundColor: '#fbfbfb',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  itemContainer: {
+    height: '25%', // TODO this does not work
+    flex: 1,
+    backgroundColor: '#ffffff',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+    borderRadius: 12.2,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    padding: 20,
+    margin: 10
+  },
+  permanentSpotContainer: {
+    height: '25%', // TODO this does not work
+    flex: 1,
+    backgroundColor: '#ffffff',
+    // flexDirection: 'row',
+    // flexWrap: 'wrap',
+    // alignItems: 'flex-start',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    paddingTop: 20,
+    marginTop: 10
   },
   title: {
     width: 229,
@@ -129,13 +223,41 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#c8c8c8'
   },
-  item: {
-    width: 327.8,
-    height: 133.9,
-    borderRadius: 12.2,
-    backgroundColor: '#ffffff',
-    borderStyle: 'solid',
-    borderWidth: 1,
+  column1: {
+    width: '20%',
+  },
+  column2: {
+    width: '70%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  column3: {
+    width: '10%',
+  },
+  row1: {
+    height: '80%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  row2: {
+    height: '20%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  row3: {
+    height: '50%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  row4: {
+    height: '50%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  spotCircle: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -144,6 +266,15 @@ const styles = StyleSheet.create({
     height: 43,
     borderRadius: 21.7,
     backgroundColor: Colors.YELLOW,
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 20
+  },
+  releaseButton: {
+    width: 327,
+    height: 43,
+    borderRadius: 21.7,
+    backgroundColor: Colors.RED,
     alignItems: 'center',
     justifyContent: 'center',
     margin: 20

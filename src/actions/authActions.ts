@@ -1,6 +1,6 @@
 import {GET_AUTHSTATE, LOG_OUT, SIMULATED_LOGIN_VERIFIED, SIMULATED_LOGIN_UNVERIFIED} from './actionTypes';
 import {LOGIN_STATE_URL, LOGOUT_URL} from 'react-native-dotenv';
-import {gotNetworkError} from './errorActions';
+import {gotNetworkError, clearErrorState} from './errorActions';
 import {CONNECTION_ERROR} from '../Constants';
 import {apiFetch} from '../Utils';
 import {removeCookie} from '../CookieStorage';
@@ -22,6 +22,7 @@ export const setSimulatedAuthState = () => {
 export const setSimulateVerified = () => {
   return async (dispatch) => {
     try {
+      dispatch(clearErrorState());
       dispatch(setAuthState({type: SIMULATED_LOGIN_VERIFIED}));
     } catch (error) {
       console.log(error);
@@ -44,6 +45,7 @@ export const getAuthState = () => {
     try {
       const authResponse = await apiFetch(LOGIN_STATE_URL, {method: HttpMethod.GET});
       const result = await authResponse.json();
+      dispatch(clearErrorState());
       dispatch(setAuthState(result));
     } catch (error) {
       dispatch(gotNetworkError(CONNECTION_ERROR));
@@ -64,6 +66,7 @@ export const logOut = () => {
       const authResponse = await apiFetch(LOGOUT_URL, {method: HttpMethod.POST});
       const result = await authResponse.json();
       await removeCookie();
+      dispatch(clearErrorState());
       dispatch(setLogOutState(result));
     } catch (error) {
       dispatch(gotNetworkError(CONNECTION_ERROR));

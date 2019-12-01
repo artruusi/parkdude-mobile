@@ -8,8 +8,13 @@ export interface LoginState {
 }
 
 export interface ErrorState{
-  hasErrors: boolean;
-  error: string;
+  networkError: string;
+  postReservationError: ReservationFailed;
+}
+
+export interface ReservationFailed{
+  message: string;
+  dates: string[];
 }
 
 export interface BasicParkingSpotData {
@@ -17,9 +22,15 @@ export interface BasicParkingSpotData {
   name: string;
 }
 
-export interface ParkingSpotEvent {
-  type: ParkingSpotEventType;
-  id: number;
+export interface MyReservations {
+  ownedSpots: BasicParkingSpotData[];
+  reservations: ParkingEvent[];
+  releases: ParkingEvent[];
+}
+
+export interface ParkingEvent {
+  date: string;
+  parkingSpot: BasicParkingSpotData;
 }
 
 export interface CalendarReservations {
@@ -39,6 +50,22 @@ export interface CalendarDateObject {
   month: number;
   timestamp: number;
   year: number;
+}
+
+export interface PostReservation {
+  dates: string[];
+  userId: string;
+  parkingSpotId: string;
+}
+
+export interface SuccesfulReservation {
+  reservations: ReservationsResponse[];
+  message: string;
+}
+
+export interface ReservationsResponse {
+  date: string;
+  parkingSpot: BasicParkingSpotData;
 }
 
 // Enums

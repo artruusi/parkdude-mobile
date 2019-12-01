@@ -13,7 +13,7 @@ interface Props {
   isAuthenticated: boolean;
   loading: boolean;
   hasErrors: boolean;
-  error: string;
+  networkError: string;
 }
 
 class AppEntryPoint extends Component<Props> {
@@ -41,13 +41,13 @@ class AppEntryPoint extends Component<Props> {
   }
 
   render() {
-    if (!this.props.isAuthenticated && !this.props.loading && !this.props.hasErrors) {
+    if (!this.props.isAuthenticated && !this.props.loading && this.props.networkError === '') {
       return (
         <LoginView navigation={this.props.navigation}/>
       );
     } else {
       return (
-        <LoadingView error={this.props.error}/>
+        <LoadingView error={this.props.networkError}/>
       );
     }
   }
@@ -57,8 +57,7 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
   userRole: state.auth.userRole,
   loading: state.auth.loading,
-  hasErrors: state.error.hasErrors,
-  error: state.error.error
+  networkError: state.error.networkError
 });
 
 const mapDispatchToProps = {getAuthState, setSimulatedAuthState};

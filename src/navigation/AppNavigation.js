@@ -40,11 +40,11 @@ const TabNavigator = createBottomTabNavigator(
 
 const DrawerNavigation = createDrawerNavigator(
   {
-    MainView: {screen: TabNavigator},
+    Parkings: {screen: TabNavigator},
     LogOut: {screen: LogOut}
   },
   {
-    initialRouteName: 'MainView'
+    initialRouteName: 'Parkings'
   }
 );
 
