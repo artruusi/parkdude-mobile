@@ -6,6 +6,7 @@ import {LOGIN_URL} from 'react-native-dotenv';
 import {setCookie} from '../CookieStorage';
 import {getAuthState, setSimulateVerified, setSimulateUnVerified} from '../actions/authActions';
 import {connect} from 'react-redux';
+import {Colors} from '../../assets/colors';
 import {NavigationScreenProp} from 'react-navigation';
 
 interface Props {
@@ -75,22 +76,30 @@ class LoginView extends Component<Props> {
             Login with Google
           </Icon.Button>
         </View>
-        <View style={styles.button}>
-          <TouchableOpacity
-            onPress={this.simulateLoginVerified}
-            style={styles.button}
-          >
-            <Text>SIMULATE LOGIN (VERIFIED)</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.button}>
-          <TouchableOpacity
-            onPress={this.simulateLoginUnVerified}
-            style={styles.button}
-          >
-            <Text>SIMULATE LOGIN (UNVERIFIED)</Text>
-          </TouchableOpacity>
-        </View>
+        {/* <View style={{flexDirection: 'row'}}>
+          <View style={styles.button}>
+            <TouchableOpacity
+              onPress={this.simulateLoginVerified}
+              style={styles.button}
+            >
+              <Text>SIMULATE LOGIN (VERIFIED)</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.button}>
+            <TouchableOpacity
+              onPress={this.simulateLoginUnVerified}
+              style={styles.button}
+            >
+              <Text>SIMULATE LOGIN (UNVERIFIED)</Text>
+            </TouchableOpacity>
+          </View>
+        </View> */}
+        <TouchableOpacity style={styles.yellowButton}>
+          <Text>Login with another email</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.signUpButton}>
+          <Text>Sign up</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -113,6 +122,28 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#DDD',
+    margin: 10
+  },
+  yellowButton: {
+    width: 327,
+    height: 43,
+    borderRadius: 21.7,
+    backgroundColor: Colors.YELLOW,
+    alignItems: 'center',
+    justifyContent: 'center',
     margin: 20
+  },
+  signUpButton: {
+    width: 240,
+    height: 53,
+    fontSize: 16,
+    fontWeight: 'normal',
+    fontStyle: 'normal',
+    lineHeight: 53,
+    letterSpacing: 0,
+    textAlign: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#000000'
   }
 });
