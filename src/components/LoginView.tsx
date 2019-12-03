@@ -66,40 +66,32 @@ class LoginView extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <Image source={require('../../assets/images/parkdude-logo/drawable-hdpi/parkdude.png')}/>
-        <View style={styles.button}>
-          <Icon.Button
-            name="google"
-            backgroundColor="#DD4B39"
-            onPress={this.loginGoogle}
-          >
-            Login with Google
-          </Icon.Button>
+        <View style={styles.container}>
+          <Image
+            source={require('../../assets/images/parkdude-logo/drawable-hdpi/parkdude.png')}
+            style={styles.parkdudeLogo}
+          />
         </View>
-        {/* <View style={{flexDirection: 'row'}}>
-          <View style={styles.button}>
-            <TouchableOpacity
-              onPress={this.simulateLoginVerified}
-              style={styles.button}
+        <View style={styles.buttonContainer}>
+          <View style={styles.googleButton}>
+            <Icon.Button
+              name="google"
+              backgroundColor="#DD4B39"
+              onPress={this.loginGoogle}
+              style={styles.googleButton}
+              size={25}
             >
-              <Text>SIMULATE LOGIN (VERIFIED)</Text>
-            </TouchableOpacity>
+              <Text style={styles.googleText}>Login with Google</Text>
+            </Icon.Button>
           </View>
-          <View style={styles.button}>
-            <TouchableOpacity
-              onPress={this.simulateLoginUnVerified}
-              style={styles.button}
-            >
-              <Text>SIMULATE LOGIN (UNVERIFIED)</Text>
-            </TouchableOpacity>
-          </View>
-        </View> */}
-        <TouchableOpacity style={styles.yellowButton}>
-          <Text>Login with another email</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.signUpButton}>
-          <Text>Sign up</Text>
-        </TouchableOpacity>
+          <Text style={styles.orText}>OR</Text>
+          <TouchableOpacity style={styles.yellowButton}>
+            <Text style={styles.buttonText}>Login with another email</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.signUpButton}>
+            <Text style={styles.buttonText}>Sign up</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -120,9 +112,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  button: {
-    backgroundColor: '#DDD',
-    margin: 10
+  buttonContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    marginBottom: '5%',
+  },
+  parkdudeLogo: {
+    // marginTop: "20%"
+  },
+  googleButton: {
+    width: 200,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  googleText: {
+    color: Colors.WHITE,
+    fontWeight: 'bold',
+    fontFamily: 'Roboto',
+  },
+  orText: {
+    fontWeight: 'bold',
+    fontFamily: 'Roboto',
+    opacity: 0.2,
+    marginTop: '5%',
+    marginBottom: '5%'
   },
   yellowButton: {
     width: 327,
@@ -131,19 +146,18 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.YELLOW,
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 20
+    marginBottom: '5%'
   },
   signUpButton: {
     width: 240,
     height: 53,
-    fontSize: 16,
-    fontWeight: 'normal',
-    fontStyle: 'normal',
-    lineHeight: 53,
-    letterSpacing: 0,
     textAlign: 'center',
     alignItems: 'center',
-    justifyContent: 'center',
-    color: '#000000'
+    color: '#000000',
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    fontFamily: 'Roboto',
   }
 });
