@@ -2,6 +2,7 @@ import * as authActions from '../../src/actions/authActions';
 import * as errorActions from '../../src/actions/errorActions';
 import * as parkingActions from '../../src/actions/parkingActions';
 import * as calendarActions from '../../src/actions/calendarActions';
+import * as reservationActions from '../../src/actions/reservationActions';
 import * as types from '../../src/actions/actionTypes';
 
 describe('Action Creators', () => {
@@ -39,6 +40,15 @@ describe('Action Creators', () => {
     expect(parkingActions.setMyParkings()).toEqual(expectedAction);
   });
 
+  it('should create RESERVE_SPOTS action', () => {
+    const mockPayload = {};
+    const expectedAction = {
+      type: types.RESERVE_SPOTS,
+      payload: mockPayload
+    };
+    expect(reservationActions.createPostReservationAction(mockPayload)).toEqual(expectedAction);
+  });
+
   it('should create NETWORK_ERROR action', () => {
     const mockPayload = 'errorString';
     const expectedAction = {
@@ -46,5 +56,24 @@ describe('Action Creators', () => {
       payload: mockPayload
     };
     expect(errorActions.gotNetworkError(mockPayload)).toEqual(expectedAction);
+  });
+
+  it('should create RESERVATION_FAILED action', () => {
+    const mockPayload = {
+      message: 'Reservation failed. There weren\'t available spots for some of the days.',
+      errorDates: ['2019-12-24']
+    };
+    const expectedAction = {
+      type: types.RESERVATION_FAILED,
+      payload: mockPayload
+    };
+    expect(errorActions.reservationFailed(mockPayload)).toEqual(expectedAction);
+  });
+
+  it('should create CLEAR_ERRORS action', () => {
+    const expectedAction = {
+      type: types.NETWORK_ERROR
+    };
+    expect(errorActions.gotNetworkError()).toEqual(expectedAction);
   });
 });
