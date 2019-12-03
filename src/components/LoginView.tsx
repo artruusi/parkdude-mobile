@@ -72,6 +72,25 @@ class LoginView extends Component<Props> {
             style={styles.parkdudeLogo}
           />
         </View>
+        {/* Comment these back if you need simulated login */}
+        {/* <View>
+          <View style={styles.yellowButton}>
+            <TouchableOpacity
+              onPress={this.simulateLoginVerified}
+              style={styles.yellowButton}
+            >
+              <Text>SIMULATE LOGIN (VERIFIED)</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.yellowButton}>
+            <TouchableOpacity
+              onPress={this.simulateLoginUnVerified}
+              style={styles.yellowButton}
+            >
+              <Text>SIMULATE LOGIN (UNVERIFIED)</Text>
+            </TouchableOpacity>
+          </View>
+        </View> */}
         <View style={styles.buttonContainer}>
           <View style={styles.googleButton}>
             <Icon.Button
