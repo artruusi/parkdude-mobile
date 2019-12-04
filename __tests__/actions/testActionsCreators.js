@@ -49,6 +49,15 @@ describe('Action Creators', () => {
     expect(reservationActions.createPostReservationAction(mockPayload)).toEqual(expectedAction);
   });
 
+  it('should create GENERAL_ERROR action', () => {
+    const mockPayload = 'errorString';
+    const expectedAction = {
+      type: types.GENERAL_ERROR,
+      payload: mockPayload
+    };
+    expect(errorActions.generalError(mockPayload)).toEqual(expectedAction);
+  });
+
   it('should create NETWORK_ERROR action', () => {
     const mockPayload = 'errorString';
     const expectedAction = {

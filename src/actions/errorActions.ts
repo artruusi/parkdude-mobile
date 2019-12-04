@@ -1,4 +1,11 @@
-import {NETWORK_ERROR, RESERVATION_FAILED, CLEAR_ERRORS} from './actionTypes';
+import {NETWORK_ERROR, RESERVATION_FAILED, CLEAR_ERRORS, GENERAL_ERROR} from './actionTypes';
+
+export const generalError = (errorString) => {
+  return {
+    type: GENERAL_ERROR,
+    payload: errorString
+  };
+};
 
 export const gotNetworkError = (errorString) => {
   return {

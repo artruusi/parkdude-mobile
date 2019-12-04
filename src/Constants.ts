@@ -44,3 +44,4 @@ export const ALREADY_BOOKED = 'It seems like your selected parking spot is alrea
 // Errors
 
 export const CONNECTION_ERROR = 'Parkdude cannot connect to the server.';
+export const GENERAL_ERROR_MESSAGE = 'An unexpected error has occured';

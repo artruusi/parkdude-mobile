@@ -8,6 +8,7 @@ export interface LoginState {
 }
 
 export interface ErrorState{
+  generalError: string;
   networkError: string;
   postReservationError: ReservationFailed;
 }

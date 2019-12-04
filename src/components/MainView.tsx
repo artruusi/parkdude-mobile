@@ -69,7 +69,7 @@ class MainView extends Component<Props, State> {
     }
   }
 
-  async getAvailableParkingSpots() {
+  getAvailableParkingSpots() {
     this.props.getParkingSpots();
   }
 
@@ -125,9 +125,9 @@ class MainView extends Component<Props, State> {
   }
 
   render() {
-    const parkingSpots = this.props.parkingSpots.map((spot, key) => (
+    const parkingSpots = this.props.parkingSpots.map((spot) => (
       <TouchableOpacity
-        key={key}
+        key={spot.id}
         style={{...styles.modalButton,
           backgroundColor: Colors.WHITE}}
         onPress={() => this.selectParkingSpot(spot)}>
@@ -135,8 +135,8 @@ class MainView extends Component<Props, State> {
       </TouchableOpacity>
     ));
 
-    const bookButtonColor = Object.keys(this.state.userSelectedDates).length === 0 ? '#cacbcc' : Colors.YELLOW;
-    const dropdownButtonColor = Object.keys(this.state.userSelectedDates).length === 0 ? '#cacbcc' : Colors.WHITE;
+    const bookButtonColor = Object.keys(this.state.userSelectedDates).length === 0 ? Colors.DISABLED : Colors.YELLOW;
+    const dropdownButtonColor = Object.keys(this.state.userSelectedDates).length === 0 ? Colors.DISABLED : Colors.WHITE;
 
     const errorDates = this.props.error.postReservationError.dates.map((date, key) => (
       <Text style={{fontSize: 18, fontWeight: 'bold'}} key={key}>- {prettierDateOutput(date)}</Text>
@@ -180,7 +180,7 @@ class MainView extends Component<Props, State> {
         <View style={{height: '25%', flex: 1, flexDirection: 'row'}}>
           <View style={{...styles.centerContent, width: '50%'}}>
             <TouchableOpacity
-              style={{...styles.dropdownButton, backgroundColor: bookButtonColor}}
+              style={{...styles.dropdownButton, backgroundColor: dropdownButtonColor}}
               onPress={this.toggleReservationModal}
               disabled={Object.keys(this.state.userSelectedDates).length === 0}>
               <View style={{flex: 1, flexDirection: 'row'}}>
@@ -276,7 +276,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(MainView);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fbfbfb',
+    backgroundColor: Colors.APP_BACKGROUND,
     justifyContent: 'center'
   },
   calendar: {
@@ -303,7 +303,6 @@ const styles = StyleSheet.create({
     width: 163.5,
     height: 43,
     borderRadius: 21.7,
-    borderColor: '#000000',
     borderStyle: 'solid',
     borderWidth: 1
   },
@@ -311,7 +310,6 @@ const styles = StyleSheet.create({
     width: 163.5,
     height: 43,
     borderRadius: 21.7,
-    borderColor: '#000000',
     borderStyle: 'solid',
     borderWidth: 1,
     alignItems: 'center',
@@ -321,7 +319,6 @@ const styles = StyleSheet.create({
     width: 250,
     height: 43,
     borderRadius: 21.7,
-    borderColor: '#000000',
     borderStyle: 'solid',
     borderWidth: 1,
     alignItems: 'center',
@@ -331,7 +328,7 @@ const styles = StyleSheet.create({
   modal: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fbfbfb',
+    backgroundColor: Colors.APP_BACKGROUND,
     borderRadius: 21.7,
     margin: 20
   }

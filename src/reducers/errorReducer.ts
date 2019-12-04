@@ -1,14 +1,20 @@
-import {NETWORK_ERROR, RESERVATION_FAILED, CLEAR_ERRORS} from '../actions/actionTypes';
+import {NETWORK_ERROR, RESERVATION_FAILED, CLEAR_ERRORS, GENERAL_ERROR} from '../actions/actionTypes';
 import {ErrorState} from '../types';
 import {reservationFailed} from '../actions/errorActions';
 
 const initialState: ErrorState = {
+  generalError: '',
   networkError: '',
   postReservationError: {message: '', dates: []}
 };
 
 export const errorReducer = (state = initialState, action ) => {
   switch (action.type) {
+  case GENERAL_ERROR:
+    return {
+      ...state,
+      generalError: action.payload
+    };
   case NETWORK_ERROR:
     return {
       ...state,

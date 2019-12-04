@@ -16,6 +16,7 @@ export const GET_PARKING_SPOTS = 'GET_PARKING_SPOTS';
 export const RESERVE_SPOTS = 'RESERVE_SPOTS';
 
 // errors
+export const GENERAL_ERROR = 'GENERAL_ERROR';
 export const NETWORK_ERROR = 'NETWORK_ERROR';
 export const RESERVATION_FAILED = 'RESERVATION_FAILED';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
