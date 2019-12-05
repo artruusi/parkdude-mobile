@@ -3,14 +3,14 @@ import LoginView from '../components/LoginView';
 import AppEntryPoint from '../components/AppEntryPoint';
 import OnboardingView from '../components/OnboardingView';
 import WaitForConfirmationView from '../components/WaitForConfirmationView';
-import EmailLoginView from '../components/EmailLoginView';
+import PasswordLoginView from '../components/PasswordLoginView';
 
 const AuthNavigation = createStackNavigator(
   {
     OnboardingView: {screen: OnboardingView},
     AppEntryPoint: {screen: AppEntryPoint},
     Login: {screen: LoginView},
-    EmailLoginView: {screen: EmailLoginView},
+    PasswordLoginView: {screen: PasswordLoginView},
     WaitForConfirmationView: {screen: WaitForConfirmationView}
   },
   {

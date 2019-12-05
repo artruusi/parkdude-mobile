@@ -1,9 +1,5 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Image, TouchableOpacity, Text, KeyboardAvoidingView} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {AuthSession} from 'expo';
-import {LOGIN_URL} from 'react-native-dotenv';
-import {setCookie} from '../CookieStorage';
 import {getAuthState, setSimulateVerified, setSimulateUnVerified} from '../actions/authActions';
 import {connect} from 'react-redux';
 import {LOG_IN, EMAIL, PASSWORD} from '../Constants';
@@ -16,14 +12,14 @@ interface Props {
   navigation: NavigationScreenProp<any, any>;
 }
 
-class EmailLoginView extends Component<Props> {
+class PasswordLoginView extends Component<Props> {
   constructor(props: Props) {
     super(props);
-    this.loginEmail = this.loginEmail.bind(this);
+    this.loginWitPassword = this.loginWitPassword.bind(this);
     this.back = this.back.bind(this);
   }
 
-  async loginEmail() {
+  async loginWitPassword() {
     try {
       // TODO
     } catch (error) {
@@ -39,11 +35,11 @@ class EmailLoginView extends Component<Props> {
     }
   }
 
-  handleEmail(email: string) {
+  onEmailChange(email: string) {
     console.log(email);
   }
 
-  handlePassword(password: string) {
+  onPasswordChange(password: string) {
     console.log(password);
   }
 
@@ -67,14 +63,14 @@ class EmailLoginView extends Component<Props> {
             placeholder={EMAIL}
             autoCompleteType='email'
             autoFocus={true}
-            onChangeText={(email) => this.handleEmail({email})}
+            onChangeText={this.onEmailChange}
           />
           <TextInput
             style={styles.inputField}
             placeholder={PASSWORD}
             autoCompleteType='password'
             secureTextEntry={true}
-            onChangeText={(password) => this.handlePassword({password})}
+            onChangeText={this.onPasswordChange}
           />
           <View style={styles.horizontalContainer}>
             <TouchableOpacity style={styles.yellowButton} onPress={this.back}>
@@ -96,7 +92,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {getAuthState, setSimulateVerified, setSimulateUnVerified};
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmailLoginView);
+export default connect(mapStateToProps, mapDispatchToProps)(PasswordLoginView);
 
 const styles = StyleSheet.create({
   container: {

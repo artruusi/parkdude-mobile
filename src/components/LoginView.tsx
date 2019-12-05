@@ -66,7 +66,7 @@ class LoginView extends Component<Props> {
   }
 
   emailLogin() {
-    this.props.navigation.navigate('EmailLoginView');
+    this.props.navigation.navigate('PasswordLoginView');
   }
 
   render() {
