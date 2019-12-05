@@ -22,6 +22,12 @@ export const EMAIL_LOGIN = 'Login with another email';
 export const SIGNUP = 'Sign up';
 export const OR = 'OR';
 
+// Email login
+
+export const LOG_IN = 'Log in';
+export const EMAIL = 'E-mail';
+export const PASSWORD = 'Password';
+
 // Waiting for confirmation
 
 export const WAITING_CONFIRMATION_TITLE = 'Waiting for confirmation';

@@ -21,6 +21,7 @@ class LoginView extends Component<Props> {
   constructor(props: Props) {
     super(props);
     this.loginGoogle = this.loginGoogle.bind(this);
+    this.emailLogin = this.emailLogin.bind(this);
     this.simulateLoginVerified = this.simulateLoginVerified.bind(this);
     this.simulateLoginUnVerified = this.simulateLoginUnVerified.bind(this);
   }
@@ -64,6 +65,10 @@ class LoginView extends Component<Props> {
     }
   }
 
+  emailLogin() {
+    this.props.navigation.navigate('EmailLoginView');
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -105,7 +110,7 @@ class LoginView extends Component<Props> {
             </Icon.Button>
           </View>
           <Text style={styles.orText}>{OR}</Text>
-          <TouchableOpacity style={styles.yellowButton}>
+          <TouchableOpacity style={styles.yellowButton} onPress={this.emailLogin}>
             <Text style={styles.buttonText}>{EMAIL_LOGIN}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.signUpButton}>
