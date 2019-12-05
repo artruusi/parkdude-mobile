@@ -15,6 +15,13 @@ export const WELCOME_TEXT1 = 'With Parkdude you can...';
 export const WELCOME_TEXT2 = '... Reserve a parking spot for yourself whenever you need it';
 export const WELCOME_TEXT3 = '... Release your parking spot when you know you\'re not going to use it';
 
+// Login
+
+export const GOOGLE_LOGIN = 'Login with Google';
+export const EMAIL_LOGIN = 'Login with another email';
+export const SIGNUP = 'Sign up';
+export const OR = 'OR';
+
 // Waiting for confirmation
 
 export const WAITING_CONFIRMATION_TITLE = 'Waiting for confirmation';

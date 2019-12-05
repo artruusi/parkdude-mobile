@@ -6,6 +6,7 @@ import {LOGIN_URL} from 'react-native-dotenv';
 import {setCookie} from '../CookieStorage';
 import {getAuthState, setSimulateVerified, setSimulateUnVerified} from '../actions/authActions';
 import {connect} from 'react-redux';
+import {GOOGLE_LOGIN, EMAIL_LOGIN, SIGNUP, OR} from '../Constants';
 import {Colors} from '../../assets/colors';
 import {NavigationScreenProp} from 'react-navigation';
 
@@ -100,15 +101,15 @@ class LoginView extends Component<Props> {
               style={styles.googleButton}
               size={25}
             >
-              <Text style={styles.googleText}>Login with Google</Text>
+              <Text style={styles.googleText}>{GOOGLE_LOGIN}</Text>
             </Icon.Button>
           </View>
-          <Text style={styles.orText}>OR</Text>
+          <Text style={styles.orText}>{OR}</Text>
           <TouchableOpacity style={styles.yellowButton}>
-            <Text style={styles.buttonText}>Login with another email</Text>
+            <Text style={styles.buttonText}>{EMAIL_LOGIN}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.signUpButton}>
-            <Text style={styles.buttonText}>Sign up</Text>
+            <Text style={styles.buttonText}>{SIGNUP}</Text>
           </TouchableOpacity>
         </View>
       </View>
