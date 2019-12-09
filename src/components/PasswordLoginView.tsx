@@ -17,6 +17,8 @@ class PasswordLoginView extends Component<Props> {
     super(props);
     this.loginWitPassword = this.loginWitPassword.bind(this);
     this.back = this.back.bind(this);
+    this.onEmailChange = this.onEmailChange.bind(this);
+    this.onPasswordChange = this.onPasswordChange.bind(this);
   }
 
   async loginWitPassword() {
