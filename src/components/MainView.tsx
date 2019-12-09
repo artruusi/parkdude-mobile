@@ -102,14 +102,15 @@ class MainView extends Component<Props, State> {
   }
 
   reserveParkingSpot() {
+    const dates = Object.keys(this.state.userSelectedDates);
     if (this.state.selectedSpot.id === 'random') {
       const reservation = {
-        dates: this.state.userSelectedDates
+        dates: dates
       };
       this.props.postReservation(reservation);
     } else {
       const reservation = {
-        dates: this.state.userSelectedDates,
+        dates: dates,
         parkingSpotId: this.state.selectedSpot
       };
       this.props.postReservation(reservation);

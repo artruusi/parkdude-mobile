@@ -19,7 +19,9 @@ export const postReservation = (reservation: PostReservation) => {
         }));
       } else {
         // Simulation ends here
-        const postReservationResponse = await apiFetch(POST_RESERVATION_URL, {method: HttpMethod.POST});
+        const postReservationResponse = await apiFetch(
+          POST_RESERVATION_URL,
+          {method: HttpMethod.POST, body: JSON.stringify(reservation)});
         const result = await postReservationResponse.json();
         if (postReservationResponse.status === 200) {
           dispatch(clearErrorState());
