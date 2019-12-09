@@ -12,7 +12,7 @@ export const postReservation = (reservation: PostReservation) => {
       // This is just for testing the error message
       // Simulation starts
       const day = '2019-12-24';
-      if (day in reservation.dates) {
+      if (reservation.dates.includes(day)) {
         dispatch(reservationFailed({
           message: 'Reservation failed. There weren\'t available spots for some of the days.',
           errorDates: ['2019-12-24']
@@ -21,7 +21,10 @@ export const postReservation = (reservation: PostReservation) => {
         // Simulation ends here
         const postReservationResponse = await apiFetch(
           POST_RESERVATION_URL,
-          {method: HttpMethod.POST, body: JSON.stringify(reservation)});
+          {method: HttpMethod.POST,
+            body: JSON.stringify(reservation),
+            headers: {'Content-Type': 'application/json'}
+          });
         const result = await postReservationResponse.json();
         if (postReservationResponse.status === 200) {
           dispatch(clearErrorState());
