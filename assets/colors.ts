@@ -5,5 +5,7 @@ export enum Colors {
   GREEN = '#afff7e',
   YELLOW = '#fdd400',
   BLACK = '#000000',
-  WHITE = '#ffffff'
+  WHITE = '#ffffff',
+  APP_BACKGROUND = '#fbfbfb',
+  DISABLED = '#cacbcc'
 }

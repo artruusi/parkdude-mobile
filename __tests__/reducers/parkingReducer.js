@@ -1,7 +1,8 @@
-import {parkingReducer} from '../../src/reducers/parkingReducer';
+import {myReservationsReducer} from '../../src/reducers/myReservationsReducer';
 
-describe('parkingReducer', () => {
+describe('myReservationsReducer', () => {
   it('should return the initial state', () => {
-    expect(parkingReducer(undefined, {})).toEqual([]);
+    const initialState = {ownedSpots: [], reservations: [], releases: []};
+    expect(myReservationsReducer(undefined, {})).toEqual(initialState);
   });
 });

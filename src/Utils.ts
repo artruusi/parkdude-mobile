@@ -56,3 +56,6 @@ export const createMarkedDatesObject = (entries: CalendarEntry[], userSelectedDa
   return result;
 };
 
+export const prettierDateOutput = (date: string) => {
+  return (date.slice(8) + '.' + date.slice(5, 7) + '.' + date.slice(0, 4));
+};
