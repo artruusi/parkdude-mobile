@@ -204,6 +204,7 @@ class MainView extends Component<Props, State> {
               textDayFontWeight: 'bold',
               textDayHeaderFontWeight: 'bold',
               textMonthFontWeight: 'bold',
+              selectedDayTextColor: 'black'
             }}
           />
         </View>
