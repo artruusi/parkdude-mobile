@@ -45,11 +45,19 @@ export const createMarkedDatesObject = (entries: CalendarEntry[], userSelectedDa
       };
     } else {
       const userHasOwnReservations = entry.spacesReservedByUser.length > 0;
-      result[entry.date] = {
-        selected: userHasOwnReservations,
-        selectedColor: userHasOwnReservations ? Colors.GREEN : Colors.WHITE,
-        disabled: entry.availableSpaces === 0
-      };
+      if (userHasOwnReservations) {
+        result[entry.date] = {
+          selected: true,
+          selectedColor: Colors.GREEN,
+          disabled: true
+        };
+      } else {
+        result[entry.date] = {
+          selected: false,
+          selectedColor: Colors.WHITE,
+          disabled: entry.availableSpaces === 0
+        };
+      }
     }
   });
   Object.keys(userSelectedDates).forEach((key) => {

@@ -1,4 +1,4 @@
-import {GET_CALENDAR_DATA, MY_PARKINGS, SIMULATE, GET_PARKING_SPOTS} from './actionTypes';
+import {MY_PARKINGS, SIMULATE, GET_PARKING_SPOTS} from './actionTypes';
 import {GET_OWN_RESERVATIONS, GET_PARKING_SPOTS_URL} from 'react-native-dotenv';
 import {gotNetworkError, clearErrorState} from './errorActions';
 import {CONNECTION_ERROR} from '../Constants';
@@ -35,7 +35,7 @@ export const getMyParkings = () => {
       const url = `${GET_OWN_RESERVATIONS}?endDate=${endDate}`;
       const getMyParkingsResponse = await apiFetch(url, {method: HttpMethod.GET});
       const result = await getMyParkingsResponse.json();
-      // console.log(result);
+      console.log(result);
       dispatch(clearErrorState());
       dispatch(setMyParkings(result));
     } catch (error) {

@@ -4,16 +4,17 @@ import {NavigationScreenProp, ScrollView} from 'react-navigation';
 import {Calendar} from 'react-native-calendars';
 import {Colors} from '../../assets/colors';
 import {Marking, CalendarEntry, CalendarDateObject, BasicParkingSpotData,
-  ErrorState, SuccesfulReservation} from '../types';
+  ErrorState, SuccesfulReservation, HttpMethod} from '../types';
 import {CALENDAR_TITLE, BOOK_NOW, BACK, SELECT_PARKING_SPOT, ALREADY_BOOKED,
   SPOT, OK, TRY_AGAIN, ERROR} from '../Constants';
 import {connect} from 'react-redux';
 import {getCalendarSpots} from '../actions/calendarActions';
 import {postReservation} from '../actions/reservationActions';
 import {getParkingSpots} from '../actions/parkingActions';
-import {createMarkedDatesObject, getMonthRangeForURL, prettierDateOutput} from '../Utils';
+import {createMarkedDatesObject, getMonthRangeForURL, prettierDateOutput, apiFetch} from '../Utils';
 import Modal from 'react-native-modal';
 import {RoundedButton} from '../shared/RoundedButton';
+import {DELETE_SPOTS_URL} from 'react-native-dotenv';
 
 interface Props {
   getCalendarSpots: (string) => void;
@@ -89,6 +90,14 @@ class MainView extends Component<Props, State> {
 
   getAvailableParkingSpots() {
     this.props.getParkingSpots();
+    //
+    /* const date = '2019-12-27';
+    const id = '784cff07-ede2-4c3d-84c2-5cde1c7b39fa';
+    apiFetch(
+      `${DELETE_SPOTS_URL}/${id}?dates=${date}`,
+      {method: HttpMethod.DELETE
+      });*/
+    //
   }
 
   fetchDataForMonth(calendarDateObject: CalendarDateObject) {
@@ -107,11 +116,14 @@ class MainView extends Component<Props, State> {
         userSelectedDates: newDates,
       });
     } else {
-      const newDates = {...this.state.userSelectedDates};
-      newDates[day.dateString] = {selected: true, selectedColor: Colors.YELLOW};
-      this.setState({
-        userSelectedDates: newDates,
-      });
+      const userReservedDates = this.props.calendarList.filter((entry) => entry.date === day.dateString);
+      if (userReservedDates[0].spacesReservedByUser.length === 0) {
+        const newDates = {...this.state.userSelectedDates};
+        newDates[day.dateString] = {selected: true, selectedColor: Colors.YELLOW};
+        this.setState({
+          userSelectedDates: newDates,
+        });
+      }
     }
   }
 
