@@ -82,6 +82,9 @@ class MyParkingsView extends Component<Props> {
 
   componentDidMount() {
     this.props.getMyParkings();
+    this.props.navigation.addListener('willFocus', () => {
+      this.props.getMyParkings();
+    });
   }
 
   componentDidUpdate() {
