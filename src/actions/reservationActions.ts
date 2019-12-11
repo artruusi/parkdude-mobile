@@ -17,8 +17,8 @@ export const postReservation = (reservation: PostReservation) => {
           headers: {'Content-Type': 'application/json'}
         });
       const result = await postReservationResponse.json();
-      console.log(postReservationResponse.status);
-      console.log(result);
+      //console.log(postReservationResponse.status);
+      //console.log(result);
       if (postReservationResponse.status === 200) {
         dispatch(clearErrorState());
         dispatch(createPostReservationAction(result));

@@ -85,6 +85,7 @@ class MainView extends Component<Props, State> {
         year: this.state.currentYear
       };
       this.fetchDataForMonth(dateObject);
+      this.setState({userSelectedDates: {}});
     }
   }
 
