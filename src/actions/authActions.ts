@@ -65,6 +65,7 @@ export const logOut = () => {
     try {
       const authResponse = await apiFetch(LOGOUT_URL, {method: HttpMethod.POST});
       const result = await authResponse.json();
+      console.log(result);
       await removeCookie();
       dispatch(clearErrorState());
       dispatch(setLogOutState(result));

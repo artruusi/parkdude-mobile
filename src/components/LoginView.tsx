@@ -33,6 +33,7 @@ class LoginView extends Component<Props> {
       // TODO: Get more static url
       const redirectUrl = AuthSession.getRedirectUrl();
       console.log(redirectUrl);
+      console.log(LOGIN_URL);
 
       const result = await AuthSession.startAsync({
         authUrl: LOGIN_URL + `?redirectUrl=${redirectUrl}`

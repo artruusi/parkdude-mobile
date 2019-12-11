@@ -27,6 +27,7 @@ export interface MyReservations {
   ownedSpots: BasicParkingSpotData[];
   reservations: ParkingEvent[];
   releases: ParkingEvent[];
+  timestamp: number;
 }
 
 export interface ParkingEvent {
@@ -62,6 +63,7 @@ export interface PostReservation {
 export interface SuccesfulReservation {
   reservations: ReservationsResponse[];
   message: string;
+  timestamp: number;
 }
 
 export interface ReservationsResponse {

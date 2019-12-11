@@ -84,6 +84,10 @@ class MyParkingsView extends Component<Props> {
     this.props.getMyParkings();
   }
 
+  componentDidUpdate() {
+    console.log("updated");
+  }
+
   simulate() {
     this.props.simulateGetMyParkings();
   }
@@ -117,7 +121,9 @@ class MyParkingsView extends Component<Props> {
       />
     ));
 
-    if (this.props.myReservations.reservations.length > 0 && this.props.myReservations.releases.length > 0) {
+    if (this.props.myReservations.reservations.length > 0 ||
+      this.props.myReservations.releases.length > 0 ||
+      this.props.myReservations.ownedSpots.length > 0) {
       return (
         <SafeAreaView style={styles.container}>
           <ScrollView>
@@ -136,9 +142,9 @@ class MyParkingsView extends Component<Props> {
           <Image style={styles.image} source={require('../../assets/icons/ic-parking/drawable-hdpi/ic_parking.png')}/>
           <Text style={styles.emptyTitle}>{NO_PARKINGS_TITLE}</Text>
           <Text style={styles.text}>{NO_PARKINGS_TEXT}</Text>
-          <TouchableOpacity style={styles.simbutton} onPress={this.simulate}>
+          {/* <TouchableOpacity style={styles.simbutton} onPress={this.simulate}>
             <Text>Simulate getting parkings</Text>
-          </TouchableOpacity>
+          </TouchableOpacity>*/}
         </View>
       );
     }

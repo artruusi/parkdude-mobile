@@ -34,14 +34,23 @@ function padZero(number: number) {
 }
 
 export const createMarkedDatesObject = (entries: CalendarEntry[], userSelectedDates: Record<string, any>) => {
+  const today = toDateString(new Date());
   const result = {};
   entries.forEach((entry) => {
-    const userHasOwnReservations = entry.spacesReservedByUser.length > 0;
-    result[entry.date] = {
-      selected: userHasOwnReservations,
-      selectedColor: userHasOwnReservations ? Colors.GREEN : Colors.WHITE,
-      disabled: entry.availableSpaces === 0
-    };
+    if (entry.date < today) {
+      result[entry.date] = {
+        selected: false,
+        selectedColor: Colors.WHITE,
+        disabled: true
+      };
+    } else {
+      const userHasOwnReservations = entry.spacesReservedByUser.length > 0;
+      result[entry.date] = {
+        selected: userHasOwnReservations,
+        selectedColor: userHasOwnReservations ? Colors.GREEN : Colors.WHITE,
+        disabled: entry.availableSpaces === 0
+      };
+    }
   });
   Object.keys(userSelectedDates).forEach((key) => {
     if (key in result) {
@@ -58,4 +67,16 @@ export const createMarkedDatesObject = (entries: CalendarEntry[], userSelectedDa
 
 export const prettierDateOutput = (date: string) => {
   return (date.slice(8) + '.' + date.slice(5, 7) + '.' + date.slice(0, 4));
+};
+
+export const createDateObjectForToday = () => {
+  const date = new Date();
+  const dateObject = {
+    dateString: undefined,
+    day: undefined,
+    month: date.getMonth()+1,
+    timestamp: undefined,
+    year: date.getFullYear()
+  };
+  return dateObject;
 };

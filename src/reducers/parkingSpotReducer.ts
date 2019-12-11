@@ -14,14 +14,14 @@ const testData: BasicParkingSpotData[] = [
 export const parkingSpotReducer = (state = initialState, action ) => {
   switch (action.type) {
   case GET_PARKING_SPOTS:
-    /* return [
-      {id: 'random', name: 'Any free spot'},
-      ...action.payload
-    ];*/
     return [
       {id: 'random', name: 'Any free spot'},
-      ...testData
+      ...action.payload
     ];
+    /* return [
+      {id: 'random', name: 'Any free spot'},
+      ...testData
+    ];*/
   default:
     return state;
   }

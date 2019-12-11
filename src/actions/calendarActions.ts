@@ -8,10 +8,10 @@ import {GET_CALENDAR_DATA} from './actionTypes';
 export const getCalendarSpots = (dateRangeParams: string) => {
   return async (dispatch) => {
     try {
-      // const calendarResponse = await apiFetch(CALENDAR_URL + dateRangeParams, {method: HttpMethod.GET});
-      // const result = await calendarResponse.json();
-      const result = calendarTestData;
-      // dispatch(clearErrorState());
+      const calendarResponse = await apiFetch(CALENDAR_URL + dateRangeParams, {method: HttpMethod.GET});
+      const result = await calendarResponse.json();
+      // const result = calendarTestData;
+      dispatch(clearErrorState());
       dispatch(setCalendarState(result));
     } catch (error) {
       dispatch(gotNetworkError(CONNECTION_ERROR));
@@ -25,7 +25,6 @@ export const setCalendarState = (result) => {
     payload: result
   };
 };
-
 
 // TEST DATA
 
