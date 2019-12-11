@@ -3,7 +3,8 @@ import {StyleSheet, Text, View, TouchableOpacity, Image, Picker, SafeAreaView} f
 import {NavigationScreenProp, ScrollView} from 'react-navigation';
 import {Calendar} from 'react-native-calendars';
 import {Colors} from '../../assets/colors';
-import {Marking, CalendarEntry, CalendarDateObject, BasicParkingSpotData, ErrorState, SuccesfulReservation} from '../types';
+import {Marking, CalendarEntry, CalendarDateObject, BasicParkingSpotData,
+  ErrorState, SuccesfulReservation} from '../types';
 import {CALENDAR_TITLE, BOOK_NOW, BACK, SELECT_PARKING_SPOT, ALREADY_BOOKED,
   SPOT, OK, TRY_AGAIN, ERROR} from '../Constants';
 import {connect} from 'react-redux';

@@ -68,15 +68,3 @@ export const createMarkedDatesObject = (entries: CalendarEntry[], userSelectedDa
 export const prettierDateOutput = (date: string) => {
   return (date.slice(8) + '.' + date.slice(5, 7) + '.' + date.slice(0, 4));
 };
-
-export const createDateObjectForToday = () => {
-  const date = new Date();
-  const dateObject = {
-    dateString: undefined,
-    day: undefined,
-    month: date.getMonth()+1,
-    timestamp: undefined,
-    year: date.getFullYear()
-  };
-  return dateObject;
-};

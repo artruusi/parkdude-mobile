@@ -85,7 +85,7 @@ class MyParkingsView extends Component<Props> {
   }
 
   componentDidUpdate() {
-    console.log("updated");
+    console.log('updated');
   }
 
   simulate() {

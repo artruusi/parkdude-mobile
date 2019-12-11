@@ -9,7 +9,7 @@ import {HttpMethod, PostReservation} from '../types';
 export const postReservation = (reservation: PostReservation) => {
   return async (dispatch) => {
     try {
-      //console.log(reservation);
+      // console.log(reservation);
       const postReservationResponse = await apiFetch(
         POST_RESERVATION_URL,
         {method: HttpMethod.POST,
