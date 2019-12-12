@@ -35,7 +35,3 @@ If changes in .env don't reflect to code run ```expo r -c``` to clear cache.
 - The given QR-code needs to be scanned with iOS camera application.
 - The parkdude-mobile-client application will open up in the Expo mobile app.
 
-## Development
-Use app without connection to backend:
-- Go to components/AppEntryPoint.tsx
-- On componentDidMount() function: you need to swap the commenting on the two codelines. The action creator to call needs to be setSimulatedAuthState()

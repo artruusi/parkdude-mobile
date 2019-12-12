@@ -6,7 +6,6 @@ import {NavigationScreenProp} from 'react-navigation';
 
 interface Props {
   logOut: () => void;
-  simulateLogout: () => void;
   navigation: NavigationScreenProp<any, any>;
 }
 

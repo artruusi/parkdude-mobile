@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Image, TouchableOpacity, Text} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {AuthSession} from 'expo';
 import {LOGIN_URL} from 'react-native-dotenv';
@@ -13,8 +13,6 @@ import {RoundedButton} from '../shared/RoundedButton';
 
 interface Props {
   getAuthState: () => void;
-  setSimulateVerified: () => void;
-  setSimulateUnVerified: () => void;
   navigation: NavigationScreenProp<any, any>;
 }
 
@@ -24,8 +22,6 @@ class LoginView extends Component<Props> {
     this.loginGoogle = this.loginGoogle.bind(this);
     this.emailLogin = this.emailLogin.bind(this);
     this.singUp = this.singUp.bind(this);
-    this.simulateLoginVerified = this.simulateLoginVerified.bind(this);
-    this.simulateLoginUnVerified = this.simulateLoginUnVerified.bind(this);
   }
 
   async loginGoogle() {
@@ -50,16 +46,6 @@ class LoginView extends Component<Props> {
       // TODO: when will this situation happen?
       console.log(error);
     }
-  }
-
-  simulateLoginVerified() {
-    this.props.setSimulateVerified();
-    this.props.navigation.navigate('App');
-  }
-
-  simulateLoginUnVerified() {
-    this.props.setSimulateUnVerified();
-    this.props.navigation.navigate('WaitForConfirmationView');
   }
 
   componentWillReceiveProps(receivedProps) {
