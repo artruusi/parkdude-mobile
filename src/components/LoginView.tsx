@@ -9,6 +9,7 @@ import {connect} from 'react-redux';
 import {GOOGLE_LOGIN, EMAIL_LOGIN, SIGNUP, OR} from '../Constants';
 import {Colors} from '../../assets/colors';
 import {NavigationScreenProp} from 'react-navigation';
+import {Button} from '../shared/Button';
 
 interface Props {
   getAuthState: () => void;
@@ -110,9 +111,12 @@ class LoginView extends Component<Props> {
             </Icon.Button>
           </View>
           <Text style={styles.orText}>{OR}</Text>
-          <TouchableOpacity style={styles.yellowButton} onPress={this.emailLogin}>
-            <Text style={styles.buttonText}>{EMAIL_LOGIN}</Text>
-          </TouchableOpacity>
+          <Button
+            onPress={this.emailLogin}
+            buttonText={EMAIL_LOGIN}
+            styleButton={styles.yellowButton}
+            styleText={styles.buttonText}
+          />
           <TouchableOpacity style={styles.signUpButton}>
             <Text style={styles.buttonText}>{SIGNUP}</Text>
           </TouchableOpacity>
@@ -165,10 +169,6 @@ const styles = StyleSheet.create({
     marginBottom: '5%'
   },
   yellowButton: {
-    width: 327,
-    height: 43,
-    borderRadius: 21.7,
-    backgroundColor: Colors.YELLOW,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: '5%'
@@ -181,8 +181,6 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   buttonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
     // fontFamily: 'Roboto',
   }
 });
