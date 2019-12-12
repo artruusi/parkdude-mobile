@@ -6,6 +6,7 @@ import {LOG_IN, EMAIL, PASSWORD} from '../Constants';
 import {Colors} from '../../assets/colors';
 import {NavigationScreenProp} from 'react-navigation';
 import {TextInput} from 'react-native-gesture-handler';
+import {Button} from '../shared/Button';
 
 interface Props {
   getAuthState: () => void;
@@ -75,12 +76,18 @@ class PasswordLoginView extends Component<Props> {
             onChangeText={this.onPasswordChange}
           />
           <View style={styles.horizontalContainer}>
-            <TouchableOpacity style={styles.yellowButton} onPress={this.back}>
-              <Text style={styles.buttonText}>Back</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.yellowButton}>
-              <Text style={styles.buttonText}>{LOG_IN}</Text>
-            </TouchableOpacity>
+            <Button
+              onPress={this.back}
+              buttonText={'Back'}
+              styleButton={styles.yellowButton}
+              styleText={styles.buttonText}
+            />
+            <Button
+              onPress={() => {}}
+              buttonText={LOG_IN}
+              styleButton={styles.yellowButton}
+              styleText={styles.buttonText}
+            />
           </View>
         </KeyboardAvoidingView>
       </View>
@@ -132,17 +139,12 @@ const styles = StyleSheet.create({
     flex: 1,
     // width: 150,
     height: 43,
-    borderRadius: 21.7,
-    backgroundColor: Colors.YELLOW,
     alignItems: 'center',
     justifyContent: 'center',
     margin: '1%',
     marginBottom: '3%',
   },
   buttonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    // fontFamily: 'Roboto',
     alignSelf: 'center',
     textAlignVertical: 'center',
     textAlign: 'center',
