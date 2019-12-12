@@ -1,4 +1,4 @@
-import {MY_PARKINGS, SIMULATE, GET_PARKING_SPOTS} from './actionTypes';
+import {MY_PARKINGS, GET_PARKING_SPOTS} from './actionTypes';
 import {GET_OWN_RESERVATIONS, GET_PARKING_SPOTS_URL} from 'react-native-dotenv';
 import {gotNetworkError, clearErrorState} from './errorActions';
 import {CONNECTION_ERROR} from '../Constants';
@@ -11,7 +11,6 @@ export const getParkingSpots = () => {
       const getSpotsResponse = await apiFetch(GET_PARKING_SPOTS_URL, {method: HttpMethod.GET});
       const result = await getSpotsResponse.json();
       dispatch(clearErrorState());
-      // console.log(result);
       dispatch(setParkingSpots(result.data));
     } catch (error) {
       dispatch(gotNetworkError(CONNECTION_ERROR));
@@ -35,7 +34,6 @@ export const getMyParkings = () => {
       const url = `${GET_OWN_RESERVATIONS}?endDate=${endDate}`;
       const getMyParkingsResponse = await apiFetch(url, {method: HttpMethod.GET});
       const result = await getMyParkingsResponse.json();
-      console.log(result);
       dispatch(clearErrorState());
       dispatch(setMyParkings(result));
     } catch (error) {
@@ -51,14 +49,3 @@ export const setMyParkings = (result) => {
     payload: result
   };
 };
-
-export const simulateGetMyParkings = () => {
-  return async (dispatch) => {
-    try {
-      dispatch({type: SIMULATE});
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
-

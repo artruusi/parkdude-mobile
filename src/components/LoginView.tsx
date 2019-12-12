@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {AuthSession} from 'expo';
 import {LOGIN_URL} from 'react-native-dotenv';
 import {setCookie} from '../CookieStorage';
-import {getAuthState, setSimulateVerified, setSimulateUnVerified} from '../actions/authActions';
+import {getAuthState} from '../actions/authActions';
 import {connect} from 'react-redux';
 import {GOOGLE_LOGIN, EMAIL_LOGIN, SIGNUP, OR} from '../Constants';
 import {Colors} from '../../assets/colors';
@@ -85,25 +85,6 @@ class LoginView extends Component<Props> {
             style={styles.parkdudeLogo}
           />
         </View>
-        {/* Comment these back if you need simulated login */}
-        {/* <View>
-          <View style={styles.yellowButton}>
-            <TouchableOpacity
-              onPress={this.simulateLoginVerified}
-              style={styles.yellowButton}
-            >
-              <Text>SIMULATE LOGIN (VERIFIED)</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.yellowButton}>
-            <TouchableOpacity
-              onPress={this.simulateLoginUnVerified}
-              style={styles.yellowButton}
-            >
-              <Text>SIMULATE LOGIN (UNVERIFIED)</Text>
-            </TouchableOpacity>
-          </View>
-        </View> */}
         <View style={styles.buttonContainer}>
           <View style={styles.googleButton}>
             <Icon.Button
@@ -139,7 +120,7 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated
 });
 
-const mapDispatchToProps = {getAuthState, setSimulateVerified, setSimulateUnVerified};
+const mapDispatchToProps = {getAuthState};
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
 

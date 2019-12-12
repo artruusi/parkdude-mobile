@@ -17,4 +17,3 @@ describe('reservationReducer', () => {
     expect(reservationReducer(initialState, {type: RESERVE_SPOTS, payload: successResponse})).toEqual(successResponse);
   });
 });
-

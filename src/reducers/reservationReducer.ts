@@ -1,11 +1,9 @@
 import {RESERVE_SPOTS} from '../actions/actionTypes';
 import {SuccesfulReservation} from '../types';
 
-// mock
 const initialState: SuccesfulReservation = {
   reservations: [],
-  message: '',
-  timestamp: 0
+  message: ''
 };
 
 export const reservationReducer = (state = initialState, action ) => {
@@ -13,8 +11,7 @@ export const reservationReducer = (state = initialState, action ) => {
   case RESERVE_SPOTS:
     return {
       reservations: action.payload.reservations,
-      message: action.payload.message,
-      timestamp: + new Date()
+      message: action.payload.message
     };
   default:
     return state;

@@ -7,7 +7,6 @@ export async function apiFetch(url: string, params: RequestInit = {}) {
   return fetch(url, {...params, headers: {cookie, ...params.headers}});
 }
 
-
 /**
  * Returns url parameter string containing daterange of of month given as parameter
  */
@@ -36,8 +35,9 @@ function padZero(number: number) {
 export const createMarkedDatesObject = (entries: CalendarEntry[], userSelectedDates: Record<string, any>) => {
   const today = toDateString(new Date());
   const result = {};
+  // Go through date entries got from API
   entries.forEach((entry) => {
-    if (entry.date < today) {
+    if (dateShouldBeDisabled(today, entry.date)) {
       result[entry.date] = {
         selected: false,
         selectedColor: Colors.WHITE,
@@ -60,6 +60,7 @@ export const createMarkedDatesObject = (entries: CalendarEntry[], userSelectedDa
       }
     }
   });
+  // Go through dates which user has seleceted on the calendar
   Object.keys(userSelectedDates).forEach((key) => {
     if (key in result) {
       if (result[key].selectedColor != Colors.GREEN && result[key].disabled == false) {
@@ -71,6 +72,10 @@ export const createMarkedDatesObject = (entries: CalendarEntry[], userSelectedDa
     }
   });
   return result;
+};
+
+export const dateShouldBeDisabled = (today: string, date: string) => {
+  return date < today;
 };
 
 export const prettierDateOutput = (date: string) => {

@@ -5,11 +5,9 @@ import {CONNECTION_ERROR, GENERAL_ERROR_MESSAGE} from '../Constants';
 import {apiFetch} from '../Utils';
 import {HttpMethod, PostReservation} from '../types';
 
-
 export const postReservation = (reservation: PostReservation) => {
   return async (dispatch) => {
     try {
-      // console.log(reservation);
       const postReservationResponse = await apiFetch(
         POST_RESERVATION_URL,
         {method: HttpMethod.POST,
@@ -17,8 +15,6 @@ export const postReservation = (reservation: PostReservation) => {
           headers: {'Content-Type': 'application/json'}
         });
       const result = await postReservationResponse.json();
-      //console.log(postReservationResponse.status);
-      //console.log(result);
       if (postReservationResponse.status === 200) {
         dispatch(clearErrorState());
         dispatch(createPostReservationAction(result));

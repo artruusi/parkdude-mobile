@@ -75,7 +75,7 @@ class MainView extends Component<Props, State> {
     if (receivedProps.error.postReservationError.message !== '') {
       this.toggleErrorModal();
     }
-    if (receivedProps.reservation.timestamp !== this.props.reservation.timestamp) {
+    if (receivedProps.reservation.reservations !== this.props.reservation.reservations) {
       console.log('new succesful reservation, triggering calendar render');
       const dateObject = {
         dateString: undefined,
@@ -91,14 +91,6 @@ class MainView extends Component<Props, State> {
 
   getAvailableParkingSpots() {
     this.props.getParkingSpots();
-    //
-    /* const date = '2019-12-27';
-    const id = '784cff07-ede2-4c3d-84c2-5cde1c7b39fa';
-    apiFetch(
-      `${DELETE_SPOTS_URL}/${id}?dates=${date}`,
-      {method: HttpMethod.DELETE
-      });*/
-    //
   }
 
   fetchDataForMonth(calendarDateObject: CalendarDateObject) {
