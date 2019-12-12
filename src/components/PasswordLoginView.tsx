@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   loginText: {
     fontSize: 20,
     fontWeight: 'bold',
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto',
     marginTop: '5%',
     marginBottom: '5%'
   },
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     fontWeight: 'bold',
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto',
     alignSelf: 'center',
     textAlignVertical: 'center',
     textAlign: 'center',

@@ -155,11 +155,11 @@ const styles = StyleSheet.create({
   googleText: {
     color: Colors.WHITE,
     fontWeight: 'bold',
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto',
   },
   orText: {
     fontWeight: 'bold',
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto',
     opacity: 0.2,
     marginTop: '5%',
     marginBottom: '5%'
@@ -183,6 +183,6 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     fontWeight: 'bold',
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto',
   }
 });
