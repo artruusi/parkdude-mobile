@@ -23,6 +23,7 @@ class LoginView extends Component<Props> {
     super(props);
     this.loginGoogle = this.loginGoogle.bind(this);
     this.emailLogin = this.emailLogin.bind(this);
+    this.singUp = this.singUp.bind(this);
     this.simulateLoginVerified = this.simulateLoginVerified.bind(this);
     this.simulateLoginUnVerified = this.simulateLoginUnVerified.bind(this);
   }
@@ -68,6 +69,11 @@ class LoginView extends Component<Props> {
 
   emailLogin() {
     this.props.navigation.navigate('PasswordLoginView');
+  }
+
+  singUp() {
+    console.log('SignUp pressed');
+
   }
 
   render() {
@@ -117,9 +123,12 @@ class LoginView extends Component<Props> {
             buttonStyle={styles.yellowButton}
             textStyle={styles.buttonText}
           />
-          <TouchableOpacity style={styles.signUpButton}>
-            <Text style={styles.buttonText}>{SIGNUP}</Text>
-          </TouchableOpacity>
+          <RoundedButton
+            onPress={this.signUp}
+            buttonText={SIGNUP}
+            buttonStyle={styles.signUpButton}
+            textStyle={styles.buttonText}
+          />
         </View>
       </View>
     );
@@ -137,13 +146,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.APP_BACKGROUND,
     alignItems: 'center',
     justifyContent: 'center'
   },
   buttonContainer: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'flex-end',
     marginBottom: '5%',
@@ -178,7 +186,7 @@ const styles = StyleSheet.create({
     height: 53,
     textAlign: 'center',
     alignItems: 'center',
-    color: '#000000',
+    backgroundColor: Colors.APP_BACKGROUND,
   },
   buttonText: {
     // fontFamily: 'Roboto',
