@@ -87,6 +87,7 @@ class PasswordLoginView extends Component<Props> {
               buttonText={LOG_IN}
               buttonStyle={styles.yellowButton}
               textStyle={styles.buttonText}
+              disabled={true}
             />
           </View>
         </KeyboardAvoidingView>
