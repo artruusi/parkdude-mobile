@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {WELCOME_TITLE, WELCOME_TEXT1, WELCOME_TEXT2, WELCOME_TEXT3} from '../Constants';
 import {Colors} from '../../assets/colors';
 import {NavigationScreenProp} from 'react-navigation';
+import {RoundedButton} from '../shared/RoundedButton';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -29,9 +30,11 @@ export default class OnboardingView extends Component<Props> {
           <Text style={styles.text}>{WELCOME_TEXT2}</Text>
           <Text style={styles.text}>{WELCOME_TEXT3}</Text>
         </View>
-        <TouchableOpacity style={styles.button} onPress={this.continue}>
-          <Text>OK</Text>
-        </TouchableOpacity>
+        <RoundedButton
+          onPress={this.continue}
+          buttonText='OK'
+          buttonStyle={styles.button}
+        />
       </View>
     );
   }
@@ -69,9 +72,6 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 327,
-    height: 43,
-    borderRadius: 21.7,
-    backgroundColor: Colors.YELLOW,
     alignItems: 'center',
     justifyContent: 'center'
   }

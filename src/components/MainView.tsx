@@ -307,7 +307,8 @@ const styles = StyleSheet.create({
     height: 43,
     borderRadius: 21.7,
     borderStyle: 'solid',
-    borderWidth: 1
+    borderWidth: 1,
+    backgroundColor: Colors.WHITE,
   },
   bookButton: {
     width: 163.5,
