@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Image, TouchableOpacity, Text, KeyboardAvoidingView} from 'react-native';
-import {getAuthState, setSimulateVerified, setSimulateUnVerified} from '../actions/authActions';
+import {getAuthState} from '../actions/authActions';
 import {connect} from 'react-redux';
 import {LOG_IN, EMAIL, PASSWORD} from '../Constants';
 import {Colors} from '../../assets/colors';
@@ -100,7 +100,7 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated
 });
 
-const mapDispatchToProps = {getAuthState, setSimulateVerified, setSimulateUnVerified};
+const mapDispatchToProps = {getAuthState};
 
 export default connect(mapStateToProps, mapDispatchToProps)(PasswordLoginView);
 
