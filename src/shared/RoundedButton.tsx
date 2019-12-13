@@ -4,10 +4,10 @@ import {Colors} from '../../assets/colors';
 
 export interface RoundedButtonProps {
     onPress: () => void;
-    disabled: boolean;
+    disabled?: boolean;
     buttonText: string;
-    buttonStyle: StyleSheet;
-    textStyle: StyleSheet;
+    buttonStyle?: StyleSheet;
+    textStyle?: StyleSheet;
 }
 
 export class RoundedButton extends Component<RoundedButtonProps> {
