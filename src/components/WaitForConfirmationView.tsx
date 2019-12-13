@@ -2,9 +2,13 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {connect} from 'react-redux';
 import {UserRole} from '../types';
-import {WAITING_CONFIRMATION_TITLE, WAITING_CONFIRMATION_TEXT1, WAITING_CONFIRMATION_TEXT2} from '../Constants';
+import {WAITING_CONFIRMATION_TITLE,
+  WAITING_CONFIRMATION_TEXT1,
+  WAITING_CONFIRMATION_TEXT2,
+  RESTART} from '../Constants';
 import {Colors} from '../../assets/colors';
 import {NavigationScreenProp} from 'react-navigation';
+import {RoundedButton} from '../shared/RoundedButton';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -38,9 +42,11 @@ class WaitForConfirmationView extends Component<Props> {
           <Text style={styles.text}>{WAITING_CONFIRMATION_TEXT1}</Text>
           <Text style={styles.text}>{WAITING_CONFIRMATION_TEXT2}</Text>
         </View>
-        <TouchableOpacity style={styles.button} onPress={this.restart}>
-          <Text>Restart</Text>
-        </TouchableOpacity>
+        <RoundedButton
+          onPress={this.restart}
+          buttonText={RESTART}
+          buttonStyle={styles.button}
+        />
       </View>
     );
   }

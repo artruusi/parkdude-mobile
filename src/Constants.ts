@@ -7,6 +7,7 @@ export const BACK = 'Back';
 export const OK = 'OK';
 export const TRY_AGAIN = 'Try again.';
 export const ERROR = 'Error';
+export const RESTART= 'Restart';
 
 // Onboarding
 
@@ -33,7 +34,7 @@ export const PASSWORD = 'Password';
 export const WAITING_CONFIRMATION_TITLE = 'Waiting for confirmation';
 export const WAITING_CONFIRMATION_TEXT1 = 'Your sign up has been received and is waiting for ' +
                                           'confirmation by one of our admins.';
-export const WAITING_CONFIRMATION_TEXT2 = 'When your signup has been accepted, you will ne notified by e-mail.';
+export const WAITING_CONFIRMATION_TEXT2 = 'When your signup has been accepted, you will be notified by e-mail.';
 
 // Parking
 
