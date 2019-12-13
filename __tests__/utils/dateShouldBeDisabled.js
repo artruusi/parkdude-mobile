@@ -26,7 +26,7 @@ describe('dateShouldBeDisabled function', () => {
     expect(actualResult).toEqual(false);
   });
 
-  it('today < today ==> return true', () => {
+  it('today < today ==> return false', () => {
     const actualResult = dateShouldBeDisabled(today, today);
     expect(actualResult).toEqual(false);
   });
