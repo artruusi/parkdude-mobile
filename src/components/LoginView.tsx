@@ -165,12 +165,10 @@ const styles = StyleSheet.create({
   },
   googleText: {
     color: Colors.WHITE,
-    fontWeight: 'bold',
-    // fontFamily: 'Roboto',
+    fontFamily: 'Exo2-bold',
   },
   orText: {
-    fontWeight: 'bold',
-    // fontFamily: 'Roboto',
+    fontFamily: 'Exo2-bold',
     opacity: 0.2,
     marginTop: '5%',
     marginBottom: '5%'

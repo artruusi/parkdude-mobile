@@ -50,18 +50,15 @@ const styles = StyleSheet.create({
   title: {
     width: 203,
     height: 84,
-    // fontFamily: 'Exo2',
+    fontFamily: 'Exo2-bold',
     fontSize: 34.8,
-    fontWeight: 'bold',
     fontStyle: 'normal',
     letterSpacing: 0,
     textAlign: 'center',
     color: Colors.BLACK
   },
   text: {
-    // width: 384,
-    // height: 267,
-    // fontFamily: 'Exo2',
+    fontFamily: 'Exo2',
     fontSize: 17.4,
     fontWeight: 'normal',
     fontStyle: 'normal',
