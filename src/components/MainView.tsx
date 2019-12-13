@@ -12,6 +12,7 @@ import {postReservation} from '../actions/reservationActions';
 import {getParkingSpots} from '../actions/parkingActions';
 import {createMarkedDatesObject, getMonthRangeForURL, prettierDateOutput} from '../Utils';
 import Modal from 'react-native-modal';
+import { RoundedButton } from '../shared/RoundedButton';
 
 interface Props {
   getCalendarSpots: (string) => void;
@@ -195,12 +196,12 @@ class MainView extends Component<Props, State> {
             </TouchableOpacity>
           </View>
           <View style={{...styles.centerContent, width: '50%'}}>
-            <TouchableOpacity
-              style={{...styles.bookButton, backgroundColor: bookButtonColor}}
+            <RoundedButton
               onPress={this.reserveParkingSpot}
-              disabled={Object.keys(this.state.userSelectedDates).length === 0}>
-              <Text style={{fontWeight: 'bold'}}>{BOOK_NOW}</Text>
-            </TouchableOpacity>
+              disabled={Object.keys(this.state.userSelectedDates).length === 0}
+              buttonText={BOOK_NOW}
+              buttonStyle={styles.bookButton}
+            />
           </View>
         </View>
 
@@ -281,6 +282,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   calendar: {
+    backgroundColor: Colors.APP_BACKGROUND,
     alignSelf: 'stretch',
   },
   centerContent: {
@@ -309,10 +311,6 @@ const styles = StyleSheet.create({
   },
   bookButton: {
     width: 163.5,
-    height: 43,
-    borderRadius: 21.7,
-    borderStyle: 'solid',
-    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },

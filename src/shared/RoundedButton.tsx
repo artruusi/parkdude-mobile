@@ -19,8 +19,8 @@ export class RoundedButton extends Component<RoundedButtonProps> {
     return (
       <TouchableOpacity
         style={[styles.button, (this.props.disabled ? styles.disabledButton : {}), this.props.buttonStyle]}
+        disabled={this.props.disabled}
         onPress={this.props.onPress}
-        disabled={this.props.diasbled}
         activeOpacity={this.props.disabled ? 1 : 0.7}>
         <Text style={[styles.buttonText, this.props.textStyle]}>{this.props.buttonText}</Text>
       </TouchableOpacity>
