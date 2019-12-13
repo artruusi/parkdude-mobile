@@ -2,22 +2,22 @@ import React, {Component} from 'react';
 import {StyleSheet, TouchableOpacity, Text} from 'react-native';
 import {Colors} from '../../assets/colors';
 
-export interface ButtonProps {
+export interface RoundedButtonProps {
     onPress: () => void;
     buttonText: string;
-    styleButton: StyleSheet;
-    styleText: StyleSheet;
+    buttonStyle: StyleSheet;
+    textStyle: StyleSheet;
 }
 
-export class Button extends Component<ButtonProps> {
-  constructor(props: ButtonProps) {
+export class RoundedButton extends Component<RoundedButtonProps> {
+  constructor(props: RoundedButtonProps) {
     super(props);
   }
 
   render() {
     return (
-      <TouchableOpacity style={[styles.button, this.props.styleButton]} onPress={this.props.onPress}>
-        <Text style={[styles.buttonText, this.props.styleText]}>{this.props.buttonText}</Text>
+      <TouchableOpacity style={[styles.button, this.props.buttonStyle]} onPress={this.props.onPress}>
+        <Text style={[styles.buttonText, this.props.textStyle]}>{this.props.buttonText}</Text>
       </TouchableOpacity>
     );
   }

@@ -6,7 +6,7 @@ import {LOG_IN, EMAIL, PASSWORD} from '../Constants';
 import {Colors} from '../../assets/colors';
 import {NavigationScreenProp} from 'react-navigation';
 import {TextInput} from 'react-native-gesture-handler';
-import {Button} from '../shared/Button';
+import {RoundedButton} from '../shared/RoundedButton';
 
 interface Props {
   getAuthState: () => void;
@@ -76,17 +76,17 @@ class PasswordLoginView extends Component<Props> {
             onChangeText={this.onPasswordChange}
           />
           <View style={styles.horizontalContainer}>
-            <Button
+            <RoundedButton
               onPress={this.back}
               buttonText={'Back'}
-              styleButton={styles.yellowButton}
-              styleText={styles.buttonText}
+              buttonStyle={styles.yellowButton}
+              textStyle={styles.buttonText}
             />
-            <Button
+            <RoundedButton
               onPress={() => {}}
               buttonText={LOG_IN}
-              styleButton={styles.yellowButton}
-              styleText={styles.buttonText}
+              buttonStyle={styles.yellowButton}
+              textStyle={styles.buttonText}
             />
           </View>
         </KeyboardAvoidingView>

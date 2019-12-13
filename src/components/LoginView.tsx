@@ -9,7 +9,7 @@ import {connect} from 'react-redux';
 import {GOOGLE_LOGIN, EMAIL_LOGIN, SIGNUP, OR} from '../Constants';
 import {Colors} from '../../assets/colors';
 import {NavigationScreenProp} from 'react-navigation';
-import {Button} from '../shared/Button';
+import {RoundedButton} from '../shared/RoundedButton';
 
 interface Props {
   getAuthState: () => void;
@@ -111,11 +111,11 @@ class LoginView extends Component<Props> {
             </Icon.Button>
           </View>
           <Text style={styles.orText}>{OR}</Text>
-          <Button
+          <RoundedButton
             onPress={this.emailLogin}
             buttonText={EMAIL_LOGIN}
-            styleButton={styles.yellowButton}
-            styleText={styles.buttonText}
+            buttonStyle={styles.yellowButton}
+            textStyle={styles.buttonText}
           />
           <TouchableOpacity style={styles.signUpButton}>
             <Text style={styles.buttonText}>{SIGNUP}</Text>
