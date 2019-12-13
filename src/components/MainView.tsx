@@ -12,7 +12,7 @@ import {postReservation} from '../actions/reservationActions';
 import {getParkingSpots} from '../actions/parkingActions';
 import {createMarkedDatesObject, getMonthRangeForURL, prettierDateOutput} from '../Utils';
 import Modal from 'react-native-modal';
-import { RoundedButton } from '../shared/RoundedButton';
+import {RoundedButton} from '../shared/RoundedButton';
 
 interface Props {
   getCalendarSpots: (string) => void;
@@ -222,11 +222,11 @@ class MainView extends Component<Props, State> {
               {parkingSpots}
             </ScrollView>
             <View style={styles.centerContent}>
-              <TouchableOpacity
-                style={{...styles.modalButton, backgroundColor: Colors.RED}}
-                onPress={this.toggleReservationModal}>
-                <Text style={{fontSize: 18, fontWeight: 'bold'}}>{BACK}</Text>
-              </TouchableOpacity>
+              <RoundedButton
+                onPress={this.toggleReservationModal}
+                buttonText={BACK}
+                buttonStyle={styles.redButton}
+              />
             </View>
           </View>
         </Modal>
@@ -252,11 +252,11 @@ class MainView extends Component<Props, State> {
               {errorDates}
               <Text style={{fontSize: 18, fontWeight: 'bold'}}>{TRY_AGAIN}</Text>
             </View>
-            <TouchableOpacity
-              style={{...styles.modalButton, backgroundColor: Colors.RED}}
-              onPress={this.toggleErrorModal}>
-              <Text style={{fontSize: 18, fontWeight: 'bold'}}>{OK}</Text>
-            </TouchableOpacity>
+            <RoundedButton
+              onPress={this.toggleErrorModal}
+              buttonText={OK}
+              buttonStyle={styles.redButton}
+            />
           </View>
         </Modal>
       </View>
@@ -313,6 +313,13 @@ const styles = StyleSheet.create({
     width: 163.5,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  redButton: {
+    width: 250,
+    backgroundColor: Colors.RED,
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 10
   },
   modalButton: {
     width: 250,

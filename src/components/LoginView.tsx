@@ -73,7 +73,6 @@ class LoginView extends Component<Props> {
 
   singUp() {
     console.log('SignUp pressed');
-
   }
 
   render() {
