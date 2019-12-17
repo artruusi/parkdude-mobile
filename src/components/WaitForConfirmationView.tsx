@@ -69,10 +69,8 @@ const styles = StyleSheet.create({
   title: {
     width: 240,
     height: 53,
-    // fontFamily: 'Exo2',
+    fontFamily: 'Exo2-bold',
     fontSize: 20,
-    fontWeight: 'bold',
-    fontStyle: 'normal',
     lineHeight: 53,
     letterSpacing: 0,
     textAlign: 'center',
@@ -81,10 +79,8 @@ const styles = StyleSheet.create({
   text: {
     width: 240,
     height: 126,
-    // fontFamily: 'Exo2',
+    fontFamily: 'Exo2',
     fontSize: 16,
-    fontWeight: 'normal',
-    fontStyle: 'normal',
     lineHeight: 18,
     letterSpacing: 0,
     textAlign: 'center',

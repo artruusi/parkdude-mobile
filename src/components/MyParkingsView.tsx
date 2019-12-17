@@ -32,16 +32,16 @@ class ParkingItem extends Component<ItemProps> {
         <View style={styles.column1}>
           <View style={styles.row1}>
             <View style={{...styles.spotCircle, backgroundColor: this.props.color}}>
-              <Text style={{fontWeight: 'bold'}}>{this.props.parkingSpot.name}</Text>
+              <Text style={{fontFamily: 'Exo2-bold'}}>{this.props.parkingSpot.name}</Text>
             </View>
           </View>
           <View style={styles.row2}>
-            <Text style={{fontWeight: 'bold'}}>Spot</Text>
+            <Text style={{fontFamily: 'Exo2-bold'}}>Spot</Text>
           </View>
         </View>
         <View style={styles.column2}>
-          <Text style={{fontWeight: 'bold'}}>{this.props.type}</Text>
-          <Text style={{fontWeight: 'bold'}}>{prettierDateOutput(this.props.date)}</Text>
+          <Text style={{fontFamily: 'Exo2-bold'}}>{this.props.type}</Text>
+          <Text style={{fontFamily: 'Exo2-bold'}}>{prettierDateOutput(this.props.date)}</Text>
         </View>
         <View style={styles.column3}>
           <View style={styles.row3}>
@@ -60,10 +60,10 @@ class PermanentSpotItem extends Component<PermanentSpotProps> {
   render() {
     return (
       <View style={styles.permanentSpotContainer}>
-        <Text style={{fontWeight: 'bold', fontSize: 25}}>{PERMANENT_SPOT}</Text>
-        <Text style={{fontWeight: 'bold', fontSize: 25}}>{this.props.name}</Text>
+        <Text style={{fontFamily: 'Exo2-bold', fontSize: 25}}>{PERMANENT_SPOT}</Text>
+        <Text style={{fontFamily: 'Exo2-bold', fontSize: 25}}>{this.props.name}</Text>
         <TouchableOpacity style={styles.releaseButton} onPress={null}>
-          <Text style={{fontWeight: 'bold', fontSize: 18}}>{NEW_RELEASE}</Text>
+          <Text style={{fontFamily: 'Exo2-bold', fontSize: 18}}>{NEW_RELEASE}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -190,10 +190,8 @@ const styles = StyleSheet.create({
   title: {
     width: 229,
     height: 42,
-    // fontFamily: 'Exo2',
+    fontFamily: 'Exo2-bold',
     fontSize: 34.8,
-    fontWeight: 'bold',
-    fontStyle: 'normal',
     letterSpacing: 0,
     textAlign: 'center',
     color: '#000000'
@@ -206,19 +204,15 @@ const styles = StyleSheet.create({
   emptyTitle: {
     width: 114,
     height: 24,
-    // fontFamily: "Exo2",
+    fontFamily: 'Exo2-bold',
     fontSize: 20,
-    fontWeight: 'bold',
-    fontStyle: 'normal',
     letterSpacing: 0,
     textAlign: 'center',
     color: '#c8c8c8'
   },
   text: {
-    // fontFamily: "Exo2",
+    fontFamily: 'Exo2',
     fontSize: 16,
-    fontWeight: 'normal',
-    fontStyle: 'normal',
     letterSpacing: 0,
     textAlign: 'center',
     color: '#c8c8c8'
