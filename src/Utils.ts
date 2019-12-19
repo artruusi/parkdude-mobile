@@ -7,7 +7,6 @@ export async function apiFetch(url: string, params: RequestInit = {}) {
   return fetch(url, {...params, headers: {cookie, ...params.headers}});
 }
 
-
 /**
  * Returns url parameter string containing daterange of of month given as parameter
  */
@@ -34,15 +33,34 @@ function padZero(number: number) {
 }
 
 export const createMarkedDatesObject = (entries: CalendarEntry[], userSelectedDates: Record<string, any>) => {
+  const today = toDateString(new Date());
   const result = {};
+  // Go through date entries got from API
   entries.forEach((entry) => {
-    const userHasOwnReservations = entry.spacesReservedByUser.length > 0;
-    result[entry.date] = {
-      selected: userHasOwnReservations,
-      selectedColor: userHasOwnReservations ? Colors.GREEN : Colors.WHITE,
-      disabled: entry.availableSpaces === 0
-    };
+    if (dateShouldBeDisabled(today, entry.date)) {
+      result[entry.date] = {
+        selected: false,
+        selectedColor: Colors.WHITE,
+        disabled: true
+      };
+    } else {
+      const userHasOwnReservations = entry.spacesReservedByUser.length > 0;
+      if (userHasOwnReservations) {
+        result[entry.date] = {
+          selected: true,
+          selectedColor: Colors.GREEN,
+          disabled: true
+        };
+      } else {
+        result[entry.date] = {
+          selected: false,
+          selectedColor: Colors.WHITE,
+          disabled: entry.availableSpaces === 0
+        };
+      }
+    }
   });
+  // Go through dates which user has seleceted on the calendar
   Object.keys(userSelectedDates).forEach((key) => {
     if (key in result) {
       if (result[key].selectedColor != Colors.GREEN && result[key].disabled == false) {
@@ -54,6 +72,10 @@ export const createMarkedDatesObject = (entries: CalendarEntry[], userSelectedDa
     }
   });
   return result;
+};
+
+export const dateShouldBeDisabled = (today: string, date: string) => {
+  return date < today;
 };
 
 export const prettierDateOutput = (date: string) => {

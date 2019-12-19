@@ -1,8 +1,11 @@
-import {createMarkedDatesObject} from '../../src/Utils';
+import {createMarkedDatesObject, toDateString} from '../../src/Utils';
 import {Colors} from '../../assets/colors';
 
-const testDay = '2019-11-15';
-const testDay2 = '2019-11-16';
+const todayDate = new Date();
+const testDay = toDateString(todayDate);
+const tomorrowDate = new Date();
+tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+const testDay2 = toDateString(tomorrowDate);
 const testUserReservations = [{id: '123-id', name: '315'}];
 
 describe('createMarkedDatesObject function', () => {
@@ -32,7 +35,7 @@ describe('createMarkedDatesObject function', () => {
       [testDay]: {
         selected: true,
         selectedColor: Colors.GREEN,
-        disabled: false
+        disabled: true
       }
     };
     const actualResult = createMarkedDatesObject(
@@ -92,7 +95,7 @@ describe('createMarkedDatesObject function', () => {
       [testDay]: {
         selected: true,
         selectedColor: Colors.GREEN,
-        disabled: false
+        disabled: true
       },
       [testDay2]: {
         selected: true,
@@ -112,7 +115,7 @@ describe('createMarkedDatesObject function', () => {
       [testDay]: {
         selected: true,
         selectedColor: Colors.GREEN,
-        disabled: false
+        disabled: true
       }
     };
     const actualResult = createMarkedDatesObject(

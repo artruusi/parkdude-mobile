@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {AuthSession} from 'expo';
 import {LOGIN_URL} from 'react-native-dotenv';
 import {setCookie} from '../CookieStorage';
-import {getAuthState, setSimulateVerified, setSimulateUnVerified} from '../actions/authActions';
+import {getAuthState} from '../actions/authActions';
 import {connect} from 'react-redux';
 import {GOOGLE_LOGIN, EMAIL_LOGIN, SIGNUP, OR} from '../Constants';
 import {Colors} from '../../assets/colors';
@@ -13,8 +13,6 @@ import {RoundedButton} from '../shared/RoundedButton';
 
 interface Props {
   getAuthState: () => void;
-  setSimulateVerified: () => void;
-  setSimulateUnVerified: () => void;
   navigation: NavigationScreenProp<any, any>;
 }
 
@@ -24,8 +22,6 @@ class LoginView extends Component<Props> {
     this.loginGoogle = this.loginGoogle.bind(this);
     this.emailLogin = this.emailLogin.bind(this);
     this.singUp = this.singUp.bind(this);
-    this.simulateLoginVerified = this.simulateLoginVerified.bind(this);
-    this.simulateLoginUnVerified = this.simulateLoginUnVerified.bind(this);
   }
 
   async loginGoogle() {
@@ -33,6 +29,7 @@ class LoginView extends Component<Props> {
       // TODO: Get more static url
       const redirectUrl = AuthSession.getRedirectUrl();
       console.log(redirectUrl);
+      console.log(LOGIN_URL);
 
       const result = await AuthSession.startAsync({
         authUrl: LOGIN_URL + `?redirectUrl=${redirectUrl}`
@@ -49,16 +46,6 @@ class LoginView extends Component<Props> {
       // TODO: when will this situation happen?
       console.log(error);
     }
-  }
-
-  simulateLoginVerified() {
-    this.props.setSimulateVerified();
-    this.props.navigation.navigate('App');
-  }
-
-  simulateLoginUnVerified() {
-    this.props.setSimulateUnVerified();
-    this.props.navigation.navigate('WaitForConfirmationView');
   }
 
   componentWillReceiveProps(receivedProps) {
@@ -84,25 +71,6 @@ class LoginView extends Component<Props> {
             style={styles.parkdudeLogo}
           />
         </View>
-        {/* Comment these back if you need simulated login */}
-        {/* <View>
-          <View style={styles.yellowButton}>
-            <TouchableOpacity
-              onPress={this.simulateLoginVerified}
-              style={styles.yellowButton}
-            >
-              <Text>SIMULATE LOGIN (VERIFIED)</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.yellowButton}>
-            <TouchableOpacity
-              onPress={this.simulateLoginUnVerified}
-              style={styles.yellowButton}
-            >
-              <Text>SIMULATE LOGIN (UNVERIFIED)</Text>
-            </TouchableOpacity>
-          </View>
-        </View> */}
         <View style={styles.buttonContainer}>
           <View style={styles.googleButton}>
             <Icon.Button
@@ -138,7 +106,7 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated
 });
 
-const mapDispatchToProps = {getAuthState, setSimulateVerified, setSimulateUnVerified};
+const mapDispatchToProps = {getAuthState};
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
 

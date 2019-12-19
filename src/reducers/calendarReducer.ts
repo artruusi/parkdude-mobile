@@ -1,7 +1,6 @@
 import {GET_CALENDAR_DATA} from '../actions/actionTypes';
 import {CalendarReservations} from '../types';
 
-// mock
 const initialState: CalendarReservations = {
   calendar: [],
   ownedSpots: []

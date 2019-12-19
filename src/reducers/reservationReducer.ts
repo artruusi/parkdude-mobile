@@ -1,7 +1,6 @@
 import {RESERVE_SPOTS} from '../actions/actionTypes';
 import {SuccesfulReservation} from '../types';
 
-// mock
 const initialState: SuccesfulReservation = {
   reservations: [],
   message: ''

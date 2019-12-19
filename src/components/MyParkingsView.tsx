@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView} from 'react-native';
 import {YOUR_PARKINGS, NO_PARKINGS_TITLE, NO_PARKINGS_TEXT, PERMANENT_SPOT, NEW_RELEASE} from '../Constants';
 import {connect} from 'react-redux';
-import {getMyParkings, simulateGetMyParkings} from '../actions/parkingActions';
+import {getMyParkings} from '../actions/parkingActions';
 import {MyReservations, ParkingEvent, ParkingSpotEventType, BasicParkingSpotData} from '../types';
 import {Colors} from '../../assets/colors';
 import {NavigationScreenProp, ScrollView} from 'react-navigation';
@@ -10,7 +10,6 @@ import {prettierDateOutput} from '../Utils';
 
 interface Props {
   getMyParkings: () => void;
-  simulateGetMyParkings: () => void;
   navigation: NavigationScreenProp<any, any>;
   myReservations: MyReservations;
 }
@@ -73,7 +72,6 @@ class PermanentSpotItem extends Component<PermanentSpotProps> {
 class MyParkingsView extends Component<Props> {
   constructor(props: Props) {
     super(props);
-    this.simulate = this.simulate.bind(this);
   }
 
   static navigationOptions = {
@@ -82,10 +80,9 @@ class MyParkingsView extends Component<Props> {
 
   componentDidMount() {
     this.props.getMyParkings();
-  }
-
-  simulate() {
-    this.props.simulateGetMyParkings();
+    this.props.navigation.addListener('willFocus', () => {
+      this.props.getMyParkings();
+    });
   }
 
   render() {
@@ -117,7 +114,9 @@ class MyParkingsView extends Component<Props> {
       />
     ));
 
-    if (this.props.myReservations.reservations.length > 0 && this.props.myReservations.releases.length > 0) {
+    if (this.props.myReservations.reservations.length > 0 ||
+      this.props.myReservations.releases.length > 0 ||
+      this.props.myReservations.ownedSpots.length > 0) {
       return (
         <SafeAreaView style={styles.container}>
           <ScrollView>
@@ -136,9 +135,6 @@ class MyParkingsView extends Component<Props> {
           <Image style={styles.image} source={require('../../assets/icons/ic-parking/drawable-hdpi/ic_parking.png')}/>
           <Text style={styles.emptyTitle}>{NO_PARKINGS_TITLE}</Text>
           <Text style={styles.text}>{NO_PARKINGS_TEXT}</Text>
-          <TouchableOpacity style={styles.simbutton} onPress={this.simulate}>
-            <Text>Simulate getting parkings</Text>
-          </TouchableOpacity>
         </View>
       );
     }
@@ -149,7 +145,7 @@ const mapStateToProps = (state) => ({
   myReservations: state.myReservations
 });
 
-const mapDispatchToProps = {getMyParkings, simulateGetMyParkings};
+const mapDispatchToProps = {getMyParkings};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyParkingsView);
 
