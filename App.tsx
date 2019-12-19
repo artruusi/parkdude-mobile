@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { Provider } from "react-redux";
+import React, {Component} from 'react';
+import {Provider} from 'react-redux';
 import AppContainer from './src/navigation';
-import store from "./src/store";
+import store from './src/store';
 import * as Font from 'expo-font';
-import { AppLoading } from "expo";
+import {AppLoading} from 'expo';
 
-export interface state {
+export interface State {
   appIsReady: boolean;
 }
 
-export default class App extends Component<{}, state> {
+export default class App extends Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = {
@@ -18,7 +18,7 @@ export default class App extends Component<{}, state> {
   }
 
   componentWillMount() {
-    this.loadAssetsAsync()
+    this.loadAssetsAsync();
   }
 
   async loadAssetsAsync() {
@@ -31,7 +31,7 @@ export default class App extends Component<{}, state> {
       console.log(e.message);
     } finally {
       this.setState({appIsReady: true});
-      console.log('ladattu')
+      console.log('ladattu');
     }
   }
 
@@ -45,7 +45,7 @@ export default class App extends Component<{}, state> {
     } else {
       return (
         <AppLoading/>
-      )
+      );
     }
   }
 }
