@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
-    fontWeight: 'bold',
-    // fontFamily: 'Roboto',
+    fontFamily: 'Exo2-bold',
   }
 });

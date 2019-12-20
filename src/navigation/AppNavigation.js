@@ -55,6 +55,7 @@ const AppNavigation = createStackNavigator(
       screen: DrawerNavigation,
       navigationOptions: ({navigation}) => ({
         headerTitle: 'Parkdude',
+        headerTitleStyle: {fontFamily: 'Exo2-bold'},
         headerLeft: (
           <TouchableOpacity style={styles.icon} onPress={() => navigation.toggleDrawer()}>
             <Image source={require('../../assets/icons/ic-profile/drawable-hdpi/ic_profile.png')}/>

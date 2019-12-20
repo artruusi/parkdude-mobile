@@ -156,7 +156,7 @@ class MainView extends Component<Props, State> {
         style={{...styles.modalButton,
           backgroundColor: Colors.WHITE}}
         onPress={() => this.selectParkingSpot(spot)}>
-        <Text style={{fontSize: 18, fontWeight: 'bold'}}>{spot.name}</Text>
+        <Text style={{fontSize: 18, fontFamily: 'Exo2-bold'}}>{spot.name}</Text>
       </TouchableOpacity>
     ));
 
@@ -164,7 +164,7 @@ class MainView extends Component<Props, State> {
     const dropdownButtonColor = Object.keys(this.state.userSelectedDates).length === 0 ? Colors.DISABLED : Colors.WHITE;
 
     const errorDates = this.props.error.postReservationError.dates.map((date, key) => (
-      <Text style={{fontSize: 18, fontWeight: 'bold'}} key={key}>- {prettierDateOutput(date)}</Text>
+      <Text style={{fontSize: 18, fontFamily: 'Exo2-bold'}} key={key}>- {prettierDateOutput(date)}</Text>
     ));
 
     return (
@@ -211,7 +211,7 @@ class MainView extends Component<Props, State> {
               disabled={Object.keys(this.state.userSelectedDates).length === 0}>
               <View style={{flex: 1, flexDirection: 'row'}}>
                 <View style={{...styles.centerContent, width: '70%'}}>
-                  <Text style={{fontWeight: 'bold', marginRight: 10}}>{this.state.selectedSpot.name}</Text>
+                  <Text style={{fontFamily: 'Exo2-bold', marginRight: 10}}>{this.state.selectedSpot.name}</Text>
                 </View>
                 <View style={{...styles.centerContent, width: '30%'}}>
                   <Image source={require('../../assets/icons/ic-dropdown/drawable-hdpi/ic_dropdown.png')}/>
@@ -240,7 +240,7 @@ class MainView extends Component<Props, State> {
           hideModalContentWhileAnimating={true}>
           <View style={styles.modal}>
             <View style={{...styles.centerContent, margin: 30}}>
-              <Text style={{fontSize: 25, fontWeight: 'bold'}}>{SELECT_PARKING_SPOT}</Text>
+              <Text style={{fontSize: 25, fontFamily: 'Exo2-bold'}}>{SELECT_PARKING_SPOT}</Text>
             </View>
             <ScrollView directionalLockEnabled={true}>
               {parkingSpots}
@@ -266,15 +266,15 @@ class MainView extends Component<Props, State> {
           hideModalContentWhileAnimating={true}>
           <View style={styles.modal}>
             <View style={{margin: 30}}>
-              <Text style={{fontSize: 25, fontWeight: 'bold', color: Colors.RED}}>{ERROR}!</Text>
-              <Text style={{fontSize: 18, fontWeight: 'bold', textDecorationLine: 'underline'}}>
+              <Text style={{fontSize: 25, fontFamily: 'Exo2-bold', color: Colors.RED}}>{ERROR}!</Text>
+              <Text style={{fontSize: 18, fontFamily: 'Exo2-bold', textDecorationLine: 'underline'}}>
                 {SPOT}: {this.state.selectedSpot.name}
               </Text>
-              <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+              <Text style={{fontSize: 18, fontFamily: 'Exo2-bold'}}>
                 {ALREADY_BOOKED}:
               </Text>
               {errorDates}
-              <Text style={{fontSize: 18, fontWeight: 'bold'}}>{TRY_AGAIN}</Text>
+              <Text style={{fontSize: 18, fontFamily: 'Exo2-bold'}}>{TRY_AGAIN}</Text>
             </View>
             <RoundedButton
               onPress={this.toggleErrorModal}
@@ -317,14 +317,13 @@ const styles = StyleSheet.create({
     width: 299,
     height: 42,
     fontSize: 34.8,
-    fontWeight: 'bold',
-    fontStyle: 'normal',
+    fontFamily: 'Exo2-bold',
     letterSpacing: 0,
   },
   error: {
     color: Colors.RED,
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'Exo2-bold',
   },
   dropdownButton: {
     width: 163.5,
