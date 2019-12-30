@@ -1,5 +1,5 @@
 import {MY_PARKINGS, GET_PARKING_SPOTS} from './actionTypes';
-import {GET_OWN_RESERVATIONS, GET_PARKING_SPOTS_URL} from 'react-native-dotenv';
+import {HOST, GET_OWN_RESERVATIONS, GET_PARKING_SPOTS_URL} from 'react-native-dotenv';
 import {gotNetworkError, clearErrorState} from './errorActions';
 import {CONNECTION_ERROR} from '../Constants';
 import {apiFetch, toDateString} from '../Utils';
@@ -8,7 +8,8 @@ import {HttpMethod} from '../types';
 export const getParkingSpots = () => {
   return async (dispatch) => {
     try {
-      const getSpotsResponse = await apiFetch(GET_PARKING_SPOTS_URL, {method: HttpMethod.GET});
+      const url = `${HOST}${GET_PARKING_SPOTS_URL}`;
+      const getSpotsResponse = await apiFetch(url, {method: HttpMethod.GET});
       const result = await getSpotsResponse.json();
       dispatch(clearErrorState());
       dispatch(setParkingSpots(result.data));
@@ -31,7 +32,7 @@ export const getMyParkings = () => {
       const date = new Date();
       date.setFullYear(date.getFullYear()+1);
       const endDate = toDateString(date);
-      const url = `${GET_OWN_RESERVATIONS}?endDate=${endDate}`;
+      const url = `${HOST}${GET_OWN_RESERVATIONS}?endDate=${endDate}`;
       const getMyParkingsResponse = await apiFetch(url, {method: HttpMethod.GET});
       const result = await getMyParkingsResponse.json();
       dispatch(clearErrorState());
