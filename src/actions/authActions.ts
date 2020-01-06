@@ -56,10 +56,10 @@ export const loginWithPassword= (email: string, password: string) => {
           const sessionId = cookie.split('sessionId=')[1].split(';')[0];
           await setCookie(`sessionId=${sessionId}`);
           getAuthState()(dispatch);
-        } else {
-          const result = await loginResponse.json();
-          dispatch(setPasswordLoginError(result.message));
         }
+      } else {
+        const result = await loginResponse.json();
+        dispatch(setPasswordLoginError(result.message));
       }
     } catch (error) {
       dispatch(setPasswordLoginError(CONNECTION_ERROR));
@@ -82,7 +82,7 @@ export const signup = (email: string, name: string, password: string) => {
         dispatch(setSignupError(result.message));
       }
     } catch (error) {
-      dispatch(gotNetworkError(CONNECTION_ERROR));
+      dispatch(setSignupError(CONNECTION_ERROR));
     }
   };
 };
