@@ -31,10 +31,15 @@ export const setAuthState = (result) => {
 export const logOut = () => {
   return async (dispatch) => {
     try {
-      const authResponse = await apiFetch(LOGOUT_URL, {method: HttpMethod.POST});
-      const result = await authResponse.json();
+      await apiFetch(LOGOUT_URL, {method: HttpMethod.POST});
       await removeCookie();
       dispatch(clearErrorState());
+      dispatch(setLogOutState());
+    } catch (error) {
+      dispatch(gotNetworkError(CONNECTION_ERROR));
+    }
+  };
+};
 
 export const loginWithPassword= (email: string, password: string) => {
   return async (dispatch) => {
@@ -68,9 +73,8 @@ export const loginWithPassword= (email: string, password: string) => {
   };
 };
 
-export const setLogOutState = (result) => {
+export const setLogOutState = () => {
   return {
-    type: LOG_OUT,
-    payload: result
+    type: LOG_OUT
   };
 };
