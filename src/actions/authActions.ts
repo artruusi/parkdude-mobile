@@ -67,6 +67,20 @@ export const loginWithPassword= (email: string, password: string) => {
   };
 };
 
+export const signup = (email: string, name: string, password: string) => {
+  return async (dispatch) => {
+    try {
+      const signUpResponse = await apiFetch(SIGNUP_URL, {
+        method: HttpMethod.POST,
+        body: JSON.stringify({email, password, name}),
+        headers: {'Content-Type': 'application/json'}
+      });
+      const result = await signUpResponse.json();
+      if (signUpResponse.status === 200) {
+        loginWithPassword(email, password)(dispatch);
+      } else {
+        dispatch(setSignupError(result.message));
+      }
     } catch (error) {
       dispatch(gotNetworkError(CONNECTION_ERROR));
     }

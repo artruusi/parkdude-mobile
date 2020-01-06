@@ -59,7 +59,7 @@ class LoginView extends Component<Props> {
   }
 
   signUp() {
-    console.log('SignUp pressed');
+    this.props.navigation.navigate('SignUpView');
   }
 
   render() {
