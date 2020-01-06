@@ -1,18 +1,19 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Image, TouchableOpacity, Text} from 'react-native';
+import {StyleSheet, View, Image, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {AuthSession} from 'expo';
 import {LOGIN_URL} from 'react-native-dotenv';
 import {setCookie} from '../CookieStorage';
 import {getAuthState} from '../actions/authActions';
-import {connect} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {GOOGLE_LOGIN, EMAIL_LOGIN, SIGNUP, OR} from '../Constants';
 import {Colors} from '../../assets/colors';
 import {NavigationScreenProp} from 'react-navigation';
 import {RoundedButton} from '../shared/RoundedButton';
+import {UserRole} from '../types';
+import {RootReducer} from '../reducers/index';
 
-interface Props {
-  getAuthState: () => void;
+type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
 }
 
@@ -48,9 +49,14 @@ class LoginView extends Component<Props> {
     }
   }
 
-  componentWillReceiveProps(receivedProps) {
+  componentWillReceiveProps(receivedProps: Props) {
     if (receivedProps.isAuthenticated) {
-      this.props.navigation.navigate('App');
+      if ([UserRole.ADMIN, UserRole.VERIFIED].includes(receivedProps.userRole)) {
+        this.props.navigation.navigate('App');
+      }
+      if (receivedProps.userRole === UserRole.UNVERIFIED) {
+        this.props.navigation.navigate('WaitForConfirmationView');
+      }
     }
   }
 
@@ -102,13 +108,16 @@ class LoginView extends Component<Props> {
   }
 }
 
-const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated
+const mapStateToProps = (state: RootReducer) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  userRole: state.auth.userRole
 });
 
 const mapDispatchToProps = {getAuthState};
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+export default connector(LoginView);
 
 const styles = StyleSheet.create({
   container: {

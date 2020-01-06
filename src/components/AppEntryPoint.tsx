@@ -1,18 +1,13 @@
 import React, {Component} from 'react';
 import LoginView from './LoginView';
-import {getAuthState} from '../actions/authActions';
-import {connect} from 'react-redux';
+import {getAuthState, setLogOutState} from '../actions/authActions';
+import {connect, ConnectedProps} from 'react-redux';
 import LoadingView from './LoadingView';
 import {UserRole} from '../types';
 import {NavigationScreenProp} from 'react-navigation';
 
-interface Props {
+type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
-  getAuthState: () => void;
-  isAuthenticated: boolean;
-  loading: boolean;
-  hasErrors: boolean;
-  networkError: string;
 }
 
 class AppEntryPoint extends Component<Props> {
@@ -21,6 +16,8 @@ class AppEntryPoint extends Component<Props> {
   }
 
   componentDidMount() {
+    // Clear login state so that componentWillReceiveProps always get called
+    this.props.setLogOutState();
     this.props.getAuthState();
   }
 
@@ -55,6 +52,8 @@ const mapStateToProps = (state) => ({
   networkError: state.error.networkError
 });
 
-const mapDispatchToProps = {getAuthState};
+const mapDispatchToProps = {getAuthState, setLogOutState};
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppEntryPoint);
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+export default connector(AppEntryPoint);

@@ -1,16 +1,20 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import {connect} from 'react-redux';
+import {StyleSheet, Text, View, Image} from 'react-native';
+import {connect, ConnectedProps} from 'react-redux';
 import {UserRole} from '../types';
-import {WAITING_CONFIRMATION_TITLE,
+import {
+  WAITING_CONFIRMATION_TITLE,
   WAITING_CONFIRMATION_TEXT1,
   WAITING_CONFIRMATION_TEXT2,
-  RESTART} from '../Constants';
+  RESTART, LOGOUT
+} from '../Constants';
 import {Colors} from '../../assets/colors';
 import {NavigationScreenProp} from 'react-navigation';
 import {RoundedButton} from '../shared/RoundedButton';
+import {logOut} from '../actions/authActions';
+import {RootReducer} from '../reducers/index';
 
-interface Props {
+type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
 }
 
@@ -18,12 +22,15 @@ class WaitForConfirmationView extends Component<Props> {
   constructor(props: Props) {
     super(props);
     this.restart = this.restart.bind(this);
+    this.logOut = this.logOut.bind(this);
   }
 
   componentWillReceiveProps(receivedProps) {
     if (receivedProps.isAuthenticated &&
       (receivedProps.userRole === UserRole.VERIFIED || receivedProps.userRole === UserRole.ADMIN)) {
       this.props.navigation.navigate('App');
+    } else if (receivedProps.isAuthenticated === false) {
+      this.restart();
     }
   }
 
@@ -31,10 +38,19 @@ class WaitForConfirmationView extends Component<Props> {
     this.props.navigation.navigate('OnboardingView');
   }
 
+  logOut() {
+    this.props.logOut();
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Image source={require('../../assets/images/parkdude-logo/drawable-hdpi/parkdude.png')}/>
+        <View style={[styles.parkdudeLogoContainer]}>
+          <Image
+            style={styles.parkdudeLogo}
+            source={require('../../assets/images/parkdude-logo/drawable-hdpi/parkdude.png')}
+          />
+        </View>
         <View>
           <Text style={styles.title}>{WAITING_CONFIRMATION_TITLE}</Text>
         </View>
@@ -47,17 +63,26 @@ class WaitForConfirmationView extends Component<Props> {
           buttonText={RESTART}
           buttonStyle={styles.button}
         />
+        <RoundedButton
+          onPress={this.logOut}
+          buttonText={LOGOUT}
+          buttonStyle={styles.button}
+        />
       </View>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootReducer) => ({
   isAuthenticated: state.auth.isAuthenticated,
   userRole: state.auth.userRole
 });
 
-export default connect(mapStateToProps)(WaitForConfirmationView);
+const mapDispatchToProps = {logOut};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+export default connector(WaitForConfirmationView);
 
 const styles = StyleSheet.create({
   container: {
@@ -76,6 +101,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: Colors.BLACK
   },
+  parkdudeLogoContainer: {
+    flexDirection: 'row',
+  },
+  parkdudeLogo: {
+    margin: 30,
+    flex: 1,
+    resizeMode: 'contain'
+  },
   text: {
     width: 240,
     height: 126,
@@ -92,6 +125,7 @@ const styles = StyleSheet.create({
     borderRadius: 21.7,
     backgroundColor: Colors.YELLOW,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    margin: 10
   }
 });
