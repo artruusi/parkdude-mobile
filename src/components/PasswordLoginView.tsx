@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Image, Text, KeyboardAvoidingView} from 'react-native';
+import {StyleSheet, View, Image, TextInput, Text, KeyboardAvoidingView} from 'react-native';
 import {getAuthState, loginWithPassword} from '../actions/authActions';
 import {connect, ConnectedProps} from 'react-redux';
 import {LOG_IN, EMAIL, PASSWORD} from '../Constants';
 import {NavigationScreenProp} from 'react-navigation';
-import {TextInput} from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 import {RoundedButton} from '../shared/RoundedButton';
 import {RootReducer} from '../reducers/index';
-import {setPasswordLoginError} from '../actions/errorActions';
+import {setPasswordLoginError, clearErrorState} from '../actions/errorActions';
 import {UserRole} from '../types';
 
 type Props = ConnectedProps<typeof connector> & {
@@ -19,6 +19,8 @@ class PasswordLoginView extends Component<Props> {
     email: '',
     password: ''
   }
+
+  private passwordInput: TextInput;
 
   constructor(props: Props) {
     super(props);
@@ -33,6 +35,7 @@ class PasswordLoginView extends Component<Props> {
   }
 
   componentWillReceiveProps(receivedProps: Props) {
+    console.log('props', this.props);
     if (receivedProps.isAuthenticated) {
       if ([UserRole.ADMIN, UserRole.VERIFIED].includes(receivedProps.userRole)) {
         this.props.navigation.navigate('App');
@@ -45,10 +48,12 @@ class PasswordLoginView extends Component<Props> {
 
   onEmailChange(email: string) {
     this.setState({email});
+    clearErrorState();
   }
 
   onPasswordChange(password: string) {
     this.setState({password});
+    clearErrorState();
   }
 
   back() {
@@ -57,48 +62,56 @@ class PasswordLoginView extends Component<Props> {
 
   render() {
     return (
-      <View style={styles.container}>
-        <View style={[styles.container, styles.parkdudeLogoContainer]}>
-          <Image
-            source={require('../../assets/images/parkdude-logo/drawable-hdpi/parkdude.png')}
-            style={styles.parkdudeLogo}
-          />
-        </View>
-        <KeyboardAvoidingView style={styles.buttonContainer} behavior="padding" enabled>
-          <Text style={styles.loginText}>{LOG_IN}</Text>
-          <TextInput
-            style={styles.inputField}
-            placeholder={EMAIL}
-            autoCompleteType='email'
-            autoFocus={true}
-            onChangeText={this.onEmailChange}
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles.inputField}
-            placeholder={PASSWORD}
-            autoCompleteType='password'
-            secureTextEntry={true}
-            onChangeText={this.onPasswordChange}
-          />
-          <View>
-            <Text style={styles.errorText}>{this.props.error}</Text>
-          </View>
-          <View style={styles.horizontalContainer}>
-            <RoundedButton
-              onPress={this.back}
-              buttonText={'Back'}
-              buttonStyle={styles.yellowButton}
+      <KeyboardAvoidingView style={styles.outerContainer} behavior="padding" enabled>
+        <ScrollView contentContainerStyle={styles.scrollViewContent} >
+          <View style={styles.container}>
+            <View style={styles.parkdudeLogoContainer}>
+              <Image
+                source={require('../../assets/images/parkdude-logo/drawable-hdpi/parkdude.png')}
+                style={styles.parkdudeLogo}
+              />
+            </View>
+            <Text style={styles.loginText}>{LOG_IN}</Text>
+            <TextInput
+              style={styles.inputField}
+              placeholder={EMAIL}
+              autoCompleteType='email'
+              autoFocus={true}
+              onChangeText={this.onEmailChange}
+              autoCapitalize="none"
+              returnKeyType="next"
+              enablesReturnKeyAutomatically={true}
+              blurOnSubmit={false}
+              onSubmitEditing={() => this.passwordInput.focus()}
             />
-            <RoundedButton
-              onPress={this.loginWithPassword}
-              buttonText={LOG_IN}
-              buttonStyle={styles.yellowButton}
-              disabled={!this.state.email || !this.state.password}
+            <TextInput
+              ref={(input) => this.passwordInput = input}
+              style={styles.inputField}
+              placeholder={PASSWORD}
+              autoCompleteType='password'
+              secureTextEntry={true}
+              enablesReturnKeyAutomatically={true}
+              onChangeText={this.onPasswordChange}
             />
+            <View style={{flex: 1}}>
+              <Text style={styles.errorText}>{this.props.error}</Text>
+            </View>
+            <View style={styles.horizontalContainer}>
+              <RoundedButton
+                onPress={this.back}
+                buttonText={'Back'}
+                buttonStyle={styles.yellowButton}
+              />
+              <RoundedButton
+                onPress={this.loginWithPassword}
+                buttonText={LOG_IN}
+                buttonStyle={styles.yellowButton}
+                disabled={!this.state.email || !this.state.password}
+              />
+            </View>
           </View>
-        </KeyboardAvoidingView>
-      </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -109,18 +122,29 @@ const mapStateToProps = (state: RootReducer) => ({
   error: state.error.passwordLoginError
 });
 
-const mapDispatchToProps = {getAuthState, loginWithPassword, setPasswordLoginError};
+const mapDispatchToProps = {getAuthState, loginWithPassword, setPasswordLoginError, clearErrorState};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 export default connector(PasswordLoginView);
 
 const styles = StyleSheet.create({
+  outerContainer: {
+    flex: 10,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+  },
   container: {
-    flex: 1,
+    flex: 10,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    flexDirection: 'column',
+    flexGrow: 1
+  },
+  scrollViewContent: {
+    flexGrow: 1
   },
   buttonContainer: {
     flex: 2,
@@ -137,13 +161,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: '5%',
   },
-  parkdudeLogoContainer: {
-    flexDirection: 'row',
-  },
   parkdudeLogo: {
     margin: 30,
     flex: 1,
     resizeMode: 'contain'
+  },
+  parkdudeLogoContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    alignSelf: 'flex-start',
+    paddingTop: 30
   },
   loginText: {
     fontSize: 20,

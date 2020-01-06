@@ -76,7 +76,7 @@ class SignupView extends Component<Props> {
   render() {
     return (
       <KeyboardAvoidingView style={styles.outerContainer} behavior="padding" enabled>
-        <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContent} >
+        <ScrollView contentContainerStyle={styles.scrollViewContent} >
           <View style={styles.container}>
             <View style={[styles.parkdudeLogoContainer]}>
               <Image
@@ -179,9 +179,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'column',
     flexGrow: 1
-  },
-  scrollView: {
-    backgroundColor: '#fff'
   },
   scrollViewContent: {
     flexGrow: 1
