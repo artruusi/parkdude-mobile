@@ -21,7 +21,7 @@ class LoginView extends Component<Props> {
     super(props);
     this.loginGoogle = this.loginGoogle.bind(this);
     this.emailLogin = this.emailLogin.bind(this);
-    this.singUp = this.singUp.bind(this);
+    this.signUp = this.signUp.bind(this);
   }
 
   async loginGoogle() {
@@ -58,7 +58,7 @@ class LoginView extends Component<Props> {
     this.props.navigation.navigate('PasswordLoginView');
   }
 
-  singUp() {
+  signUp() {
     console.log('SignUp pressed');
   }
 
