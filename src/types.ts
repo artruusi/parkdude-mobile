@@ -11,6 +11,8 @@ export interface ErrorState{
   generalError: string;
   networkError: string;
   postReservationError: ReservationFailed;
+  passwordLoginError: string;
+  signupError: string;
 }
 
 export interface ReservationFailed{

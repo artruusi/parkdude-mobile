@@ -22,12 +22,15 @@ export const GOOGLE_LOGIN = 'Login with Google';
 export const EMAIL_LOGIN = 'Login with another email';
 export const SIGNUP = 'Sign up';
 export const OR = 'OR';
+export const LOGOUT = 'Log out';
 
-// Email login
+// Password login
 
 export const LOG_IN = 'Log in';
 export const EMAIL = 'E-mail';
 export const PASSWORD = 'Password';
+export const CONFIRM_PASSWORD = 'Confirm password';
+export const NAME = 'Name';
 
 // Waiting for confirmation
 

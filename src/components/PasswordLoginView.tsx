@@ -1,49 +1,54 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Image, TouchableOpacity, Text, KeyboardAvoidingView} from 'react-native';
-import {getAuthState} from '../actions/authActions';
-import {connect} from 'react-redux';
+import {StyleSheet, View, Image, Text, KeyboardAvoidingView} from 'react-native';
+import {getAuthState, loginWithPassword} from '../actions/authActions';
+import {connect, ConnectedProps} from 'react-redux';
 import {LOG_IN, EMAIL, PASSWORD} from '../Constants';
-import {Colors} from '../../assets/colors';
 import {NavigationScreenProp} from 'react-navigation';
 import {TextInput} from 'react-native-gesture-handler';
 import {RoundedButton} from '../shared/RoundedButton';
+import {RootReducer} from '../reducers/index';
+import {setPasswordLoginError} from '../actions/errorActions';
+import {UserRole} from '../types';
 
-interface Props {
-  getAuthState: () => void;
+type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
 }
 
 class PasswordLoginView extends Component<Props> {
+  state = {
+    email: '',
+    password: ''
+  }
+
   constructor(props: Props) {
     super(props);
-    this.loginWitPassword = this.loginWitPassword.bind(this);
+    this.loginWithPassword = this.loginWithPassword.bind(this);
     this.back = this.back.bind(this);
     this.onEmailChange = this.onEmailChange.bind(this);
     this.onPasswordChange = this.onPasswordChange.bind(this);
   }
 
-  async loginWitPassword() {
-    try {
-      // TODO
-    } catch (error) {
-      // TODO: when will this situation happen?
-      console.log(error);
-    }
+  loginWithPassword() {
+    this.props.loginWithPassword(this.state.email, this.state.password);
   }
 
-
-  componentWillReceiveProps(receivedProps) {
+  componentWillReceiveProps(receivedProps: Props) {
     if (receivedProps.isAuthenticated) {
-      this.props.navigation.navigate('App');
+      if ([UserRole.ADMIN, UserRole.VERIFIED].includes(receivedProps.userRole)) {
+        this.props.navigation.navigate('App');
+      }
+      if (receivedProps.userRole === UserRole.UNVERIFIED) {
+        this.props.navigation.navigate('WaitForConfirmationView');
+      }
     }
   }
 
   onEmailChange(email: string) {
-    console.log(email);
+    this.setState({email});
   }
 
   onPasswordChange(password: string) {
-    console.log(password);
+    this.setState({password});
   }
 
   back() {
@@ -67,6 +72,7 @@ class PasswordLoginView extends Component<Props> {
             autoCompleteType='email'
             autoFocus={true}
             onChangeText={this.onEmailChange}
+            autoCapitalize="none"
           />
           <TextInput
             style={styles.inputField}
@@ -75,19 +81,20 @@ class PasswordLoginView extends Component<Props> {
             secureTextEntry={true}
             onChangeText={this.onPasswordChange}
           />
+          <View>
+            <Text style={styles.errorText}>{this.props.error}</Text>
+          </View>
           <View style={styles.horizontalContainer}>
             <RoundedButton
               onPress={this.back}
               buttonText={'Back'}
               buttonStyle={styles.yellowButton}
-              textStyle={styles.buttonText}
             />
             <RoundedButton
-              onPress={() => {}}
+              onPress={this.loginWithPassword}
               buttonText={LOG_IN}
               buttonStyle={styles.yellowButton}
-              textStyle={styles.buttonText}
-              disabled={true}
+              disabled={!this.state.email || !this.state.password}
             />
           </View>
         </KeyboardAvoidingView>
@@ -96,17 +103,21 @@ class PasswordLoginView extends Component<Props> {
   }
 }
 
-const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated
+const mapStateToProps = (state: RootReducer) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  userRole: state.auth.userRole,
+  error: state.error.passwordLoginError
 });
 
-const mapDispatchToProps = {getAuthState};
+const mapDispatchToProps = {getAuthState, loginWithPassword, setPasswordLoginError};
 
-export default connect(mapStateToProps, mapDispatchToProps)(PasswordLoginView);
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+export default connector(PasswordLoginView);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 3,
+    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center'
@@ -126,39 +137,40 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: '5%',
   },
+  parkdudeLogoContainer: {
+    flexDirection: 'row',
+  },
   parkdudeLogo: {
     margin: 30,
     flex: 1,
     resizeMode: 'contain'
   },
-  parkdudeLogoContainer: {
-    flexDirection: 'row',
-  },
   loginText: {
     fontSize: 20,
-    fontWeight: 'bold',
-    // fontFamily: 'Roboto',
+    fontFamily: 'Exo2-bold',
     marginTop: '5%',
     marginBottom: '5%'
   },
+  errorText: {
+    fontSize: 16,
+    fontFamily: 'Exo2',
+    marginTop: '1%',
+    marginBottom: '1%',
+    color: 'red'
+  },
   yellowButton: {
     flex: 1,
-    // width: 150,
-    height: 43,
     alignItems: 'center',
     justifyContent: 'center',
     margin: '1%',
-    marginBottom: '3%',
-  },
-  buttonText: {
-    alignSelf: 'center',
-    textAlignVertical: 'center',
-    textAlign: 'center',
+    marginBottom: '3%'
   },
   inputField: {
     margin: '2%',
     width: 250,
     height: 43,
-    textAlign: 'center'
+    textAlign: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: 'black'
   },
 });
