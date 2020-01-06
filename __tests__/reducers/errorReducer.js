@@ -4,9 +4,11 @@ import {NETWORK_ERROR} from '../../src/actions/actionTypes';
 describe('errorReducer', () => {
   it('should return the initial state', () => {
     expect(errorReducer(undefined, {})).toEqual({
-      generalError: '',
-      networkError: '',
-      postReservationError: {message: '', dates: []}
+      'generalError': '',
+      'networkError': '',
+      'postReservationError': {message: '', dates: []},
+      'passwordLoginError': '',
+      'signupError': ''
     });
   });
 
@@ -18,7 +20,9 @@ describe('errorReducer', () => {
     })).toEqual({
       generalError: '',
       networkError: errorString,
-      postReservationError: {message: '', dates: []}
+      postReservationError: {message: '', dates: []},
+      passwordLoginError: '',
+      signupError: ''
     });
   });
 });
