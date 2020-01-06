@@ -53,7 +53,7 @@ class PasswordLoginView extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.container}>
+        <View style={[styles.container, styles.parkdudeLogoContainer]}>
           <Image
             source={require('../../assets/images/parkdude-logo/drawable-hdpi/parkdude.png')}
             style={styles.parkdudeLogo}
@@ -127,7 +127,12 @@ const styles = StyleSheet.create({
     marginBottom: '5%',
   },
   parkdudeLogo: {
-    // marginTop: "20%"
+    margin: 30,
+    flex: 1,
+    resizeMode: 'contain'
+  },
+  parkdudeLogoContainer: {
+    flexDirection: 'row',
   },
   loginText: {
     fontSize: 20,
