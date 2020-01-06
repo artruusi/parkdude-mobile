@@ -35,7 +35,6 @@ class PasswordLoginView extends Component<Props> {
   }
 
   componentWillReceiveProps(receivedProps: Props) {
-    console.log('props', this.props);
     if (receivedProps.isAuthenticated) {
       if ([UserRole.ADMIN, UserRole.VERIFIED].includes(receivedProps.userRole)) {
         this.props.navigation.navigate('App');
