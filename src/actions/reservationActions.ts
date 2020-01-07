@@ -8,9 +8,8 @@ import {HttpMethod, PostReservation} from '../types';
 export const postReservation = (reservation: PostReservation) => {
   return async (dispatch) => {
     try {
-      const url = `${POST_RESERVATION_URL}`;
       const postReservationResponse = await apiFetch(
-        url,
+        POST_RESERVATION_URL,
         {method: HttpMethod.POST,
           body: JSON.stringify(reservation),
           headers: {'Content-Type': 'application/json'}

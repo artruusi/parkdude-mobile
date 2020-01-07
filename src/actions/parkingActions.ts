@@ -8,8 +8,7 @@ import {HttpMethod} from '../types';
 export const getParkingSpots = () => {
   return async (dispatch) => {
     try {
-      const url = `${GET_PARKING_SPOTS_URL}`;
-      const getSpotsResponse = await apiFetch(url, {method: HttpMethod.GET});
+      const getSpotsResponse = await apiFetch(GET_PARKING_SPOTS_URL, {method: HttpMethod.GET});
       const result = await getSpotsResponse.json();
       dispatch(clearErrorState());
       dispatch(setParkingSpots(result.data));

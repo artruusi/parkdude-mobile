@@ -9,8 +9,7 @@ import {HttpMethod} from '../types';
 export const getAuthState = () => {
   return async (dispatch) => {
     try {
-      const url = `${LOGIN_STATE_URL}`;
-      const authResponse = await apiFetch(url, {method: HttpMethod.GET});
+      const authResponse = await apiFetch(LOGIN_STATE_URL, {method: HttpMethod.GET});
       const result = await authResponse.json();
       dispatch(clearErrorState());
       dispatch(setAuthState(result));
@@ -30,8 +29,7 @@ export const setAuthState = (result) => {
 export const logOut = () => {
   return async (dispatch) => {
     try {
-      const url = `${LOGOUT_URL}`;
-      const authResponse = await apiFetch(url, {method: HttpMethod.POST});
+      const authResponse = await apiFetch(LOGOUT_URL, {method: HttpMethod.POST});
       const result = await authResponse.json();
       await removeCookie();
       dispatch(clearErrorState());
