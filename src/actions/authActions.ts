@@ -1,5 +1,5 @@
 import {GET_AUTHSTATE, LOG_OUT} from './actionTypes';
-import {HOST, LOGIN_STATE_URL, LOGOUT_URL} from 'react-native-dotenv';
+import {LOGIN_STATE_URL, LOGOUT_URL} from 'react-native-dotenv';
 import {gotNetworkError, clearErrorState} from './errorActions';
 import {CONNECTION_ERROR} from '../Constants';
 import {apiFetch} from '../Utils';
@@ -9,7 +9,7 @@ import {HttpMethod} from '../types';
 export const getAuthState = () => {
   return async (dispatch) => {
     try {
-      const url = `${HOST}${LOGIN_STATE_URL}`;
+      const url = `${LOGIN_STATE_URL}`;
       const authResponse = await apiFetch(url, {method: HttpMethod.GET});
       const result = await authResponse.json();
       dispatch(clearErrorState());
@@ -30,7 +30,7 @@ export const setAuthState = (result) => {
 export const logOut = () => {
   return async (dispatch) => {
     try {
-      const url = `${HOST}${LOGOUT_URL}`;
+      const url = `${LOGOUT_URL}`;
       const authResponse = await apiFetch(url, {method: HttpMethod.POST});
       const result = await authResponse.json();
       await removeCookie();

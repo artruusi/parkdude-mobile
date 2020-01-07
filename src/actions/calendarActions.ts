@@ -1,4 +1,4 @@
-import {HOST, CALENDAR_URL} from 'react-native-dotenv';
+import {CALENDAR_URL} from 'react-native-dotenv';
 import {apiFetch} from '../Utils';
 import {HttpMethod} from '../types';
 import {gotNetworkError, clearErrorState} from './errorActions';
@@ -8,7 +8,7 @@ import {GET_CALENDAR_DATA} from './actionTypes';
 export const getCalendarSpots = (dateRangeParams: string) => {
   return async (dispatch) => {
     try {
-      const url = `${HOST}${CALENDAR_URL}${dateRangeParams}`;
+      const url = `${CALENDAR_URL}${dateRangeParams}`;
       const calendarResponse = await apiFetch(url, {method: HttpMethod.GET});
       const result = await calendarResponse.json();
       dispatch(clearErrorState());

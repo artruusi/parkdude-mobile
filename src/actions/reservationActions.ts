@@ -1,5 +1,5 @@
 import {RESERVE_SPOTS} from './actionTypes';
-import {HOST, POST_RESERVATION_URL} from 'react-native-dotenv';
+import {POST_RESERVATION_URL} from 'react-native-dotenv';
 import {gotNetworkError, reservationFailed, clearErrorState, generalError} from './errorActions';
 import {CONNECTION_ERROR, GENERAL_ERROR_MESSAGE} from '../Constants';
 import {apiFetch} from '../Utils';
@@ -8,7 +8,7 @@ import {HttpMethod, PostReservation} from '../types';
 export const postReservation = (reservation: PostReservation) => {
   return async (dispatch) => {
     try {
-      const url = `${HOST}${POST_RESERVATION_URL}`;
+      const url = `${POST_RESERVATION_URL}`;
       const postReservationResponse = await apiFetch(
         url,
         {method: HttpMethod.POST,
