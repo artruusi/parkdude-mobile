@@ -190,8 +190,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    margin: '1%',
-    marginBottom: '3%'
+    margin: 8,
+    marginBottom: 16
   },
   inputField: {
     margin: '2%',
