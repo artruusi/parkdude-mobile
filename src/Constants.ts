@@ -24,6 +24,7 @@ export const EMAIL_LOGIN = 'Login with another email';
 export const SIGNUP = 'Sign up';
 export const OR = 'OR';
 export const LOGOUT = 'Log out';
+export const LOGGING_OUT = 'Logging out...';
 
 // Password login
 
