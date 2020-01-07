@@ -8,6 +8,7 @@ export const OK = 'OK';
 export const TRY_AGAIN = 'Try again.';
 export const ERROR = 'Error';
 export const RESTART= 'Restart';
+export const REFRESH = 'Refresh';
 
 // Onboarding
 
