@@ -43,8 +43,8 @@ class SignupView extends Component<Props> {
     this.props.signup(this.state.email, this.state.name, this.state.password);
   }
 
-  componentWillReceiveProps(receivedProps) {
-    if (receivedProps.isAuthenticated) {
+  componentDidUpdate(prevProps) {
+    if (this.props.isAuthenticated) {
       this.props.navigation.navigate('App');
     }
   }

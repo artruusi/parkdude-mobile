@@ -34,12 +34,12 @@ class PasswordLoginView extends Component<Props> {
     this.props.loginWithPassword(this.state.email, this.state.password);
   }
 
-  componentWillReceiveProps(receivedProps: Props) {
-    if (receivedProps.isAuthenticated) {
-      if ([UserRole.ADMIN, UserRole.VERIFIED].includes(receivedProps.userRole)) {
+  componentDidUpdate() {
+    if (this.props.isAuthenticated) {
+      if ([UserRole.ADMIN, UserRole.VERIFIED].includes(this.props.userRole)) {
         this.props.navigation.navigate('App');
       }
-      if (receivedProps.userRole === UserRole.UNVERIFIED) {
+      if (this.props.userRole === UserRole.UNVERIFIED) {
         this.props.navigation.navigate('WaitForConfirmationView');
       }
     }
