@@ -16,17 +16,16 @@ class AppEntryPoint extends Component<Props> {
   }
 
   componentDidMount() {
-    // Clear login state so that componentWillReceiveProps always get called
-    this.props.setLogOutState();
     this.props.getAuthState();
+    this.componentDidUpdate(this.props);
   }
 
-  componentWillReceiveProps(receivedProps) {
-    if (receivedProps.isAuthenticated) {
-      if (receivedProps.userRole === UserRole.UNVERIFIED) {
+  componentDidUpdate(prevProps) {
+    if (this.props.isAuthenticated) {
+      if (this.props.userRole === UserRole.UNVERIFIED) {
         this.props.navigation.navigate('WaitForConfirmationView');
       }
-      if (receivedProps.userRole === UserRole.VERIFIED || receivedProps.userRole === UserRole.ADMIN) {
+      if (this.props.userRole === UserRole.VERIFIED || this.props.userRole === UserRole.ADMIN) {
         this.props.navigation.navigate('App');
       }
     }

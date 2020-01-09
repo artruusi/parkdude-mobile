@@ -34,6 +34,10 @@ class PasswordLoginView extends Component<Props> {
     this.props.loginWithPassword(this.state.email, this.state.password);
   }
 
+  componentDidMount() {
+    this.componentDidUpdate();
+  }
+
   componentDidUpdate() {
     if (this.props.isAuthenticated) {
       if ([UserRole.ADMIN, UserRole.VERIFIED].includes(this.props.userRole)) {
