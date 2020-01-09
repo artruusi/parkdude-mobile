@@ -8,6 +8,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {RoundedButton} from '../shared/RoundedButton';
 import {RootReducer} from '../reducers/index';
 import {setSignupError, clearErrorState} from '../actions/errorActions';
+import {UserRole} from '../types';
 
 type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
@@ -43,9 +44,18 @@ class SignupView extends Component<Props> {
     this.props.signup(this.state.email, this.state.name, this.state.password);
   }
 
+  componentDidMount() {
+    this.componentDidUpdate(this.props);
+  }
+
   componentDidUpdate(prevProps) {
-    if (this.props.isAuthenticated) {
-      this.props.navigation.navigate('App');
+    if (prevProps.isAuthenticated) {
+      if (prevProps.userRole === UserRole.UNVERIFIED) {
+        this.props.navigation.navigate('WaitForConfirmationView');
+      }
+      if (prevProps.userRole === UserRole.VERIFIED || prevProps.userRole === UserRole.ADMIN) {
+        this.props.navigation.navigate('App');
+      }
     }
   }
 
@@ -156,6 +166,7 @@ class SignupView extends Component<Props> {
 
 const mapStateToProps = (state: RootReducer) => ({
   isAuthenticated: state.auth.isAuthenticated,
+  userRole: state.auth.userRole,
   error: state.error.signupError
 });
 
