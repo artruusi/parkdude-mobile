@@ -4,7 +4,7 @@ import {RoundedButton} from '../shared/RoundedButton';
 import {clearErrorState} from '../actions/errorActions';
 import {connect, ConnectedProps} from 'react-redux';
 import {getAuthState} from '../actions/authActions';
-import {REFRESH} from '../Constants';
+import {TRY_AGAIN} from '../Constants';
 
 type Props = ConnectedProps<typeof connector> & {
   error: string;
@@ -32,7 +32,7 @@ export class LoadingView extends Component<Props, {}> {
         <Text>{this.props.error}</Text>
         <RoundedButton
           onPress={this.refresh}
-          buttonText={REFRESH}
+          buttonText={TRY_AGAIN}
           buttonStyle={styles.button}
         />
       </View>
