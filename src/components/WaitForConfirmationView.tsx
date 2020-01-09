@@ -6,7 +6,7 @@ import {
   WAITING_CONFIRMATION_TITLE,
   WAITING_CONFIRMATION_TEXT1,
   WAITING_CONFIRMATION_TEXT2,
-  RESTART, LOGOUT
+  REFRESH, LOGOUT
 } from '../Constants';
 import {Colors} from '../../assets/colors';
 import {NavigationScreenProp} from 'react-navigation';
@@ -61,7 +61,7 @@ class WaitForConfirmationView extends Component<Props> {
           </View>
           <RoundedButton
             onPress={this.restart}
-            buttonText={RESTART}
+            buttonText={REFRESH}
             buttonStyle={styles.button}
           />
           <RoundedButton

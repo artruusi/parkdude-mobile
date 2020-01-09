@@ -16,11 +16,18 @@ export default class OnboardingView extends Component<Props> {
     this.continue = this.continue.bind(this);
   }
 
-  async componentWillMount() {
-    const cookie = await getCookie();
-    if (cookie != null) {
-      this.continue();
-    }
+  componentDidMount() {
+    const {navigation} = this.props;
+    this.focusListener = navigation.addListener('didFocus', async () => {
+      const cookie = await getCookie();
+      if (cookie != null) {
+        this.continue();
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this.focusListener.remove();
   }
 
   continue() {
