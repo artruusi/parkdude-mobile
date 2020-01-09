@@ -6,7 +6,8 @@ import {calendarReducer} from './calendarReducer';
 import {reservationReducer} from './reservationReducer';
 import {parkingSpotReducer} from './parkingSpotReducer';
 
-export default combineReducers({
+
+export const rootReducer = combineReducers({
   auth: authReducer,
   error: errorReducer,
   myReservations: myReservationsReducer,
@@ -14,3 +15,7 @@ export default combineReducers({
   reservation: reservationReducer,
   parkingSpots: parkingSpotReducer
 });
+
+export type RootReducer = ReturnType<typeof rootReducer>
+
+export default rootReducer;

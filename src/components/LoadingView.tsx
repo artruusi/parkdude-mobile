@@ -1,16 +1,22 @@
 import React, {Component} from 'react';
 import {StyleSheet, ActivityIndicator, View, Text} from 'react-native';
+import {RoundedButton} from '../shared/RoundedButton';
+import {clearErrorState} from '../actions/errorActions';
+import {connect, ConnectedProps} from 'react-redux';
+import {getAuthState} from '../actions/authActions';
+import {TRY_AGAIN} from '../Constants';
 
-interface LoadingProps {
+type Props = ConnectedProps<typeof connector> & {
   error: string;
 }
 
-export default class LoadingView extends Component<LoadingProps, {}> {
-  constructor(props: LoadingProps) {
+export class LoadingView extends Component<Props, {}> {
+  constructor(props: Props) {
     super(props);
+    this.refresh = this.refresh.bind(this);
   }
 
-  render() {
+  renderLoading() {
     return (
       <View style={styles.container}>
         <Text>{this.props.error}</Text>
@@ -18,7 +24,39 @@ export default class LoadingView extends Component<LoadingProps, {}> {
       </View>
     );
   }
+
+  renderError() {
+    // Note: Currently errors are always network errors
+    return (
+      <View style={styles.container}>
+        <Text>{this.props.error}</Text>
+        <RoundedButton
+          onPress={this.refresh}
+          buttonText={TRY_AGAIN}
+          buttonStyle={styles.button}
+        />
+      </View>
+    );
+  }
+
+  refresh() {
+    this.props.clearErrorState();
+    this.props.getAuthState();
+  }
+
+  render() {
+    if (this.props.error) {
+      return this.renderError();
+    }
+    return this.renderLoading();
+  }
 }
+
+const mapDispatchToProps = {getAuthState, clearErrorState};
+
+const connector = connect(null, mapDispatchToProps);
+
+export default connector(LoadingView);
 
 const styles = StyleSheet.create({
   container: {
@@ -26,5 +64,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 16
   }
 });

@@ -1,50 +1,60 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Image, TextInput, Text, KeyboardAvoidingView} from 'react-native';
-import {getAuthState, loginWithPassword} from '../actions/authActions';
+import {getAuthState, signup} from '../actions/authActions';
 import {connect, ConnectedProps} from 'react-redux';
-import {LOG_IN, EMAIL, PASSWORD} from '../Constants';
+import {EMAIL, PASSWORD, SIGNUP, CONFIRM_PASSWORD, NAME, BACK} from '../Constants';
 import {NavigationScreenProp} from 'react-navigation';
 import {ScrollView} from 'react-native-gesture-handler';
 import {RoundedButton} from '../shared/RoundedButton';
 import {RootReducer} from '../reducers/index';
-import {setPasswordLoginError, clearErrorState} from '../actions/errorActions';
+import {setSignupError, clearErrorState} from '../actions/errorActions';
 import {UserRole} from '../types';
 
 type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
-}
+};
 
-class PasswordLoginView extends Component<Props> {
+class SignupView extends Component<Props> {
   state = {
     email: '',
-    password: ''
+    name: '',
+    password: '',
+    password2: ''
   }
 
+  private nameInput: TextInput;
   private passwordInput: TextInput;
+  private password2Input: TextInput;
 
   constructor(props: Props) {
     super(props);
-    this.loginWithPassword = this.loginWithPassword.bind(this);
+    this.signUp = this.signUp.bind(this);
     this.back = this.back.bind(this);
     this.onEmailChange = this.onEmailChange.bind(this);
+    this.onNameChange = this.onNameChange.bind(this);
     this.onPasswordChange = this.onPasswordChange.bind(this);
+    this.onPassword2Change = this.onPassword2Change.bind(this);
   }
 
-  loginWithPassword() {
-    this.props.loginWithPassword(this.state.email, this.state.password);
+  signUp() {
+    if (this.state.password !== this.state.password2) {
+      this.props.setSignupError('Passwords must match.');
+      return;
+    }
+    this.props.signup(this.state.email, this.state.name, this.state.password);
   }
 
   componentDidMount() {
-    this.componentDidUpdate();
+    this.componentDidUpdate(this.props);
   }
 
-  componentDidUpdate() {
-    if (this.props.isAuthenticated) {
-      if ([UserRole.ADMIN, UserRole.VERIFIED].includes(this.props.userRole)) {
-        this.props.navigation.navigate('App');
-      }
-      if (this.props.userRole === UserRole.UNVERIFIED) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.isAuthenticated) {
+      if (prevProps.userRole === UserRole.UNVERIFIED) {
         this.props.navigation.navigate('WaitForConfirmationView');
+      }
+      if (prevProps.userRole === UserRole.VERIFIED || prevProps.userRole === UserRole.ADMIN) {
+        this.props.navigation.navigate('App');
       }
     }
   }
@@ -54,8 +64,18 @@ class PasswordLoginView extends Component<Props> {
     clearErrorState();
   }
 
+  onNameChange(name: string) {
+    this.setState({name});
+    clearErrorState();
+  }
+
   onPasswordChange(password: string) {
     this.setState({password});
+    clearErrorState();
+  }
+
+  onPassword2Change(password2: string) {
+    this.setState({password2});
     clearErrorState();
   }
 
@@ -68,19 +88,30 @@ class PasswordLoginView extends Component<Props> {
       <KeyboardAvoidingView style={styles.outerContainer} behavior="padding" enabled>
         <ScrollView contentContainerStyle={styles.scrollViewContent} >
           <View style={styles.container}>
-            <View style={styles.parkdudeLogoContainer}>
+            <View style={[styles.parkdudeLogoContainer]}>
               <Image
                 source={require('../../assets/images/parkdude-logo/drawable-hdpi/parkdude.png')}
                 style={styles.parkdudeLogo}
               />
             </View>
-            <Text style={styles.loginText}>{LOG_IN}</Text>
+            <Text style={styles.signupText}>{SIGNUP}</Text>
             <TextInput
               style={styles.inputField}
               placeholder={EMAIL}
               autoCompleteType='email'
               autoFocus={true}
               onChangeText={this.onEmailChange}
+              autoCapitalize="none"
+              returnKeyType="next"
+              enablesReturnKeyAutomatically={true}
+              blurOnSubmit={false}
+              onSubmitEditing={() => this.nameInput.focus()}
+            />
+            <TextInput
+              ref={(input) => this.nameInput = input}
+              style={styles.inputField}
+              placeholder={NAME}
+              onChangeText={this.onNameChange}
               autoCapitalize="none"
               returnKeyType="next"
               enablesReturnKeyAutomatically={true}
@@ -93,8 +124,20 @@ class PasswordLoginView extends Component<Props> {
               placeholder={PASSWORD}
               autoCompleteType='password'
               secureTextEntry={true}
-              enablesReturnKeyAutomatically={true}
               onChangeText={this.onPasswordChange}
+              returnKeyType="next"
+              enablesReturnKeyAutomatically={true}
+              blurOnSubmit={false}
+              onSubmitEditing={() => this.password2Input.focus()}
+            />
+            <TextInput
+              ref={(input) => this.password2Input = input}
+              style={styles.inputField}
+              placeholder={CONFIRM_PASSWORD}
+              autoCompleteType='password'
+              secureTextEntry={true}
+              onChangeText={this.onPassword2Change}
+              enablesReturnKeyAutomatically={true}
             />
             <View style={{flex: 1}}>
               <Text style={styles.errorText}>{this.props.error}</Text>
@@ -102,14 +145,16 @@ class PasswordLoginView extends Component<Props> {
             <View style={styles.horizontalContainer}>
               <RoundedButton
                 onPress={this.back}
-                buttonText={'Back'}
+                buttonText={BACK}
                 buttonStyle={styles.yellowButton}
               />
               <RoundedButton
-                onPress={this.loginWithPassword}
-                buttonText={LOG_IN}
+                onPress={this.signUp}
+                buttonText={SIGNUP}
                 buttonStyle={styles.yellowButton}
-                disabled={!this.state.email || !this.state.password}
+                disabled={
+                  !this.state.email || !this.state.name || !this.state.password || !this.state.password2
+                }
               />
             </View>
           </View>
@@ -122,14 +167,14 @@ class PasswordLoginView extends Component<Props> {
 const mapStateToProps = (state: RootReducer) => ({
   isAuthenticated: state.auth.isAuthenticated,
   userRole: state.auth.userRole,
-  error: state.error.passwordLoginError
+  error: state.error.signupError
 });
 
-const mapDispatchToProps = {getAuthState, loginWithPassword, setPasswordLoginError, clearErrorState};
+const mapDispatchToProps = {getAuthState, signup, setSignupError, clearErrorState};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-export default connector(PasswordLoginView);
+export default connector(SignupView);
 
 const styles = StyleSheet.create({
   outerContainer: {
@@ -149,15 +194,18 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     flexGrow: 1
   },
-  buttonContainer: {
-    flex: 2,
+  signupFormContainer: {
     backgroundColor: '#fff',
     alignItems: 'center',
+  },
+  outerFormContainer: {
+    flex: 2,
+    alignItems: 'center',
     justifyContent: 'flex-end',
-    marginBottom: '5%',
+    paddingBottom: '5%'
   },
   horizontalContainer: {
-    flex: 1,
+    flex: 3,
     flexDirection: 'row',
     backgroundColor: '#fff',
     alignItems: 'center',
@@ -177,11 +225,10 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingTop: 30
   },
-  loginText: {
+  signupText: {
     fontSize: 20,
     fontFamily: 'Exo2-bold',
-    marginTop: '5%',
-    marginBottom: '5%'
+    marginBottom: '2%'
   },
   errorText: {
     fontSize: 16,
