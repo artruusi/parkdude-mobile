@@ -4,6 +4,7 @@ import {WELCOME_TITLE, WELCOME_TEXT1, WELCOME_TEXT2, WELCOME_TEXT3} from '../Con
 import {Colors} from '../../assets/colors';
 import {NavigationScreenProp} from 'react-navigation';
 import {RoundedButton} from '../shared/RoundedButton';
+import {getCookie} from '../CookieStorage';
 
 interface Props {
   navigation: NavigationScreenProp<any, any>;
@@ -13,6 +14,13 @@ export default class OnboardingView extends Component<Props> {
   constructor(props: Props) {
     super(props);
     this.continue = this.continue.bind(this);
+  }
+
+  async componentWillMount() {
+    const cookie = await getCookie();
+    if (cookie != null) {
+      this.continue();
+    }
   }
 
   continue() {
