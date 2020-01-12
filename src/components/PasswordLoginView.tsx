@@ -83,6 +83,7 @@ class PasswordLoginView extends Component<Props> {
                 style={styles.inputField}
                 placeholder={EMAIL}
                 autoCompleteType='email'
+                keyboardType="email-address"
                 autoFocus={true}
                 onChangeText={this.onEmailChange}
                 autoCapitalize="none"
@@ -99,6 +100,7 @@ class PasswordLoginView extends Component<Props> {
                 secureTextEntry={true}
                 enablesReturnKeyAutomatically={true}
                 onChangeText={this.onPasswordChange}
+                onSubmitEditing={this.loginWithPassword}
               />
               <View>
                 <Text style={styles.errorText}>{this.props.error}</Text>
@@ -108,6 +110,7 @@ class PasswordLoginView extends Component<Props> {
                   onPress={this.back}
                   buttonText={'Back'}
                   buttonStyle={styles.yellowButton}
+                  disabled={this.props.loginLoding}
                 />
                 <RoundedButton
                   onPress={this.loginWithPassword}

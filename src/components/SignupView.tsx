@@ -103,6 +103,7 @@ class SignupView extends Component<Props> {
                 style={styles.inputField}
                 placeholder={EMAIL}
                 autoCompleteType='email'
+                keyboardType="email-address"
                 autoFocus={true}
                 onChangeText={this.onEmailChange}
                 autoCapitalize="none"
@@ -142,6 +143,7 @@ class SignupView extends Component<Props> {
                 secureTextEntry={true}
                 onChangeText={this.onPassword2Change}
                 enablesReturnKeyAutomatically={true}
+                onSubmitEditing={this.signUp}
               />
               <View>
                 <Text style={styles.errorText}>{this.props.error}</Text>
@@ -151,6 +153,7 @@ class SignupView extends Component<Props> {
                   onPress={this.back}
                   buttonText={BACK}
                   buttonStyle={styles.yellowButton}
+                  disabled={this.props.signupLoading}
                 />
                 <RoundedButton
                   onPress={this.signUp}
