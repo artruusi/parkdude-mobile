@@ -364,11 +364,14 @@ const styles = StyleSheet.create({
     width: 250,
     height: 43,
     borderRadius: 21.7,
-    borderStyle: 'solid',
-    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 10
+    margin: 10,
+    shadowColor: '#000',
+    shadowOffset: {width: 2, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
   },
   modal: {
     alignItems: 'center',
