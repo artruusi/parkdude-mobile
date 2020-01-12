@@ -87,7 +87,9 @@ class SignupView extends Component<Props> {
   render() {
     return (
       <KeyboardAvoidingView style={styles.outerContainer} behavior="padding" enabled>
-        <ScrollView contentContainerStyle={styles.scrollViewContent} >
+        <ScrollView
+          contentContainerStyle={styles.scrollViewContent}
+          keyboardShouldPersistTaps="handled" >
           <View style={styles.container}>
             <View style={[styles.parkdudeLogoContainer]}>
               <Image
