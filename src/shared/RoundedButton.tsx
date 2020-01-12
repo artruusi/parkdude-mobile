@@ -9,6 +9,7 @@ export interface RoundedButtonProps {
     buttonText: string;
     buttonStyle?: StyleProp<ViewStyle>;
     textStyle?: StyleProp<TextStyle>;
+    isTertiary?: boolean;
 }
 
 export class RoundedButton extends Component<RoundedButtonProps> {
@@ -18,10 +19,11 @@ export class RoundedButton extends Component<RoundedButtonProps> {
 
   render() {
     if (this.props.isLoading) {
-    return (
-      <TouchableOpacity
+      return (
+        <TouchableOpacity
           style={[
             styles.button,
+            this.props.isTertiary === true ? {} : styles.shadow,
             this.props.buttonStyle
           ]}
           disabled={true}>
@@ -33,6 +35,8 @@ export class RoundedButton extends Component<RoundedButtonProps> {
       <TouchableOpacity
         style={[
           styles.button,
+          // Tertiary buttons don't have shadows
+          this.props.isTertiary === true ? {} : styles.shadow,
           (this.props.disabled ? styles.disabledButton : {}),
           this.props.buttonStyle
         ]}
@@ -51,6 +55,13 @@ const styles = StyleSheet.create({
     height: 43,
     borderRadius: 21.7,
     backgroundColor: Colors.YELLOW,
+  },
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: {width: 2, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
   },
   disabledButton: {
     backgroundColor: Colors.DISABLED,
