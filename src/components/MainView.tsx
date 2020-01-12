@@ -244,6 +244,7 @@ class MainView extends Component<Props, State> {
           isVisible={this.state.reservationModalVisible}
           onBackdropPress={this.toggleReservationModal}
           onBackButtonPress={this.toggleReservationModal}
+          style={{padding: 10}}
           animationInTiming={500}
           animationOutTiming={100}
           useNativeDriver={true}
@@ -271,6 +272,7 @@ class MainView extends Component<Props, State> {
           isVisible={this.state.errorModalVisible}
           onBackdropPress={this.toggleErrorModal}
           onBackButtonPress={this.toggleErrorModal}
+          style={{padding: 10}}
           animationInTiming={500}
           animationOutTiming={100}
           useNativeDriver={true}
