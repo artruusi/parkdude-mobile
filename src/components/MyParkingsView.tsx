@@ -54,8 +54,10 @@ class ParkingItem extends Component<ItemProps> {
           </View>
         </View>
         <View style={styles.column2}>
-          <Text style={{fontFamily: 'Exo2-bold'}}>{this.props.item.type}</Text>
-          <Text style={{fontFamily: 'Exo2-bold'}}>{prettierDateOutput(this.props.item.parkingEvent.date)}</Text>
+          <Text style={{fontFamily: 'Exo2-bold', fontSize: 20}}>{this.props.item.type}</Text>
+          <Text style={{fontFamily: 'Exo2-bold', fontSize: 16}}>
+            {prettierDateOutput(this.props.item.parkingEvent.date)}
+          </Text>
         </View>
         <View style={styles.column3}>
           <View style={styles.row3}>
@@ -308,8 +310,11 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'flex-start',
     borderRadius: 12.2,
-    borderStyle: 'solid',
-    borderWidth: 1,
+    shadowColor: '#000',
+    shadowOffset: {width: 2, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
     padding: 20,
     margin: 10
   },
@@ -361,6 +366,7 @@ const styles = StyleSheet.create({
     width: '70%',
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: 'center'
   },
   column3: {
     width: '10%',
