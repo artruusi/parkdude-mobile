@@ -3,6 +3,7 @@ import {createDrawerNavigator} from 'react-navigation-drawer';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import MainView from '../components/MainView';
 import LogOut from '../components/LogOut';
+import AboutPage from '../components/AboutPageView';
 import MyReservationsView from '../components/MyParkingsView';
 import {createStackNavigator} from 'react-navigation-stack';
 import {TouchableOpacity, Image, StyleSheet} from 'react-native';
@@ -41,6 +42,7 @@ const TabNavigator = createBottomTabNavigator(
 const DrawerNavigation = createDrawerNavigator(
   {
     Parkings: {screen: TabNavigator},
+    About: {screen: AboutPage},
     LogOut: {screen: LogOut}
   },
   {
