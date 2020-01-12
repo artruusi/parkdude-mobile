@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
     padding: 8,
-    // Just enough margin to se the shadow as "border"
+    // Just enough margin to see the shadow as "border"
     marginTop: 1
   },
   title: {
