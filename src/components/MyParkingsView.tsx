@@ -15,6 +15,7 @@ import Modal from 'react-native-modal';
 import {RootReducer} from '../reducers';
 import {RoundedButton} from '../shared/RoundedButton';
 import {ErrorModal} from '../shared/ErrorModal';
+import {LoadingArea} from '../shared/LoadingArea';
 
 type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
@@ -266,6 +267,9 @@ class MyParkingsView extends Component<Props, State> {
 
       );
     } else {
+      if (this.props.reservationsLoading) {
+        return <LoadingArea/>;
+      }
       return (
         <View style={styles.container}>
           <Image style={styles.image} source={require('../../assets/icons/ic-parking/drawable-hdpi/ic_parking.png')}/>
@@ -279,7 +283,8 @@ class MyParkingsView extends Component<Props, State> {
 
 const mapStateToProps = (state: RootReducer) => ({
   myReservations: state.myReservations,
-  error: state.error
+  error: state.error,
+  reservationsLoading: state.loading.getReservationsLoading
 });
 
 const mapDispatchToProps = {getMyParkings, deleteReservation, postReservation};
