@@ -1,10 +1,11 @@
 import {getCookie} from './CookieStorage';
 import {CalendarEntry} from './types';
 import {Colors} from '../assets/colors';
+import {HOST} from 'react-native-dotenv';
 
 export async function apiFetch(url: string, params: RequestInit = {}) {
   const cookie = await getCookie();
-  return fetch(url, {...params, headers: {cookie, ...params.headers}});
+  return fetch(HOST + url, {...params, headers: {cookie, ...params.headers}});
 }
 
 /**

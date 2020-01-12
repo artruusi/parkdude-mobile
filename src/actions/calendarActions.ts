@@ -8,7 +8,8 @@ import {GET_CALENDAR_DATA} from './actionTypes';
 export const getCalendarSpots = (dateRangeParams: string) => {
   return async (dispatch) => {
     try {
-      const calendarResponse = await apiFetch(CALENDAR_URL + dateRangeParams, {method: HttpMethod.GET});
+      const url = `${CALENDAR_URL}${dateRangeParams}`;
+      const calendarResponse = await apiFetch(url, {method: HttpMethod.GET});
       if (calendarResponse.status === 200) {
         const result = await calendarResponse.json();
         dispatch(clearErrorState());
