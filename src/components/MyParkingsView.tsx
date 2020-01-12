@@ -226,6 +226,7 @@ class MyParkingsView extends Component<Props, State> {
           <Modal
             isVisible={this.state.deleteModalVisible}
             onBackdropPress={this.toggleDeleteModal}
+            onBackButtonPress={this.toggleDeleteModal}
             animationInTiming={500}
             animationOutTiming={100}
             useNativeDriver={true}
