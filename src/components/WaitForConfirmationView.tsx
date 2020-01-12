@@ -51,23 +51,25 @@ class WaitForConfirmationView extends Component<Props> {
             source={require('../../assets/images/parkdude-logo/drawable-hdpi/parkdude.png')}
           />
         </View>
-        <View>
-          <Text style={styles.title}>{WAITING_CONFIRMATION_TITLE}</Text>
+        <View style={styles.contentContainer}>
+          <View>
+            <Text style={styles.title}>{WAITING_CONFIRMATION_TITLE}</Text>
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.text}>{WAITING_CONFIRMATION_TEXT1}</Text>
+            <Text style={styles.text}>{WAITING_CONFIRMATION_TEXT2}</Text>
+          </View>
+          <RoundedButton
+            onPress={this.restart}
+            buttonText={RESTART}
+            buttonStyle={styles.button}
+          />
+          <RoundedButton
+            onPress={this.logOut}
+            buttonText={LOGOUT}
+            buttonStyle={styles.button}
+          />
         </View>
-        <View>
-          <Text style={styles.text}>{WAITING_CONFIRMATION_TEXT1}</Text>
-          <Text style={styles.text}>{WAITING_CONFIRMATION_TEXT2}</Text>
-        </View>
-        <RoundedButton
-          onPress={this.restart}
-          buttonText={RESTART}
-          buttonStyle={styles.button}
-        />
-        <RoundedButton
-          onPress={this.logOut}
-          buttonText={LOGOUT}
-          buttonStyle={styles.button}
-        />
       </View>
     );
   }
@@ -93,7 +95,7 @@ const styles = StyleSheet.create({
   },
   title: {
     width: 240,
-    height: 53,
+    height: 48,
     fontFamily: 'Exo2-bold',
     fontSize: 20,
     lineHeight: 53,
@@ -103,21 +105,33 @@ const styles = StyleSheet.create({
   },
   parkdudeLogoContainer: {
     flexDirection: 'row',
+    paddingTop: 48
   },
   parkdudeLogo: {
     margin: 30,
     flex: 1,
     resizeMode: 'contain'
   },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    marginBottom: 40
+  },
+  textContainer: {
+    marginTop: 24,
+    marginBottom: 40
+  },
   text: {
     width: 240,
-    height: 126,
+    // height: 126,
     fontFamily: 'Exo2',
     fontSize: 16,
     lineHeight: 18,
     letterSpacing: 0,
     textAlign: 'center',
-    color: Colors.BLACK
+    color: Colors.BLACK,
+    margin: 9
   },
   button: {
     width: 327,

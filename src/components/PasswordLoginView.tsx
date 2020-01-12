@@ -77,44 +77,46 @@ class PasswordLoginView extends Component<Props> {
                 style={styles.parkdudeLogo}
               />
             </View>
-            <Text style={styles.loginText}>{LOG_IN}</Text>
-            <TextInput
-              style={styles.inputField}
-              placeholder={EMAIL}
-              autoCompleteType='email'
-              autoFocus={true}
-              onChangeText={this.onEmailChange}
-              autoCapitalize="none"
-              returnKeyType="next"
-              enablesReturnKeyAutomatically={true}
-              blurOnSubmit={false}
-              onSubmitEditing={() => this.passwordInput.focus()}
-            />
-            <TextInput
-              ref={(input) => this.passwordInput = input}
-              style={styles.inputField}
-              placeholder={PASSWORD}
-              autoCompleteType='password'
-              secureTextEntry={true}
-              enablesReturnKeyAutomatically={true}
-              onChangeText={this.onPasswordChange}
-            />
-            <View style={{flex: 1}}>
-              <Text style={styles.errorText}>{this.props.error}</Text>
-            </View>
-            <View style={styles.horizontalContainer}>
-              <RoundedButton
-                onPress={this.back}
-                buttonText={'Back'}
-                buttonStyle={styles.yellowButton}
+            <View style={styles.formContainer}>
+              <Text style={styles.loginText}>{LOG_IN}</Text>
+              <TextInput
+                style={styles.inputField}
+                placeholder={EMAIL}
+                autoCompleteType='email'
+                autoFocus={true}
+                onChangeText={this.onEmailChange}
+                autoCapitalize="none"
+                returnKeyType="next"
+                enablesReturnKeyAutomatically={true}
+                blurOnSubmit={false}
+                onSubmitEditing={() => this.passwordInput.focus()}
               />
-              <RoundedButton
-                onPress={this.loginWithPassword}
-                buttonText={LOG_IN}
-                buttonStyle={styles.yellowButton}
-                disabled={!this.state.email || !this.state.password}
-                isLoading={this.props.loginLoding}
+              <TextInput
+                ref={(input) => this.passwordInput = input}
+                style={styles.inputField}
+                placeholder={PASSWORD}
+                autoCompleteType='password'
+                secureTextEntry={true}
+                enablesReturnKeyAutomatically={true}
+                onChangeText={this.onPasswordChange}
               />
+              <View>
+                <Text style={styles.errorText}>{this.props.error}</Text>
+              </View>
+              <View style={styles.horizontalContainer}>
+                <RoundedButton
+                  onPress={this.back}
+                  buttonText={'Back'}
+                  buttonStyle={styles.yellowButton}
+                />
+                <RoundedButton
+                  onPress={this.loginWithPassword}
+                  buttonText={LOG_IN}
+                  buttonStyle={styles.yellowButton}
+                  disabled={!this.state.email || !this.state.password}
+                  isLoading={this.props.loginLoding}
+                />
+              </View>
             </View>
           </View>
         </ScrollView>
@@ -151,18 +153,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flexGrow: 1
   },
+  formContainer: {
+    flex: 1,
+    alignItems: 'center'
+  },
   scrollViewContent: {
     flexGrow: 1
   },
-  buttonContainer: {
-    flex: 2,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    marginBottom: '5%',
-  },
   horizontalContainer: {
-    flex: 1,
     flexDirection: 'row',
     backgroundColor: '#fff',
     alignItems: 'center',
@@ -177,10 +175,8 @@ const styles = StyleSheet.create({
   parkdudeLogoContainer: {
     flexDirection: 'row',
     flex: 1,
-    alignItems: 'flex-start',
     justifyContent: 'center',
-    alignSelf: 'flex-start',
-    paddingTop: 30
+    paddingTop: 50
   },
   loginText: {
     fontSize: 20,
