@@ -307,9 +307,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fbfbfb',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingBottom: 8
   },
   itemContainer: {
-    height: '25%', // TODO this does not work
     flex: 1,
     backgroundColor: '#ffffff',
     flexDirection: 'row',
@@ -321,19 +321,23 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 3,
-    padding: 20,
-    margin: 10
+    padding: 16,
+    marginHorizontal: 16,
+    marginVertical: 8
   },
   permanentSpotContainer: {
-    height: '25%', // TODO this does not work
     flex: 1,
     backgroundColor: '#ffffff',
     alignItems: 'center',
     justifyContent: 'center',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    paddingTop: 20,
-    marginTop: 10
+    shadowColor: '#000',
+    shadowOffset: {width: 2, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
+    padding: 8,
+    // Just enough margin to se the shadow as "border"
+    marginTop: 1
   },
   title: {
     width: 229,
@@ -421,7 +425,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.RED,
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 20
+    margin: 8
   },
   modalButton: {
     width: 250,
@@ -435,6 +439,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: Colors.APP_BACKGROUND,
     borderRadius: 21.7,
-    margin: 20
+    margin: 24,
+    paddingBottom: 8
   }
 });
