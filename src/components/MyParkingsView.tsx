@@ -278,9 +278,11 @@ class MyParkingsView extends Component<Props, State> {
       }
       return (
         <View style={styles.container}>
-          <Image style={styles.image} source={require('../../assets/icons/ic-parking/drawable-hdpi/ic_parking.png')}/>
+          <Image
+            style={styles.image}
+            source={require('../../assets/icons/ic-parking/drawable-xxxhdpi/ic_parking.png')}/>
           <Text style={styles.emptyTitle}>{NO_PARKINGS_TITLE}</Text>
-          <Text style={styles.text}>{NO_PARKINGS_TEXT}</Text>
+          <Text style={styles.emptyText}>{NO_PARKINGS_TEXT}</Text>
         </View>
       );
     }
@@ -356,19 +358,20 @@ const styles = StyleSheet.create({
   },
   emptyTitle: {
     width: 114,
-    height: 24,
     fontFamily: 'Exo2-bold',
     fontSize: 20,
     letterSpacing: 0,
     textAlign: 'center',
-    color: '#c8c8c8'
+    color: '#a0a0a0',
+    margin: 8
   },
-  text: {
+  emptyText: {
     fontFamily: 'Exo2',
     fontSize: 16,
     letterSpacing: 0,
+    width: 216,
     textAlign: 'center',
-    color: '#c8c8c8'
+    color: '#a0a0a0'
   },
   column1: {
     width: '20%',
