@@ -337,12 +337,13 @@ const styles = StyleSheet.create({
   },
   title: {
     width: 229,
-    height: 42,
+    height: 48,
     fontFamily: 'Exo2-bold',
     fontSize: 34.8,
     letterSpacing: 0,
     textAlign: 'center',
-    color: Colors.BLACK
+    color: Colors.BLACK,
+    margin: 16
   },
   image: {
     width: 105,
