@@ -8,7 +8,8 @@ const initialState: LoadingState = {
   getMonthLoading: false,
   getReservationsLoading: false,
   getParkingSpotsLoading: false,
-  reserveSpotsLoading: false
+  reserveSpotsLoading: false,
+  deleteReservationLoading: false
 };
 
 type Action = ReturnType<typeof setLoadingState|typeof removeLoadingState>

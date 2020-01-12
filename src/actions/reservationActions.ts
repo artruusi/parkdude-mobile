@@ -44,6 +44,7 @@ export const createPostReservationAction = (result) => {
 
 export const deleteReservation = (item: UserParkingItem) => {
   return async (dispatch) => {
+    dispatch(setLoadingState(LoadingType.DELETE_RESERVATION));
     try {
       const date = item.parkingEvent.date;
       const id = item.parkingEvent.parkingSpot.id;
@@ -64,6 +65,7 @@ export const deleteReservation = (item: UserParkingItem) => {
     } catch (error) {
       dispatch(gotNetworkError(CONNECTION_ERROR));
     }
+    dispatch(removeLoadingState(LoadingType.DELETE_RESERVATION));
   };
 };
 

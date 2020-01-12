@@ -108,7 +108,8 @@ export enum LoadingType {
   GET_MONTH = 'getMonthLoading',
   GET_RESERVATIONS = 'getReservationsLoading',
   GET_PARKING_SPOTS = 'getParkingSpotsLoading',
-  RESERVE_SPOTS = 'reserveSpotsLoading'
+  RESERVE_SPOTS = 'reserveSpotsLoading',
+  DELETE_RESERVATION = 'deleteReservationLoading'
 }
 
 export type LoadingState = {

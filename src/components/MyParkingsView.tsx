@@ -154,9 +154,9 @@ class MyParkingsView extends Component<Props, State> {
     this.setState({errorModalVisible: !this.state.errorModalVisible, errorText: ''});
   }
 
-  delete() {
+  async delete() {
     if (this.state.parkingItemToDelete.type === ParkingSpotEventType.PARKING) {
-      this.props.deleteReservation(this.state.parkingItemToDelete);
+      await this.props.deleteReservation(this.state.parkingItemToDelete);
     }
     if (this.state.parkingItemToDelete.type === ParkingSpotEventType.RELEASE) {
       const date = this.state.parkingItemToDelete.parkingEvent.date;
@@ -164,7 +164,7 @@ class MyParkingsView extends Component<Props, State> {
         dates: [date],
         parkingSpotId: this.state.parkingItemToDelete.parkingEvent.parkingSpot.id
       };
-      this.props.postReservation(reservation);
+      await this.props.postReservation(reservation);
     }
     this.toggleDeleteModal();
   }
@@ -247,11 +247,13 @@ class MyParkingsView extends Component<Props, State> {
               <RoundedButton
                 onPress={this.delete}
                 buttonText={DELETE}
+                isLoading={this.props.deleteReservationLoading || this.props.removeReleaseLoading}
                 buttonStyle={{...styles.modalButton, backgroundColor: Colors.RED}}
               />
               <RoundedButton
                 onPress={this.toggleDeleteModal}
                 buttonText={CANCEL}
+                disabled={this.props.deleteReservationLoading || this.props.removeReleaseLoading}
                 buttonStyle={{...styles.modalButton, backgroundColor: Colors.WHITE}}
               />
             </View>
@@ -286,7 +288,9 @@ class MyParkingsView extends Component<Props, State> {
 const mapStateToProps = (state: RootReducer) => ({
   myReservations: state.myReservations,
   error: state.error,
-  reservationsLoading: state.loading.getReservationsLoading
+  reservationsLoading: state.loading.getReservationsLoading,
+  deleteReservationLoading: state.loading.deleteReservationLoading,
+  removeReleaseLoading: state.loading.reserveSpotsLoading
 });
 
 const mapDispatchToProps = {getMyParkings, deleteReservation, postReservation};
