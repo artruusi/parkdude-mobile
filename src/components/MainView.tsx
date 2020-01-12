@@ -14,7 +14,7 @@ import {getParkingSpots} from '../actions/parkingActions';
 import {createMarkedDatesObject, getMonthRangeForURL, prettierDateOutput, apiFetch} from '../Utils';
 import Modal from 'react-native-modal';
 import {RoundedButton} from '../shared/RoundedButton';
-import {DELETE_SPOTS_URL} from 'react-native-dotenv';
+import {RootReducer} from '../reducers/index';
 
 interface Props {
   getCalendarSpots: (string) => void;
@@ -288,7 +288,7 @@ class MainView extends Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootReducer) => ({
   calendarList: state.calendar.calendar,
   reservation: state.reservation,
   parkingSpots: state.parkingSpots,

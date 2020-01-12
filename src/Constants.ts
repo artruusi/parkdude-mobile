@@ -8,6 +8,7 @@ export const OK = 'OK';
 export const TRY_AGAIN = 'Try again.';
 export const ERROR = 'Error';
 export const RESTART= 'Restart';
+export const REFRESH = 'Refresh';
 
 // Onboarding
 
@@ -22,12 +23,16 @@ export const GOOGLE_LOGIN = 'Login with Google';
 export const EMAIL_LOGIN = 'Login with another email';
 export const SIGNUP = 'Sign up';
 export const OR = 'OR';
+export const LOGOUT = 'Log out';
+export const LOGGING_OUT = 'Logging out...';
 
-// Email login
+// Password login
 
 export const LOG_IN = 'Log in';
 export const EMAIL = 'E-mail';
 export const PASSWORD = 'Password';
+export const CONFIRM_PASSWORD = 'Confirm password';
+export const NAME = 'Name';
 
 // Waiting for confirmation
 

@@ -10,9 +10,14 @@ export const getCalendarSpots = (dateRangeParams: string) => {
     try {
       const url = `${CALENDAR_URL}${dateRangeParams}`;
       const calendarResponse = await apiFetch(url, {method: HttpMethod.GET});
-      const result = await calendarResponse.json();
-      dispatch(clearErrorState());
-      dispatch(setCalendarState(result));
+      if (calendarResponse.status === 200) {
+        const result = await calendarResponse.json();
+        dispatch(clearErrorState());
+        dispatch(setCalendarState(result));
+      } else {
+        // TODO: Better error handling
+        throw new Error();
+      }
     } catch (error) {
       dispatch(gotNetworkError(CONNECTION_ERROR));
     }

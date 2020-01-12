@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, ActivityIndicator} from 'react-native';
 import {logOut} from '../actions/authActions';
-import {connect} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {NavigationScreenProp} from 'react-navigation';
+import {RootReducer} from '../reducers/index';
+import {LOGGING_OUT} from '../Constants';
 
-interface Props {
-  logOut: () => void;
+type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
 }
 
@@ -14,33 +15,38 @@ class LogOut extends Component<Props> {
     drawerLabel: 'Log out'
   };
 
-  componentWillReceiveProps(receivedProps) {
-    if (!receivedProps.isAuthenticated) {
+  componentDidMount() {
+    this.componentDidUpdate(this.props);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!this.props.isAuthenticated) {
       this.props.navigation.navigate('Auth');
+    } else {
+      // Log out will cause isAuthenticated to turn false, which will trigger naviation to Auth
+      this.props.logOut();
     }
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity
-          onPress={this.props.logOut}
-          style={styles.logoutButton}
-        >
-          <Text>Log out</Text>
-        </TouchableOpacity>
+        <Text>{LOGGING_OUT}</Text>
+        <ActivityIndicator size="large" color="#0000ff" />
       </View>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootReducer) => ({
   isAuthenticated: state.auth.isAuthenticated
 });
 
 const mapDispatchToProps = {logOut};
 
-export default connect(mapStateToProps, mapDispatchToProps)(LogOut);
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+export default connector(LogOut);
 
 const styles = StyleSheet.create({
   container: {

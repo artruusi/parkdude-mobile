@@ -16,12 +16,10 @@ describe('Action Creators', () => {
   });
 
   it('should create GET_LOGOUT action', () => {
-    const mockPayload = {};
     const expectedAction = {
-      type: types.LOG_OUT,
-      payload: mockPayload
+      type: types.LOG_OUT
     };
-    expect(authActions.setLogOutState(mockPayload)).toEqual(expectedAction);
+    expect(authActions.setLogOutState()).toEqual(expectedAction);
   });
 
   it('should create GET_CALENDAR_DATA action', () => {
@@ -79,10 +77,28 @@ describe('Action Creators', () => {
     expect(errorActions.reservationFailed(mockPayload)).toEqual(expectedAction);
   });
 
+  it('should create PASSWORD_LOGIN_ERROR action', () => {
+    const mockPayload = 'errorString';
+    const expectedAction = {
+      type: types.PASSWORD_LOGIN_ERROR,
+      payload: mockPayload
+    };
+    expect(errorActions.setPasswordLoginError(mockPayload)).toEqual(expectedAction);
+  });
+
+  it('should create SIGNUP_ERROR action', () => {
+    const mockPayload = 'errorString';
+    const expectedAction = {
+      type: types.SIGNUP_ERROR,
+      payload: mockPayload
+    };
+    expect(errorActions.setSignupError(mockPayload)).toEqual(expectedAction);
+  });
+
   it('should create CLEAR_ERRORS action', () => {
     const expectedAction = {
-      type: types.NETWORK_ERROR
+      type: types.CLEAR_ERRORS
     };
-    expect(errorActions.gotNetworkError()).toEqual(expectedAction);
+    expect(errorActions.clearErrorState()).toEqual(expectedAction);
   });
 });

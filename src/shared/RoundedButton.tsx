@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
-import {StyleSheet, TouchableOpacity, Text} from 'react-native';
+import {StyleSheet, TouchableOpacity, Text, ViewStyle, TextStyle, StyleProp} from 'react-native';
 import {Colors} from '../../assets/colors';
 
 export interface RoundedButtonProps {
     onPress: () => void;
     disabled?: boolean;
     buttonText: string;
-    buttonStyle?: StyleSheet;
-    textStyle?: StyleSheet;
+    buttonStyle?: StyleProp<ViewStyle>;
+    textStyle?: StyleProp<TextStyle>;
 }
 
 export class RoundedButton extends Component<RoundedButtonProps> {

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import MainView from '../components/MainView';

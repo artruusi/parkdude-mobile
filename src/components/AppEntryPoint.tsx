@@ -1,18 +1,13 @@
 import React, {Component} from 'react';
 import LoginView from './LoginView';
-import {getAuthState} from '../actions/authActions';
-import {connect} from 'react-redux';
+import {getAuthState, setLogOutState} from '../actions/authActions';
+import {connect, ConnectedProps} from 'react-redux';
 import LoadingView from './LoadingView';
 import {UserRole} from '../types';
 import {NavigationScreenProp} from 'react-navigation';
 
-interface Props {
+type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
-  getAuthState: () => void;
-  isAuthenticated: boolean;
-  loading: boolean;
-  hasErrors: boolean;
-  networkError: string;
 }
 
 class AppEntryPoint extends Component<Props> {
@@ -22,14 +17,15 @@ class AppEntryPoint extends Component<Props> {
 
   componentDidMount() {
     this.props.getAuthState();
+    this.componentDidUpdate(this.props);
   }
 
-  componentWillReceiveProps(receivedProps) {
-    if (receivedProps.isAuthenticated) {
-      if (receivedProps.userRole === UserRole.UNVERIFIED) {
+  componentDidUpdate(prevProps) {
+    if (this.props.isAuthenticated) {
+      if (this.props.userRole === UserRole.UNVERIFIED) {
         this.props.navigation.navigate('WaitForConfirmationView');
       }
-      if (receivedProps.userRole === UserRole.VERIFIED || receivedProps.userRole === UserRole.ADMIN) {
+      if (this.props.userRole === UserRole.VERIFIED || this.props.userRole === UserRole.ADMIN) {
         this.props.navigation.navigate('App');
       }
     }
@@ -55,6 +51,8 @@ const mapStateToProps = (state) => ({
   networkError: state.error.networkError
 });
 
-const mapDispatchToProps = {getAuthState};
+const mapDispatchToProps = {getAuthState, setLogOutState};
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppEntryPoint);
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+export default connector(AppEntryPoint);
