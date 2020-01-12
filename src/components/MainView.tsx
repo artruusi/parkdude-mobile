@@ -233,6 +233,7 @@ class MainView extends Component<Props, State> {
               disabled={Object.keys(this.state.userSelectedDates).length === 0}
               buttonText={BOOK_NOW}
               buttonStyle={styles.bookButton}
+              isLoading={this.props.reserveSpotsLoading}
             />
           </View>
         </View>
@@ -300,7 +301,8 @@ const mapStateToProps = (state: RootReducer) => ({
   calendarList: state.calendar.calendar,
   reservation: state.reservation,
   parkingSpots: state.parkingSpots,
-  error: state.error
+  error: state.error,
+  reserveSpotsLoading: state.loading.reserveSpotsLoading
 });
 
 const mapDispatchToProps = {getCalendarSpots, postReservation, getParkingSpots};

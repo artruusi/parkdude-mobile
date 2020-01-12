@@ -3,11 +3,13 @@ import {GET_OWN_RESERVATIONS, GET_PARKING_SPOTS_URL} from 'react-native-dotenv';
 import {gotNetworkError, clearErrorState} from './errorActions';
 import {CONNECTION_ERROR} from '../Constants';
 import {apiFetch, toDateString} from '../Utils';
-import {HttpMethod} from '../types';
+import {HttpMethod, LoadingType} from '../types';
+import {setLoadingState, removeLoadingState} from './loadingActions';
 
 export const getParkingSpots = () => {
   return async (dispatch) => {
     try {
+      dispatch(setLoadingState(LoadingType.GET_PARKING_SPOTS));
       const getSpotsResponse = await apiFetch(GET_PARKING_SPOTS_URL, {method: HttpMethod.GET});
       const result = await getSpotsResponse.json();
       dispatch(clearErrorState());
@@ -15,6 +17,7 @@ export const getParkingSpots = () => {
     } catch (error) {
       dispatch(gotNetworkError(CONNECTION_ERROR));
     }
+    dispatch(removeLoadingState(LoadingType.GET_PARKING_SPOTS));
   };
 };
 
@@ -28,6 +31,7 @@ export const setParkingSpots = (result) => {
 export const getMyParkings = () => {
   return async (dispatch) => {
     try {
+      dispatch(setLoadingState(LoadingType.GET_RESERVATIONS));
       const date = new Date();
       date.setFullYear(date.getFullYear()+1);
       const endDate = toDateString(date);
@@ -40,6 +44,7 @@ export const getMyParkings = () => {
       console.log(error);
       dispatch(gotNetworkError(CONNECTION_ERROR));
     }
+    dispatch(removeLoadingState(LoadingType.GET_RESERVATIONS));
   };
 };
 

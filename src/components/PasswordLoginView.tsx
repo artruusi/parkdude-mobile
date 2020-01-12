@@ -110,6 +110,7 @@ class PasswordLoginView extends Component<Props> {
                 buttonText={LOG_IN}
                 buttonStyle={styles.yellowButton}
                 disabled={!this.state.email || !this.state.password}
+                isLoading={this.props.loginLoding}
               />
             </View>
           </View>
@@ -122,7 +123,8 @@ class PasswordLoginView extends Component<Props> {
 const mapStateToProps = (state: RootReducer) => ({
   isAuthenticated: state.auth.isAuthenticated,
   userRole: state.auth.userRole,
-  error: state.error.passwordLoginError
+  error: state.error.passwordLoginError,
+  loginLoding: state.loading.passwordLoginLoading
 });
 
 const mapDispatchToProps = {getAuthState, loginWithPassword, setPasswordLoginError, clearErrorState};

@@ -6,7 +6,8 @@ import {gotNetworkError, clearErrorState, setPasswordLoginError, setSignupError}
 import {CONNECTION_ERROR} from '../Constants';
 import {apiFetch} from '../Utils';
 import {removeCookie, setCookie} from '../CookieStorage';
-import {HttpMethod} from '../types';
+import {HttpMethod, LoadingType} from '../types';
+import {setLoadingState, removeLoadingState} from './loadingActions';
 
 export const getAuthState = () => {
   return async (dispatch) => {
@@ -41,9 +42,10 @@ export const logOut = () => {
   };
 };
 
-export const loginWithPassword= (email: string, password: string) => {
+export const loginWithPassword = (email: string, password: string) => {
   return async (dispatch) => {
     try {
+      dispatch(setLoadingState(LoadingType.PASSWORD_LOGIN));
       const loginResponse = await apiFetch(PASSWORD_LOGIN_URL, {
         method: HttpMethod.POST,
         body: JSON.stringify({email, password}),
@@ -55,7 +57,7 @@ export const loginWithPassword= (email: string, password: string) => {
         if (cookie) {
           const sessionId = cookie.split('sessionId=')[1].split(';')[0];
           await setCookie(`sessionId=${sessionId}`);
-          getAuthState()(dispatch);
+          await getAuthState()(dispatch);
         }
       } else {
         const result = await loginResponse.json();
@@ -64,12 +66,14 @@ export const loginWithPassword= (email: string, password: string) => {
     } catch (error) {
       dispatch(setPasswordLoginError(CONNECTION_ERROR));
     }
+    dispatch(removeLoadingState(LoadingType.PASSWORD_LOGIN));
   };
 };
 
 export const signup = (email: string, name: string, password: string) => {
   return async (dispatch) => {
     try {
+      dispatch(setLoadingState(LoadingType.SIGNUP));
       const signUpResponse = await apiFetch(SIGNUP_URL, {
         method: HttpMethod.POST,
         body: JSON.stringify({email, password, name}),
@@ -77,13 +81,14 @@ export const signup = (email: string, name: string, password: string) => {
       });
       const result = await signUpResponse.json();
       if (signUpResponse.status === 200) {
-        loginWithPassword(email, password)(dispatch);
+        await loginWithPassword(email, password)(dispatch);
       } else {
         dispatch(setSignupError(result.message));
       }
     } catch (error) {
       dispatch(setSignupError(CONNECTION_ERROR));
     }
+    dispatch(removeLoadingState(LoadingType.SIGNUP));
   };
 };
 
