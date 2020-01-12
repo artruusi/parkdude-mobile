@@ -1,18 +1,13 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, ActivityIndicator} from 'react-native';
 import {logOut} from '../actions/authActions';
-import {connect, ConnectedProps} from 'react-redux';
 import {NavigationScreenProp} from 'react-navigation';
 import {Colors} from '../../assets/colors';
 import {ABOUT_TITLE, ABOUT_TEXT1, BACK} from '../Constants';
 import {RoundedButton} from '../shared/RoundedButton';
 
 
-type Props = ConnectedProps<typeof connector> & {
-  navigation: NavigationScreenProp<any, any>;
-}
-
-class AboutPage extends Component<Props> {
+export default class AboutPage extends Component<Props> {
   constructor(props: Props) {
     super(props);
   }
@@ -30,16 +25,6 @@ class AboutPage extends Component<Props> {
     );
   }
 }
-
-const mapStateToProps = (state: RootReducer) => ({
-  isAuthenticated: state.auth.isAuthenticated
-});
-
-const mapDispatchToProps = {};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-export default connector(AboutPage);
 
 const styles = StyleSheet.create({
   container: {
