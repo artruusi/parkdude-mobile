@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {StyleSheet, View, Image, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {AuthSession} from 'expo';
-import {LOGIN_URL} from 'react-native-dotenv';
+import {HOST, LOGIN_URL} from 'react-native-dotenv';
 import {setCookie} from '../CookieStorage';
 import {getAuthState} from '../actions/authActions';
 import {connect, ConnectedProps} from 'react-redux';
@@ -33,7 +33,7 @@ class LoginView extends Component<Props> {
       console.log(LOGIN_URL);
 
       const result = await AuthSession.startAsync({
-        authUrl: LOGIN_URL + `?redirectUrl=${redirectUrl}`
+        authUrl: HOST + LOGIN_URL + `?redirectUrl=${redirectUrl}`
       });
 
       console.log('Returned from browser', result);
