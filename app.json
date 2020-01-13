@@ -10,6 +10,7 @@
     "entryPoint": "node_modules/expo/AppEntry.js",
     "platforms": ["ios", "android", "web"],
     "scheme": "parkdude",
+    "orientation": "portrait",
     "android": {
       "package": "com.{ORGANISATION_HERE}.parkdude",
       "versionCode": 1,
