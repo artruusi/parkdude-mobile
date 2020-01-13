@@ -12,10 +12,23 @@
     "scheme": "parkdude",
     "orientation": "portrait",
     "icon": "./assets/images/app-icon/app-icon.png",
+    "splash": {
+      "image": "./assets/images/parkdude-logo/drawable-xxhdpi/parkdude.png",
+      "backgroundColor": "#ffffff",
+      "resizeMode": "contain"
+    },
     "android": {
       "package": "com.{ORGANISATION_HERE}.parkdude",
       "versionCode": 1,
-      "permissions": []
+      "permissions": [],
+      "splash": {
+        "resizeMode": "native",
+        "mdpi": "./assets/images/splash-screen/drawable-mdpi/splash-screen.png",
+        "hdpi": "./assets/images/splash-screen/drawable-hdpi/splash-screen.png",
+        "xhdpi": "./assets/images/splash-screen/drawable-xhdpi/splash-screen.png",
+        "xxhdpi": "./assets/images/splash-screen/drawable-xxhdpi/splash-screen.png",
+        "xxxhdpi": "./assets/images/splash-screen/drawable-xxxhdpi/splash-screen.png"
+      }
     },
     "ios": {
       "bundleIdentifier": "com.{ORGANISATION_HERE}.parkdude"
