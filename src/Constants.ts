@@ -60,6 +60,11 @@ export const SELECT_PARKING_SPOT = 'Select parking spot';
 export const ALREADY_BOOKED = 'It seems like your selected parking spot is already ' +
                               'booked for the following days';
 
+// About
+
+export const ABOUT_TITLE = 'About Parkdude';
+export const ABOUT_TEXT1 = 'This page will contain licences of used libraries etc.';
+
 // Errors
 
 export const CONNECTION_ERROR = 'Parkdude cannot connect to the server.';
