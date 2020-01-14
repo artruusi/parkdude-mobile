@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator} from 'react-native';
 import {NavigationScreenProp, ScrollView} from 'react-navigation';
 import {Calendar} from 'react-native-calendars';
 import {Colors} from '../../assets/colors';
@@ -51,7 +51,6 @@ class MainView extends Component<Props, State> {
   }
 
   componentDidMount() {
-    this.getAvailableParkingSpots();
     const date = new Date();
     this.setState({currentMonth: date.getMonth()+1, currentYear: date.getFullYear()}, () => {
       const dateObject = {
@@ -92,8 +91,8 @@ class MainView extends Component<Props, State> {
     }
   }
 
-  getAvailableParkingSpots() {
-    this.props.getParkingSpots();
+  getAvailableParkingSpots(dates: string[]) {
+    this.props.getParkingSpots(dates);
   }
 
   fetchDataForMonth(calendarDateObject: CalendarDateObject) {
@@ -150,6 +149,10 @@ class MainView extends Component<Props, State> {
   }
 
   toggleReservationModal() {
+    if (!this.state.reservationModalVisible) {
+      const dates = Object.keys(this.state.userSelectedDates);
+      this.getAvailableParkingSpots(dates);
+    }
     this.setState({reservationModalVisible: !this.state.reservationModalVisible});
   }
 
@@ -167,6 +170,8 @@ class MainView extends Component<Props, State> {
         <Text style={{fontSize: 18, fontFamily: 'Exo2-bold'}}>{spot.name}</Text>
       </TouchableOpacity>
     ));
+
+    // console.log(parkingSpots);
 
     const bookButtonColor = Object.keys(this.state.userSelectedDates).length === 0 ? Colors.DISABLED : Colors.YELLOW;
     const dropdownButtonColor = Object.keys(this.state.userSelectedDates).length === 0 ? Colors.DISABLED : Colors.WHITE;
@@ -254,7 +259,10 @@ class MainView extends Component<Props, State> {
               <Text style={{fontSize: 25, fontFamily: 'Exo2-bold'}}>{SELECT_PARKING_SPOT}</Text>
             </View>
             <ScrollView directionalLockEnabled={true}>
-              {parkingSpots}
+              {
+                // TODO: Add loading state checking here and show ActivityIndicator
+                parkingSpots
+              }
             </ScrollView>
             <View style={styles.centerContent}>
               <RoundedButton
