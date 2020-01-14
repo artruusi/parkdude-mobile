@@ -1,5 +1,5 @@
 import {getCookie} from './CookieStorage';
-import {CalendarEntry} from './types';
+import {CalendarEntry, CalendarReservations, BasicParkingSpotData} from './types';
 import {Colors} from '../assets/colors';
 import {HOST} from 'react-native-dotenv';
 

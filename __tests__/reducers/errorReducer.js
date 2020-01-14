@@ -8,7 +8,8 @@ describe('errorReducer', () => {
       'networkError': '',
       'postReservationError': {message: '', dates: []},
       'passwordLoginError': '',
-      'signupError': ''
+      'signupError': '',
+      'deleteReservationError': {message: '', dates: []}
     });
   });
 
@@ -22,7 +23,8 @@ describe('errorReducer', () => {
       networkError: errorString,
       postReservationError: {message: '', dates: []},
       passwordLoginError: '',
-      signupError: ''
+      signupError: '',
+      deleteReservationError: {message: '', dates: []}
     });
   });
 });

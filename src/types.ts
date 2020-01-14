@@ -13,6 +13,7 @@ export interface ErrorState{
   postReservationError: ReservationFailed;
   passwordLoginError: string;
   signupError: string;
+  deleteReservationError: ReservationFailed;
 }
 
 export interface ReservationFailed{
@@ -36,6 +37,11 @@ export interface ParkingEvent {
   parkingSpot: BasicParkingSpotData;
 }
 
+export interface UserParkingItem {
+  parkingEvent: ParkingEvent;
+  type: ParkingSpotEventType;
+}
+
 export interface CalendarReservations {
   calendar: CalendarEntry[];
   ownedSpots: BasicParkingSpotData[];
@@ -57,8 +63,7 @@ export interface CalendarDateObject {
 
 export interface PostReservation {
   dates: string[];
-  userId: string;
-  parkingSpotId: string;
+  parkingSpotId?: string;
 }
 
 export interface SuccesfulReservation {

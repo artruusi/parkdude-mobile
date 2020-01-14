@@ -1,4 +1,4 @@
-import {RESERVE_SPOTS} from '../actions/actionTypes';
+import {RESERVE_SPOTS, DELETE_RESERVATION} from '../actions/actionTypes';
 import {SuccesfulReservation} from '../types';
 
 const initialState: SuccesfulReservation = {

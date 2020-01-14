@@ -1,6 +1,6 @@
 import {
   NETWORK_ERROR, RESERVATION_FAILED, CLEAR_ERRORS,
-  GENERAL_ERROR, PASSWORD_LOGIN_ERROR, SIGNUP_ERROR
+  GENERAL_ERROR, PASSWORD_LOGIN_ERROR, SIGNUP_ERROR, DELETE_RESERVATION_FAILED
 } from './actionTypes';
 
 export const generalError = (errorString: string) => {
@@ -34,6 +34,13 @@ export const gotNetworkError = (errorString: string) => {
 export const reservationFailed = (result) => {
   return {
     type: RESERVATION_FAILED,
+    payload: result
+  };
+};
+
+export const deleteReservationFailed = (result) => {
+  return {
+    type: DELETE_RESERVATION_FAILED,
     payload: result
   };
 };

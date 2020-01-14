@@ -1,9 +1,11 @@
 import {RESERVE_SPOTS} from './actionTypes';
-import {POST_RESERVATION_URL} from 'react-native-dotenv';
-import {gotNetworkError, reservationFailed, clearErrorState, generalError} from './errorActions';
+import {POST_RESERVATION_URL, DELETE_SPOTS_URL} from 'react-native-dotenv';
+import {gotNetworkError, reservationFailed, clearErrorState,
+  generalError, deleteReservationFailed} from './errorActions';
 import {CONNECTION_ERROR, GENERAL_ERROR_MESSAGE} from '../Constants';
 import {apiFetch} from '../Utils';
-import {HttpMethod, PostReservation} from '../types';
+import {HttpMethod, PostReservation, UserParkingItem} from '../types';
+import {getMyParkings} from './parkingActions';
 
 export const postReservation = (reservation: PostReservation) => {
   return async (dispatch) => {
@@ -18,8 +20,7 @@ export const postReservation = (reservation: PostReservation) => {
       if (postReservationResponse.status === 200) {
         dispatch(clearErrorState());
         dispatch(createPostReservationAction(result));
-      }
-      if (postReservationResponse.status === 400) {
+      } else if (postReservationResponse.status === 400) {
         dispatch(reservationFailed(result));
       } else {
         // HTTP Status 500 or something else unexpected
@@ -35,6 +36,31 @@ export const createPostReservationAction = (result) => {
   return {
     type: RESERVE_SPOTS,
     payload: result
+  };
+};
+
+export const deleteReservation = (item: UserParkingItem) => {
+  return async (dispatch) => {
+    try {
+      const date = item.parkingEvent.date;
+      const id = item.parkingEvent.parkingSpot.id;
+      const response = await apiFetch(
+        `${DELETE_SPOTS_URL}/${id}?dates=${date}`,
+        {method: HttpMethod.DELETE}
+      );
+      const result = await response.json();
+      if (response.status === 200) {
+        dispatch(clearErrorState());
+        getMyParkings()(dispatch);
+      } else if (response.status === 400) {
+        dispatch(deleteReservationFailed(result));
+      } else {
+        // HTTP Status 500 or something else unexpected
+        dispatch(generalError(GENERAL_ERROR_MESSAGE));
+      }
+    } catch (error) {
+      dispatch(gotNetworkError(CONNECTION_ERROR));
+    }
   };
 };
 

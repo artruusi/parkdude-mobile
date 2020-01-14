@@ -3,12 +3,18 @@
 // General
 
 export const SPOT = 'Spot';
+export const CANCEL = 'Cancel';
 export const BACK = 'Back';
 export const OK = 'OK';
 export const TRY_AGAIN = 'Try again.';
 export const ERROR = 'Error';
 export const RESTART= 'Restart';
 export const REFRESH = 'Refresh';
+export const DATE = 'Date';
+export const ARE_YOU_SURE = 'Are you sure?';
+export const DELETE = 'Delete';
+export const DELETE_PARKING = 'Delete parking reservation';
+export const DELETE_RELEASE = 'Delete release';
 
 // Onboarding
 
@@ -67,5 +73,6 @@ export const ABOUT_TEXT1 = 'This page will contain licences of used libraries et
 
 // Errors
 
-export const CONNECTION_ERROR = 'Parkdude cannot connect to the server.';
+export const CONNECTION_ERROR = 'Parkdude cannot connect to the server';
 export const GENERAL_ERROR_MESSAGE = 'An unexpected error has occured';
+export const DELETE_FAILED = 'Deletion operation failed';

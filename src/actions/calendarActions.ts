@@ -25,6 +25,12 @@ export const getCalendarSpots = (dateRangeParams: string) => {
 };
 
 export const setCalendarState = (result) => {
+  // Filter permanent spots out from own reservations
+  const ownedSpotsIDs = result.ownedSpots.map((r) => r.id);
+  result.calendar.forEach((entry) => {
+    entry.spacesReservedByUser = entry.spacesReservedByUser.filter((r) =>
+      !ownedSpotsIDs.includes(r.id));
+  });
   return {
     type: GET_CALENDAR_DATA,
     payload: result

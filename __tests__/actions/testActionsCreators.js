@@ -23,7 +23,7 @@ describe('Action Creators', () => {
   });
 
   it('should create GET_CALENDAR_DATA action', () => {
-    const mockPayload = {};
+    const mockPayload = {calendar: [], ownedSpots: []};
     const expectedAction = {
       type: types.GET_CALENDAR_DATA,
       payload: mockPayload
