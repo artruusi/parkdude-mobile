@@ -29,7 +29,7 @@ export class LoadingView extends Component<Props, {}> {
     // Note: Currently errors are always network errors
     return (
       <View style={styles.container}>
-        <Text>{this.props.error}</Text>
+        <Text style={styles.errorText}>{this.props.error}</Text>
         <RoundedButton
           onPress={this.refresh}
           buttonText={TRY_AGAIN}
@@ -69,5 +69,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     margin: 16
+  },
+  errorText: {
+    fontFamily: 'Exo2'
   }
 });
