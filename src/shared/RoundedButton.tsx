@@ -27,7 +27,7 @@ export class RoundedButton extends Component<RoundedButtonProps> {
             this.props.buttonStyle
           ]}
           disabled={true}>
-          <ActivityIndicator size="small" color="#000000" />
+          <ActivityIndicator size="small" color={Colors.BLACK} />
         </TouchableOpacity>
       );
     }
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.YELLOW,
   },
   shadow: {
-    shadowColor: '#000',
+    shadowColor: Colors.BLACK,
     shadowOffset: {width: 2, height: 2},
     shadowOpacity: 0.2,
     shadowRadius: 4,

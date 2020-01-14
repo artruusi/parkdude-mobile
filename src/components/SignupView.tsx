@@ -9,6 +9,7 @@ import {RoundedButton} from '../shared/RoundedButton';
 import {RootReducer} from '../reducers/index';
 import {setSignupError, clearErrorState} from '../actions/errorActions';
 import {UserRole} from '../types';
+import {Colors} from '../../assets/colors';
 
 type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
@@ -237,7 +238,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Exo2',
     marginTop: '1%',
     marginBottom: '1%',
-    color: 'red'
+    color: Colors.RED
   },
   yellowButton: {
     flex: 1,

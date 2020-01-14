@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'flex-start',
     borderRadius: 12.2,
-    shadowColor: '#000',
+    shadowColor: Colors.BLACK,
     shadowOffset: {width: 2, height: 2},
     shadowOpacity: 0.2,
     shadowRadius: 4,
@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
     fontSize: 34.8,
     letterSpacing: 0,
     textAlign: 'center',
-    color: '#000000'
+    color: Colors.BLACK
   },
   image: {
     width: 105,

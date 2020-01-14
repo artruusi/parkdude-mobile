@@ -5,6 +5,7 @@ import {connect, ConnectedProps} from 'react-redux';
 import {NavigationScreenProp} from 'react-navigation';
 import {RootReducer} from '../reducers/index';
 import {LOGGING_OUT} from '../Constants';
+import {Colors} from '../../assets/colors';
 
 type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
@@ -32,7 +33,7 @@ class LogOut extends Component<Props> {
     return (
       <View style={styles.container}>
         <Text>{LOGGING_OUT}</Text>
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color={Colors.BLACK} />
       </View>
     );
   }
