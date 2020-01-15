@@ -2,8 +2,10 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView} from 'react-native';
 import {YOUR_PARKINGS, NO_PARKINGS_TITLE, NO_PARKINGS_TEXT, PERMANENT_SPOT,
   NEW_RELEASE, SPOT, ARE_YOU_SURE, DATE, DELETE_RELEASE,
-  DELETE, DELETE_PARKING, CANCEL, DELETE_FAILED, GENERAL_ERROR_MESSAGE, CONNECTION_ERROR} from '../Constants';
+  DELETE, DELETE_PARKING, CANCEL, DELETE_FAILED, GENERAL_ERROR_MESSAGE,
+  CONNECTION_ERROR, RELEASE_SPOT} from '../Constants';
 import {connect, ConnectedProps} from 'react-redux';
+import {Calendar} from 'react-native-calendars';
 import {getMyParkings} from '../actions/parkingActions';
 import {postReservation, deleteReservation} from '../actions/reservationActions';
 import {ParkingEvent, ParkingSpotEventType, BasicParkingSpotData,
@@ -24,7 +26,9 @@ type Props = ConnectedProps<typeof connector> & {
 interface State {
   deleteModalVisible: boolean;
   errorModalVisible: boolean;
+  newReleaseModalVisible: boolean;
   parkingItemToDelete: UserParkingItem;
+  spotToBeReleased: BasicParkingSpotData;
   errorText: string;
 }
 
@@ -37,6 +41,7 @@ interface ItemProps {
 
 interface PermanentSpotProps extends BasicParkingSpotData {
   key: number;
+  toggle: (BasicParkingSpotData) => void;
 }
 
 class ParkingItem extends Component<ItemProps> {
@@ -82,7 +87,7 @@ class PermanentSpotItem extends Component<PermanentSpotProps> {
         <Text style={{fontFamily: 'Exo2-bold', fontSize: 25}}>{PERMANENT_SPOT}</Text>
         <Text style={{fontFamily: 'Exo2-bold', fontSize: 25}}>{this.props.name}</Text>
         <RoundedButton
-          onPress={/* TODO */ null}
+          onPress={() => this.props.toggle({id: this.props.id, name: this.props.name})}
           buttonText={NEW_RELEASE}
           buttonStyle={styles.releaseButton}
         />
@@ -97,6 +102,7 @@ class MyParkingsView extends Component<Props, State> {
     this.state = {
       deleteModalVisible: false,
       errorModalVisible: false,
+      newReleaseModalVisible: false,
       parkingItemToDelete: {
         parkingEvent: {
           date: '',
@@ -104,11 +110,13 @@ class MyParkingsView extends Component<Props, State> {
         },
         type: ParkingSpotEventType.PARKING
       },
+      spotToBeReleased: {id: '', name: ''},
       errorText: ''
     };
     this.initDeleteModal = this.initDeleteModal.bind(this);
     this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
     this.toggleErrorModal = this.toggleErrorModal.bind(this);
+    this.toggleNewReleaseModal = this.toggleNewReleaseModal.bind(this);
     this.delete = this.delete.bind(this);
   }
 
@@ -154,6 +162,13 @@ class MyParkingsView extends Component<Props, State> {
     this.setState({errorModalVisible: !this.state.errorModalVisible, errorText: ''});
   }
 
+  toggleNewReleaseModal(spot?: BasicParkingSpotData) {
+    if (spot !== undefined) {
+      this.setState({spotToBeReleased: spot});
+    }
+    this.setState({newReleaseModalVisible: !this.state.newReleaseModalVisible});
+  }
+
   async delete() {
     if (this.state.parkingItemToDelete.type === ParkingSpotEventType.PARKING) {
       await this.props.deleteReservation(this.state.parkingItemToDelete);
@@ -175,6 +190,7 @@ class MyParkingsView extends Component<Props, State> {
         key={keyIndex}
         id={spot.id}
         name={spot.name}
+        toggle={this.toggleNewReleaseModal}
       />
     ));
 
@@ -258,6 +274,65 @@ class MyParkingsView extends Component<Props, State> {
                 disabled={this.props.deleteReservationLoading || this.props.removeReleaseLoading}
                 buttonStyle={{...styles.modalButton, backgroundColor: Colors.WHITE}}
               />
+            </View>
+          </Modal>
+
+          {/* New release modal */}
+
+          <Modal
+            isVisible={this.state.newReleaseModalVisible}
+            onBackdropPress={this.toggleNewReleaseModal}
+            onBackButtonPress={this.toggleNewReleaseModal}
+            animationInTiming={500}
+            animationOutTiming={100}
+            useNativeDriver={true}
+            hideModalContentWhileAnimating={true}>
+            <View style={styles.newReleaseModal}>
+
+              <View style={{alignItems: 'center'}}>
+                <Text style={{fontFamily: 'Exo2-bold', fontSize: 25}}>{NEW_RELEASE}</Text>
+                <Text style={{fontFamily: 'Exo2-bold', fontSize: 20}}>
+                  {SPOT}: {this.state.spotToBeReleased.name}
+                </Text>
+              </View>
+
+              <View>
+                <Calendar
+                  markingType={'Simple'}
+                  onDayPress={(day) => {
+                  // this.toggleSelectedDay(day);
+                  }}
+                  minDate={new Date()}
+                  markedDates={
+                    null
+                  }
+                  firstDay={1}
+                  hideExtraDays={true}
+                  /* onMonthChange={(calendarDateObject) => {
+                  this.fetchDataForMonth(calendarDateObject);
+                }}*/
+                  // style={styles.calendar}
+                  theme={{
+                    textDayFontWeight: 'bold',
+                    textDayHeaderFontWeight: 'bold',
+                    textMonthFontWeight: 'bold',
+                    selectedDayTextColor: 'black'
+                  }}
+                />
+              </View>
+
+              <View style={{alignItems: 'center'}}>
+                <RoundedButton
+                  onPress={null}
+                  buttonText={RELEASE_SPOT}
+                  buttonStyle={{...styles.modalButton, backgroundColor: Colors.RED}}
+                />
+                <RoundedButton
+                  onPress={this.toggleNewReleaseModal}
+                  buttonText={CANCEL}
+                  buttonStyle={{...styles.modalButton, backgroundColor: Colors.WHITE}}
+                />
+              </View>
             </View>
           </Modal>
 
@@ -412,15 +487,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  simbutton: {
-    width: 327,
-    height: 43,
-    borderRadius: 21.7,
-    backgroundColor: Colors.YELLOW,
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 20
-  },
   releaseButton: {
     width: 327,
     height: 43,
@@ -444,5 +510,17 @@ const styles = StyleSheet.create({
     borderRadius: 21.7,
     margin: 24,
     paddingBottom: 8
+  },
+  newReleaseModal: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: Colors.APP_BACKGROUND,
+    borderRadius: 21.7,
+    paddingBottom: 8
+  },
+  calendar: {
+    backgroundColor: Colors.APP_BACKGROUND,
+    alignSelf: 'stretch'
   }
 });
