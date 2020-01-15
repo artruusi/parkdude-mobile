@@ -9,6 +9,7 @@ import {setLoadingState, removeLoadingState} from './loadingActions';
 export const getParkingSpots = (dates: string[]) => {
   return async (dispatch) => {
     try {
+      dispatch(setLoadingState(LoadingType.GET_PARKING_SPOTS));
       const url = `${GET_PARKING_SPOTS_URL}?availableOnDates=${dates.join(',')}`;
       const getSpotsResponse = await apiFetch(url, {method: HttpMethod.GET});
       const result = await getSpotsResponse.json();
