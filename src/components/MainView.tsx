@@ -177,14 +177,14 @@ class MainView extends Component<Props, State> {
 
     return (
       <View style={styles.container}>
-        <View style={{...styles.centerContent, height: '15%'}}>
+        <View style={{...styles.centerContent}}>
           <Text style={styles.title}>{CALENDAR_TITLE}</Text>
           <Text style={styles.error}>{this.props.error.networkError}</Text>
         </View>
 
         {/* Calendar component */}
 
-        <View style={{height: '60%', marginBottom: 30}}>
+        <View style={{height: '60%', marginBottom: 32}}>
           <Calendar
             markingType={this.state.markingType}
             onDayPress={(day) => {
@@ -243,6 +243,8 @@ class MainView extends Component<Props, State> {
         <Modal
           isVisible={this.state.reservationModalVisible}
           onBackdropPress={this.toggleReservationModal}
+          onBackButtonPress={this.toggleReservationModal}
+          style={{padding: 10}}
           animationInTiming={500}
           animationOutTiming={100}
           useNativeDriver={true}
@@ -269,6 +271,8 @@ class MainView extends Component<Props, State> {
         <Modal
           isVisible={this.state.errorModalVisible}
           onBackdropPress={this.toggleErrorModal}
+          onBackButtonPress={this.toggleErrorModal}
+          style={{padding: 10}}
           animationInTiming={500}
           animationOutTiming={100}
           useNativeDriver={true}
@@ -327,10 +331,11 @@ const styles = StyleSheet.create({
   },
   title: {
     width: 299,
-    height: 42,
+    height: 48,
     fontSize: 34.8,
     fontFamily: 'Exo2-bold',
     letterSpacing: 0,
+    margin: 16
   },
   error: {
     color: Colors.RED,

@@ -21,6 +21,8 @@ export class ErrorModal extends Component<ErrorModalProps> {
       <Modal
         isVisible={this.props.isVisible}
         onBackdropPress={this.props.toggleErrorModal}
+        onBackButtonPress={this.props.toggleErrorModal}
+        style={{padding: 10}}
         animationInTiming={500}
         animationOutTiming={100}
         useNativeDriver={true}

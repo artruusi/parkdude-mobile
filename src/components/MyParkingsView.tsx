@@ -226,6 +226,8 @@ class MyParkingsView extends Component<Props, State> {
           <Modal
             isVisible={this.state.deleteModalVisible}
             onBackdropPress={this.toggleDeleteModal}
+            onBackButtonPress={this.toggleDeleteModal}
+            style={{padding: 10}}
             animationInTiming={500}
             animationOutTiming={100}
             useNativeDriver={true}
@@ -276,9 +278,11 @@ class MyParkingsView extends Component<Props, State> {
       }
       return (
         <View style={styles.container}>
-          <Image style={styles.image} source={require('../../assets/icons/ic-parking/drawable-hdpi/ic_parking.png')}/>
+          <Image
+            style={styles.image}
+            source={require('../../assets/icons/ic-parking/drawable-xxxhdpi/ic_parking.png')}/>
           <Text style={styles.emptyTitle}>{NO_PARKINGS_TITLE}</Text>
-          <Text style={styles.text}>{NO_PARKINGS_TEXT}</Text>
+          <Text style={styles.emptyText}>{NO_PARKINGS_TEXT}</Text>
         </View>
       );
     }
@@ -305,9 +309,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fbfbfb',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingBottom: 8
   },
   itemContainer: {
-    height: '25%', // TODO this does not work
     flex: 1,
     backgroundColor: '#ffffff',
     flexDirection: 'row',
@@ -319,28 +323,33 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 3,
-    padding: 20,
-    margin: 10
+    padding: 16,
+    marginHorizontal: 16,
+    marginVertical: 8
   },
   permanentSpotContainer: {
-    height: '25%', // TODO this does not work
     flex: 1,
     backgroundColor: '#ffffff',
     alignItems: 'center',
     justifyContent: 'center',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    paddingTop: 20,
-    marginTop: 10
+    shadowColor: '#000',
+    shadowOffset: {width: 2, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
+    padding: 8,
+    // Just enough margin to see the shadow as "border"
+    marginTop: 1
   },
   title: {
     width: 229,
-    height: 42,
+    height: 48,
     fontFamily: 'Exo2-bold',
     fontSize: 34.8,
     letterSpacing: 0,
     textAlign: 'center',
-    color: Colors.BLACK
+    color: Colors.BLACK,
+    margin: 16
   },
   image: {
     width: 105,
@@ -349,19 +358,20 @@ const styles = StyleSheet.create({
   },
   emptyTitle: {
     width: 114,
-    height: 24,
     fontFamily: 'Exo2-bold',
     fontSize: 20,
     letterSpacing: 0,
     textAlign: 'center',
-    color: '#c8c8c8'
+    color: '#a0a0a0',
+    margin: 8
   },
-  text: {
+  emptyText: {
     fontFamily: 'Exo2',
     fontSize: 16,
     letterSpacing: 0,
+    width: 216,
     textAlign: 'center',
-    color: '#c8c8c8'
+    color: '#a0a0a0'
   },
   column1: {
     width: '20%',
@@ -418,7 +428,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.RED,
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 20
+    margin: 8
   },
   modalButton: {
     width: 250,
@@ -432,6 +442,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: Colors.APP_BACKGROUND,
     borderRadius: 21.7,
-    margin: 20
+    margin: 24,
+    paddingBottom: 8
   }
 });

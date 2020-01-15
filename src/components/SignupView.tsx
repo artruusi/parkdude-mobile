@@ -87,7 +87,9 @@ class SignupView extends Component<Props> {
   render() {
     return (
       <KeyboardAvoidingView style={styles.outerContainer} behavior="padding" enabled>
-        <ScrollView contentContainerStyle={styles.scrollViewContent} >
+        <ScrollView
+          contentContainerStyle={styles.scrollViewContent}
+          keyboardShouldPersistTaps="handled" >
           <View style={styles.container}>
             <View style={[styles.parkdudeLogoContainer]}>
               <Image
@@ -95,69 +97,74 @@ class SignupView extends Component<Props> {
                 style={styles.parkdudeLogo}
               />
             </View>
-            <Text style={styles.signupText}>{SIGNUP}</Text>
-            <TextInput
-              style={styles.inputField}
-              placeholder={EMAIL}
-              autoCompleteType='email'
-              autoFocus={true}
-              onChangeText={this.onEmailChange}
-              autoCapitalize="none"
-              returnKeyType="next"
-              enablesReturnKeyAutomatically={true}
-              blurOnSubmit={false}
-              onSubmitEditing={() => this.nameInput.focus()}
-            />
-            <TextInput
-              ref={(input) => this.nameInput = input}
-              style={styles.inputField}
-              placeholder={NAME}
-              onChangeText={this.onNameChange}
-              autoCapitalize="none"
-              returnKeyType="next"
-              enablesReturnKeyAutomatically={true}
-              blurOnSubmit={false}
-              onSubmitEditing={() => this.passwordInput.focus()}
-            />
-            <TextInput
-              ref={(input) => this.passwordInput = input}
-              style={styles.inputField}
-              placeholder={PASSWORD}
-              autoCompleteType='password'
-              secureTextEntry={true}
-              onChangeText={this.onPasswordChange}
-              returnKeyType="next"
-              enablesReturnKeyAutomatically={true}
-              blurOnSubmit={false}
-              onSubmitEditing={() => this.password2Input.focus()}
-            />
-            <TextInput
-              ref={(input) => this.password2Input = input}
-              style={styles.inputField}
-              placeholder={CONFIRM_PASSWORD}
-              autoCompleteType='password'
-              secureTextEntry={true}
-              onChangeText={this.onPassword2Change}
-              enablesReturnKeyAutomatically={true}
-            />
-            <View style={{flex: 1}}>
-              <Text style={styles.errorText}>{this.props.error}</Text>
-            </View>
-            <View style={styles.horizontalContainer}>
-              <RoundedButton
-                onPress={this.back}
-                buttonText={BACK}
-                buttonStyle={styles.yellowButton}
+            <View style={styles.formContainer}>
+              <Text style={styles.signupText}>{SIGNUP}</Text>
+              <TextInput
+                style={styles.inputField}
+                placeholder={EMAIL}
+                autoCompleteType='email'
+                keyboardType="email-address"
+                autoFocus={true}
+                onChangeText={this.onEmailChange}
+                autoCapitalize="none"
+                returnKeyType="next"
+                enablesReturnKeyAutomatically={true}
+                blurOnSubmit={false}
+                onSubmitEditing={() => this.nameInput.focus()}
               />
-              <RoundedButton
-                onPress={this.signUp}
-                buttonText={SIGNUP}
-                buttonStyle={styles.yellowButton}
-                isLoading={this.props.signupLoading}
-                disabled={
-                  !this.state.email || !this.state.name || !this.state.password || !this.state.password2
-                }
+              <TextInput
+                ref={(input) => this.nameInput = input}
+                style={styles.inputField}
+                placeholder={NAME}
+                onChangeText={this.onNameChange}
+                autoCapitalize="none"
+                returnKeyType="next"
+                enablesReturnKeyAutomatically={true}
+                blurOnSubmit={false}
+                onSubmitEditing={() => this.passwordInput.focus()}
               />
+              <TextInput
+                ref={(input) => this.passwordInput = input}
+                style={styles.inputField}
+                placeholder={PASSWORD}
+                autoCompleteType='password'
+                secureTextEntry={true}
+                onChangeText={this.onPasswordChange}
+                returnKeyType="next"
+                enablesReturnKeyAutomatically={true}
+                blurOnSubmit={false}
+                onSubmitEditing={() => this.password2Input.focus()}
+              />
+              <TextInput
+                ref={(input) => this.password2Input = input}
+                style={styles.inputField}
+                placeholder={CONFIRM_PASSWORD}
+                autoCompleteType='password'
+                secureTextEntry={true}
+                onChangeText={this.onPassword2Change}
+                enablesReturnKeyAutomatically={true}
+                onSubmitEditing={this.signUp}
+              />
+              <View>
+                <Text style={styles.errorText}>{this.props.error}</Text>
+              </View>
+              <View style={styles.horizontalContainer}>
+                <RoundedButton
+                  onPress={this.back}
+                  buttonText={BACK}
+                  buttonStyle={styles.yellowButton}
+                  disabled={this.props.signupLoading}
+                />
+                <RoundedButton
+                  onPress={this.signUp}
+                  buttonText={SIGNUP}
+                  buttonStyle={styles.yellowButton}
+                  isLoading={this.props.signupLoading}
+                  disabled={
+                    !this.state.email || !this.state.name || !this.state.password || !this.state.password2
+                  }
+                />
+              </View>
             </View>
           </View>
         </ScrollView>
@@ -181,13 +188,12 @@ export default connector(SignupView);
 
 const styles = StyleSheet.create({
   outerContainer: {
-    flex: 10,
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     backgroundColor: '#fff',
   },
   container: {
-    flex: 10,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
@@ -201,14 +207,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
   },
-  outerFormContainer: {
-    flex: 2,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingBottom: '5%'
+  formContainer: {
+    flex: 1,
+    alignItems: 'center'
   },
   horizontalContainer: {
-    flex: 3,
     flexDirection: 'row',
     backgroundColor: '#fff',
     alignItems: 'center',
@@ -223,10 +226,8 @@ const styles = StyleSheet.create({
   parkdudeLogoContainer: {
     flexDirection: 'row',
     flex: 1,
-    alignItems: 'flex-start',
     justifyContent: 'center',
-    alignSelf: 'flex-start',
-    paddingTop: 30
+    paddingTop: 50
   },
   signupText: {
     fontSize: 20,
