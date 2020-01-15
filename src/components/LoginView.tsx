@@ -101,6 +101,7 @@ class LoginView extends Component<Props> {
             buttonText={SIGNUP}
             buttonStyle={styles.signUpButton}
             textStyle={styles.buttonText}
+            isTertiary={true}
           />
         </View>
       </View>

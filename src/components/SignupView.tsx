@@ -9,6 +9,7 @@ import {RoundedButton} from '../shared/RoundedButton';
 import {RootReducer} from '../reducers/index';
 import {setSignupError, clearErrorState} from '../actions/errorActions';
 import {UserRole} from '../types';
+import {Colors} from '../../assets/colors';
 
 type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
@@ -152,6 +153,7 @@ class SignupView extends Component<Props> {
                 onPress={this.signUp}
                 buttonText={SIGNUP}
                 buttonStyle={styles.yellowButton}
+                isLoading={this.props.signupLoading}
                 disabled={
                   !this.state.email || !this.state.name || !this.state.password || !this.state.password2
                 }
@@ -167,7 +169,8 @@ class SignupView extends Component<Props> {
 const mapStateToProps = (state: RootReducer) => ({
   isAuthenticated: state.auth.isAuthenticated,
   userRole: state.auth.userRole,
-  error: state.error.signupError
+  error: state.error.signupError,
+  signupLoading: state.loading.signUpLoading
 });
 
 const mapDispatchToProps = {getAuthState, signup, setSignupError, clearErrorState};
@@ -235,7 +238,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Exo2',
     marginTop: '1%',
     marginBottom: '1%',
-    color: 'red'
+    color: Colors.RED
   },
   yellowButton: {
     flex: 1,

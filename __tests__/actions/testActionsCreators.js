@@ -4,6 +4,8 @@ import * as parkingActions from '../../src/actions/parkingActions';
 import * as calendarActions from '../../src/actions/calendarActions';
 import * as reservationActions from '../../src/actions/reservationActions';
 import * as types from '../../src/actions/actionTypes';
+import {LoadingType} from '../../src/types';
+import {setLoadingState, removeLoadingState} from '../../src/actions/loadingActions';
 
 describe('Action Creators', () => {
   it('should create GET_AUTHSTATE action', () => {
@@ -100,5 +102,23 @@ describe('Action Creators', () => {
       type: types.CLEAR_ERRORS
     };
     expect(errorActions.clearErrorState()).toEqual(expectedAction);
+  });
+
+  it('should create SET_LOADING_STATE action', () => {
+    const mockPayload = LoadingType.GET_MONTH;
+    const expectedAction = {
+      type: types.SET_LOADING_STATE,
+      payload: mockPayload
+    };
+    expect(setLoadingState(mockPayload)).toEqual(expectedAction);
+  });
+
+  it('should create REMOVE_LOADING_STATE action', () => {
+    const mockPayload = LoadingType.GET_MONTH;
+    const expectedAction = {
+      type: types.REMOVE_LOADING_STATE,
+      payload: mockPayload
+    };
+    expect(removeLoadingState(mockPayload)).toEqual(expectedAction);
   });
 });

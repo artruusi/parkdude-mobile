@@ -4,12 +4,14 @@ import {gotNetworkError, reservationFailed, clearErrorState,
   generalError, deleteReservationFailed} from './errorActions';
 import {CONNECTION_ERROR, GENERAL_ERROR_MESSAGE} from '../Constants';
 import {apiFetch} from '../Utils';
-import {HttpMethod, PostReservation, UserParkingItem} from '../types';
+import {HttpMethod, PostReservation, UserParkingItem, LoadingType} from '../types';
 import {getMyParkings} from './parkingActions';
+import {setLoadingState, removeLoadingState} from './loadingActions';
 
 export const postReservation = (reservation: PostReservation) => {
   return async (dispatch) => {
     try {
+      dispatch(setLoadingState(LoadingType.RESERVE_SPOTS));
       const postReservationResponse = await apiFetch(
         POST_RESERVATION_URL,
         {method: HttpMethod.POST,
@@ -29,6 +31,7 @@ export const postReservation = (reservation: PostReservation) => {
     } catch (error) {
       dispatch(gotNetworkError(CONNECTION_ERROR));
     }
+    dispatch(removeLoadingState(LoadingType.RESERVE_SPOTS));
   };
 };
 
@@ -41,6 +44,7 @@ export const createPostReservationAction = (result) => {
 
 export const deleteReservation = (item: UserParkingItem) => {
   return async (dispatch) => {
+    dispatch(setLoadingState(LoadingType.DELETE_RESERVATION));
     try {
       const date = item.parkingEvent.date;
       const id = item.parkingEvent.parkingSpot.id;
@@ -61,6 +65,7 @@ export const deleteReservation = (item: UserParkingItem) => {
     } catch (error) {
       dispatch(gotNetworkError(CONNECTION_ERROR));
     }
+    dispatch(removeLoadingState(LoadingType.DELETE_RESERVATION));
   };
 };
 

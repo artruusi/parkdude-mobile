@@ -102,3 +102,17 @@ export enum Marking {
   PERIOD = 'period'
 }
 
+export enum LoadingType {
+  SIGNUP = 'signUpLoading',
+  PASSWORD_LOGIN = 'passwordLoginLoading',
+  GET_MONTH = 'getMonthLoading',
+  GET_RESERVATIONS = 'getReservationsLoading',
+  GET_PARKING_SPOTS = 'getParkingSpotsLoading',
+  RESERVE_SPOTS = 'reserveSpotsLoading',
+  DELETE_RESERVATION = 'deleteReservationLoading'
+}
+
+export type LoadingState = {
+  [key in LoadingType]: boolean;
+}
+

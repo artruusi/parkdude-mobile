@@ -15,6 +15,7 @@ import Modal from 'react-native-modal';
 import {RootReducer} from '../reducers';
 import {RoundedButton} from '../shared/RoundedButton';
 import {ErrorModal} from '../shared/ErrorModal';
+import {LoadingArea} from '../shared/LoadingArea';
 
 type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
@@ -53,8 +54,10 @@ class ParkingItem extends Component<ItemProps> {
           </View>
         </View>
         <View style={styles.column2}>
-          <Text style={{fontFamily: 'Exo2-bold'}}>{this.props.item.type}</Text>
-          <Text style={{fontFamily: 'Exo2-bold'}}>{prettierDateOutput(this.props.item.parkingEvent.date)}</Text>
+          <Text style={{fontFamily: 'Exo2-bold', fontSize: 20}}>{this.props.item.type}</Text>
+          <Text style={{fontFamily: 'Exo2-bold', fontSize: 16}}>
+            {prettierDateOutput(this.props.item.parkingEvent.date)}
+          </Text>
         </View>
         <View style={styles.column3}>
           <View style={styles.row3}>
@@ -151,9 +154,9 @@ class MyParkingsView extends Component<Props, State> {
     this.setState({errorModalVisible: !this.state.errorModalVisible, errorText: ''});
   }
 
-  delete() {
+  async delete() {
     if (this.state.parkingItemToDelete.type === ParkingSpotEventType.PARKING) {
-      this.props.deleteReservation(this.state.parkingItemToDelete);
+      await this.props.deleteReservation(this.state.parkingItemToDelete);
     }
     if (this.state.parkingItemToDelete.type === ParkingSpotEventType.RELEASE) {
       const date = this.state.parkingItemToDelete.parkingEvent.date;
@@ -161,7 +164,7 @@ class MyParkingsView extends Component<Props, State> {
         dates: [date],
         parkingSpotId: this.state.parkingItemToDelete.parkingEvent.parkingSpot.id
       };
-      this.props.postReservation(reservation);
+      await this.props.postReservation(reservation);
     }
     this.toggleDeleteModal();
   }
@@ -244,11 +247,13 @@ class MyParkingsView extends Component<Props, State> {
               <RoundedButton
                 onPress={this.delete}
                 buttonText={DELETE}
+                isLoading={this.props.deleteReservationLoading || this.props.removeReleaseLoading}
                 buttonStyle={{...styles.modalButton, backgroundColor: Colors.RED}}
               />
               <RoundedButton
                 onPress={this.toggleDeleteModal}
                 buttonText={CANCEL}
+                disabled={this.props.deleteReservationLoading || this.props.removeReleaseLoading}
                 buttonStyle={{...styles.modalButton, backgroundColor: Colors.WHITE}}
               />
             </View>
@@ -266,6 +271,9 @@ class MyParkingsView extends Component<Props, State> {
 
       );
     } else {
+      if (this.props.reservationsLoading) {
+        return <LoadingArea/>;
+      }
       return (
         <View style={styles.container}>
           <Image style={styles.image} source={require('../../assets/icons/ic-parking/drawable-hdpi/ic_parking.png')}/>
@@ -279,7 +287,10 @@ class MyParkingsView extends Component<Props, State> {
 
 const mapStateToProps = (state: RootReducer) => ({
   myReservations: state.myReservations,
-  error: state.error
+  error: state.error,
+  reservationsLoading: state.loading.getReservationsLoading,
+  deleteReservationLoading: state.loading.deleteReservationLoading,
+  removeReleaseLoading: state.loading.reserveSpotsLoading
 });
 
 const mapDispatchToProps = {getMyParkings, deleteReservation, postReservation};
@@ -303,8 +314,11 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'flex-start',
     borderRadius: 12.2,
-    borderStyle: 'solid',
-    borderWidth: 1,
+    shadowColor: Colors.BLACK,
+    shadowOffset: {width: 2, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
     padding: 20,
     margin: 10
   },
@@ -326,7 +340,7 @@ const styles = StyleSheet.create({
     fontSize: 34.8,
     letterSpacing: 0,
     textAlign: 'center',
-    color: '#000000'
+    color: Colors.BLACK
   },
   image: {
     width: 105,
@@ -356,6 +370,7 @@ const styles = StyleSheet.create({
     width: '70%',
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: 'center'
   },
   column3: {
     width: '10%',

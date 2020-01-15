@@ -9,6 +9,7 @@ import {RoundedButton} from '../shared/RoundedButton';
 import {RootReducer} from '../reducers/index';
 import {setPasswordLoginError, clearErrorState} from '../actions/errorActions';
 import {UserRole} from '../types';
+import {Colors} from '../../assets/colors';
 
 type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
@@ -110,6 +111,7 @@ class PasswordLoginView extends Component<Props> {
                 buttonText={LOG_IN}
                 buttonStyle={styles.yellowButton}
                 disabled={!this.state.email || !this.state.password}
+                isLoading={this.props.loginLoding}
               />
             </View>
           </View>
@@ -122,7 +124,8 @@ class PasswordLoginView extends Component<Props> {
 const mapStateToProps = (state: RootReducer) => ({
   isAuthenticated: state.auth.isAuthenticated,
   userRole: state.auth.userRole,
-  error: state.error.passwordLoginError
+  error: state.error.passwordLoginError,
+  loginLoding: state.loading.passwordLoginLoading
 });
 
 const mapDispatchToProps = {getAuthState, loginWithPassword, setPasswordLoginError, clearErrorState};
@@ -188,7 +191,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Exo2',
     marginTop: '1%',
     marginBottom: '1%',
-    color: 'red'
+    color: Colors.RED
   },
   yellowButton: {
     flex: 1,

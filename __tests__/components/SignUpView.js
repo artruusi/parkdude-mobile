@@ -16,6 +16,9 @@ const store = mockStore({
   },
   error: {
     passwordLoginError: ''
+  },
+  loading: {
+    signupLoading: false
   }
 });
 

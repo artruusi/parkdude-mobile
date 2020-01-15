@@ -219,7 +219,7 @@ class MainView extends Component<Props, State> {
               disabled={Object.keys(this.state.userSelectedDates).length === 0}>
               <View style={{flex: 1, flexDirection: 'row'}}>
                 <View style={{...styles.centerContent, width: '70%'}}>
-                  <Text style={{fontFamily: 'Exo2-bold', marginRight: 10}}>{this.state.selectedSpot.name}</Text>
+                  <Text style={{fontFamily: 'Exo2-bold', fontSize: 16}}>{this.state.selectedSpot.name}</Text>
                 </View>
                 <View style={{...styles.centerContent, width: '30%'}}>
                   <Image source={require('../../assets/icons/ic-dropdown/drawable-hdpi/ic_dropdown.png')}/>
@@ -233,6 +233,7 @@ class MainView extends Component<Props, State> {
               disabled={Object.keys(this.state.userSelectedDates).length === 0}
               buttonText={BOOK_NOW}
               buttonStyle={styles.bookButton}
+              isLoading={this.props.reserveSpotsLoading}
             />
           </View>
         </View>
@@ -300,7 +301,8 @@ const mapStateToProps = (state: RootReducer) => ({
   calendarList: state.calendar.calendar,
   reservation: state.reservation,
   parkingSpots: state.parkingSpots,
-  error: state.error
+  error: state.error,
+  reserveSpotsLoading: state.loading.reserveSpotsLoading
 });
 
 const mapDispatchToProps = {getCalendarSpots, postReservation, getParkingSpots};
@@ -339,9 +341,12 @@ const styles = StyleSheet.create({
     width: 163.5,
     height: 43,
     borderRadius: 21.7,
-    borderStyle: 'solid',
-    borderWidth: 1,
     backgroundColor: Colors.WHITE,
+    shadowColor: Colors.BLACK,
+    shadowOffset: {width: 2, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
   },
   bookButton: {
     width: 163.5,
@@ -359,11 +364,14 @@ const styles = StyleSheet.create({
     width: 250,
     height: 43,
     borderRadius: 21.7,
-    borderStyle: 'solid',
-    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 10
+    margin: 10,
+    shadowColor: Colors.BLACK,
+    shadowOffset: {width: 2, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
   },
   modal: {
     alignItems: 'center',
