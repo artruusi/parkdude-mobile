@@ -2,13 +2,36 @@
   "name": "parkdude",
   "displayName": "Parkdude",
   "expo": {
-    "name": "parkdude",
-    "slug": "expo-template-bare",
+    "name": "Parkdude",
+    "slug": "parkdude",
     "privacy": "unlisted",
     "sdkVersion": "35.0.0",
     "version": "1.0.0",
     "entryPoint": "node_modules/expo/AppEntry.js",
     "platforms": ["ios", "android", "web"],
-    "scheme": "parkdude"
+    "scheme": "parkdude",
+    "orientation": "portrait",
+    "icon": "./assets/images/app-icon/app-icon.png",
+    "splash": {
+      "image": "./assets/images/parkdude-logo/drawable-xxhdpi/parkdude.png",
+      "backgroundColor": "#ffffff",
+      "resizeMode": "contain"
+    },
+    "android": {
+      "package": "com.{ORGANISATION_HERE}.parkdude",
+      "versionCode": 1,
+      "permissions": [],
+      "splash": {
+        "resizeMode": "native",
+        "mdpi": "./assets/images/splash-screen/drawable-mdpi/splash-screen.png",
+        "hdpi": "./assets/images/splash-screen/drawable-hdpi/splash-screen.png",
+        "xhdpi": "./assets/images/splash-screen/drawable-xhdpi/splash-screen.png",
+        "xxhdpi": "./assets/images/splash-screen/drawable-xxhdpi/splash-screen.png",
+        "xxxhdpi": "./assets/images/splash-screen/drawable-xxxhdpi/splash-screen.png"
+      }
+    },
+    "ios": {
+      "bundleIdentifier": "com.{ORGANISATION_HERE}.parkdude"
+    }
   }
 }
