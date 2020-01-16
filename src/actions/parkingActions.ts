@@ -6,11 +6,12 @@ import {apiFetch, toDateString} from '../Utils';
 import {HttpMethod, LoadingType} from '../types';
 import {setLoadingState, removeLoadingState} from './loadingActions';
 
-export const getParkingSpots = () => {
+export const getParkingSpots = (dates: string[]) => {
   return async (dispatch) => {
     try {
       dispatch(setLoadingState(LoadingType.GET_PARKING_SPOTS));
-      const getSpotsResponse = await apiFetch(GET_PARKING_SPOTS_URL, {method: HttpMethod.GET});
+      const url = `${GET_PARKING_SPOTS_URL}?availableOnDates=${dates.join(',')}`;
+      const getSpotsResponse = await apiFetch(url, {method: HttpMethod.GET});
       const result = await getSpotsResponse.json();
       dispatch(clearErrorState());
       dispatch(setParkingSpots(result.data));

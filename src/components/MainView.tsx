@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator} from 'react-native';
 import {NavigationScreenProp, ScrollView} from 'react-navigation';
 import {Calendar} from 'react-native-calendars';
 import {Colors} from '../../assets/colors';
@@ -27,7 +27,10 @@ interface State {
   selectedSpot: BasicParkingSpotData;
   currentMonth: number;
   currentYear: number;
+  textColorChangeActive: boolean;
 }
+
+const randomSpot = {id: 'random', name: 'Any free spot'};
 
 class MainView extends Component<Props, State> {
   constructor(props: Props) {
@@ -37,9 +40,10 @@ class MainView extends Component<Props, State> {
       markingType: Marking.SIMPLE, // simple/period
       reservationModalVisible: false,
       errorModalVisible: false,
-      selectedSpot: {id: 'random', name: 'Any free spot'},
+      selectedSpot: randomSpot,
       currentMonth: 0,
-      currentYear: 0
+      currentYear: 0,
+      textColorChangeActive: false
     };
     this.toggleSelectedDay = this.toggleSelectedDay.bind(this);
     this.fetchDataForMonth = this.fetchDataForMonth.bind(this);
@@ -48,10 +52,10 @@ class MainView extends Component<Props, State> {
     this.selectParkingSpot = this.selectParkingSpot.bind(this);
     this.reserveParkingSpot = this.reserveParkingSpot.bind(this);
     this.getAvailableParkingSpots = this.getAvailableParkingSpots.bind(this);
+    this.blinkSelectedParkingSpotColor = this.blinkSelectedParkingSpotColor.bind(this);
   }
 
   componentDidMount() {
-    this.getAvailableParkingSpots();
     const date = new Date();
     this.setState({currentMonth: date.getMonth()+1, currentYear: date.getFullYear()}, () => {
       const dateObject = {
@@ -88,12 +92,15 @@ class MainView extends Component<Props, State> {
         year: this.state.currentYear
       };
       this.fetchDataForMonth(dateObject);
-      this.setState({userSelectedDates: {}});
+      this.setState({
+        userSelectedDates: {},
+        selectedSpot: randomSpot
+      });
     }
   }
 
-  getAvailableParkingSpots() {
-    this.props.getParkingSpots();
+  getAvailableParkingSpots(dates: string[]) {
+    this.props.getParkingSpots(dates);
   }
 
   fetchDataForMonth(calendarDateObject: CalendarDateObject) {
@@ -125,7 +132,19 @@ class MainView extends Component<Props, State> {
           });
         }
       }
+      // Reset selected spot to 'Any free spot' if more dates are selected after the spot is selected
+      if (this.state.selectedSpot.id !== 'random' && Object.keys(this.state.userSelectedDates).length > 0) {
+        this.setState({
+          selectedSpot: randomSpot
+        });
+        this.blinkSelectedParkingSpotColor();
+      }
     }
+  }
+
+  blinkSelectedParkingSpotColor() {
+    this.setState({textColorChangeActive: true});
+    setTimeout(() => this.setState({textColorChangeActive: false}), 1000);
   }
 
   selectParkingSpot(spot: BasicParkingSpotData) {
@@ -150,6 +169,10 @@ class MainView extends Component<Props, State> {
   }
 
   toggleReservationModal() {
+    if (!this.state.reservationModalVisible) {
+      const dates = Object.keys(this.state.userSelectedDates);
+      this.getAvailableParkingSpots(dates);
+    }
     this.setState({reservationModalVisible: !this.state.reservationModalVisible});
   }
 
@@ -219,7 +242,13 @@ class MainView extends Component<Props, State> {
               disabled={Object.keys(this.state.userSelectedDates).length === 0}>
               <View style={{flex: 1, flexDirection: 'row'}}>
                 <View style={{...styles.centerContent, width: '70%'}}>
-                  <Text style={{fontFamily: 'Exo2-bold', fontSize: 16}}>{this.state.selectedSpot.name}</Text>
+                  {
+                    this.state.textColorChangeActive ?
+                      <Text style={{fontFamily: 'Exo2-bold', fontSize: 16, color: Colors.RED}}>
+                        {this.state.selectedSpot.name}
+                      </Text> :
+                      <Text style={{fontFamily: 'Exo2-bold', fontSize: 16}}>{this.state.selectedSpot.name}</Text>
+                  }
                 </View>
                 <View style={{...styles.centerContent, width: '30%'}}>
                   <Image source={require('../../assets/icons/ic-dropdown/drawable-hdpi/ic_dropdown.png')}/>
@@ -254,7 +283,15 @@ class MainView extends Component<Props, State> {
               <Text style={{fontSize: 25, fontFamily: 'Exo2-bold'}}>{SELECT_PARKING_SPOT}</Text>
             </View>
             <ScrollView directionalLockEnabled={true}>
-              {parkingSpots}
+              {
+                this.props.getParkingSpotsLoading ?
+                  <ActivityIndicator
+                    size='large'
+                    color={Colors.BLACK}
+                    style={{marginVertical: 120}}
+                  /> :
+                  parkingSpots
+              }
             </ScrollView>
             <View style={styles.centerContent}>
               <RoundedButton
@@ -306,7 +343,8 @@ const mapStateToProps = (state: RootReducer) => ({
   reservation: state.reservation,
   parkingSpots: state.parkingSpots,
   error: state.error,
-  reserveSpotsLoading: state.loading.reserveSpotsLoading
+  reserveSpotsLoading: state.loading.reserveSpotsLoading,
+  getParkingSpotsLoading: state.loading.getParkingSpotsLoading
 });
 
 const mapDispatchToProps = {getCalendarSpots, postReservation, getParkingSpots};
