@@ -16,6 +16,7 @@ class ProfileView extends Component<Props> {
   constructor(props: Props) {
     super(props);
     this.logOut = this.logOut.bind(this);
+    this.changePassword = this.changePassword.bind(this);
   }
 
   static navigationOptions = {
@@ -36,6 +37,10 @@ class ProfileView extends Component<Props> {
     this.props.navigation.navigate('LogOut');
   }
 
+  changePassword() {
+    this.props.navigation.navigate('ChangePassword');
+  }
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -47,7 +52,7 @@ class ProfileView extends Component<Props> {
         </View>
         <View style={styles.buttonContainer}>
           <RoundedButton
-            onPress={console.log('Pressed change password')}
+            onPress={this.changePassword}
             buttonText={CHANGE_PASSWORD}
             buttonStyle={styles.yellowButton}
           />
@@ -89,8 +94,6 @@ const styles = StyleSheet.create({
     marginBottom: '5%',
   },
   title: {
-    width: 229,
-    height: 48,
     fontFamily: 'Exo2-bold',
     fontSize: 34.8,
     letterSpacing: 0,

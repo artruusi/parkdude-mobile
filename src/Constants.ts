@@ -72,6 +72,13 @@ export const PROFILE_TITLE = 'Your account';
 export const YOUR_EMAIL = 'Your e-mail';
 export const CHANGE_PASSWORD = 'Change password';
 
+// Change password
+
+export const CHANGE_PASSWORD_TITLE = 'Change password';
+export const CURRENT_PASSWORD = 'Current password';
+export const NEW_PASSWORD = 'New password';
+export const CONFIRM_NEW_PASSWORD = 'Confirm new password';
+
 // About
 
 export const ABOUT_TITLE = 'About Parkdude';

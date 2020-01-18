@@ -8,6 +8,7 @@ import LogOut from '../components/LogOut';
 import AboutPage from '../components/AboutPageView';
 import MyReservationsView from '../components/MyParkingsView';
 import ProfileView from '../components/ProfileView';
+import ChangePasswordView from '../components/ChangePasswordView';
 import {createStackNavigator} from 'react-navigation-stack';
 import {TouchableOpacity, Image, StyleSheet} from 'react-native';
 
@@ -91,7 +92,8 @@ const AppNavigation = createStackNavigator(
           </TouchableOpacity>
         )
       })
-    }
+    },
+    ChangePassword: {screen: ChangePasswordView}
   },
   {
     initialRouteName: 'DrawerStack',
