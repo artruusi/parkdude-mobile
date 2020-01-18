@@ -94,13 +94,11 @@ class LoginView extends Component<Props> {
             onPress={this.emailLogin}
             buttonText={EMAIL_LOGIN}
             buttonStyle={styles.yellowButton}
-            textStyle={styles.buttonText}
           />
           <RoundedButton
             onPress={this.signUp}
             buttonText={SIGNUP}
             buttonStyle={styles.signUpButton}
-            textStyle={styles.buttonText}
             isTertiary={true}
           />
         </View>
@@ -168,7 +166,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Colors.APP_BACKGROUND,
   },
-  buttonText: {
-    // fontFamily: 'Roboto',
-  }
 });

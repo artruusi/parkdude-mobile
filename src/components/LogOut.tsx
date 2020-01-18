@@ -56,9 +56,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  logoutButton: {
-    margin: 10,
-    padding: 10,
-    backgroundColor: '#DDD'
-  }
 });
