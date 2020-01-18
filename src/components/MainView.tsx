@@ -3,17 +3,18 @@ import {StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator} from
 import {NavigationScreenProp, ScrollView} from 'react-navigation';
 import {Calendar} from 'react-native-calendars';
 import {Colors} from '../../assets/colors';
-import {Marking, CalendarDateObject, BasicParkingSpotData} from '../types';
+import {Marking, CalendarDateObject, BasicParkingSpotData, CalendarType} from '../types';
 import {CALENDAR_TITLE, BOOK_NOW, BACK, SELECT_PARKING_SPOT, ALREADY_BOOKED,
   SPOT, OK, TRY_AGAIN, ERROR} from '../Constants';
 import {connect, ConnectedProps} from 'react-redux';
-import {getCalendarSpots} from '../actions/calendarActions';
+// import {getCalendarSpots} from '../actions/calendarActions';
 import {postReservation} from '../actions/reservationActions';
 import {getParkingSpots} from '../actions/parkingActions';
 import {createMarkedDatesObject, getMonthRangeForURL, prettierDateOutput} from '../Utils';
 import Modal from 'react-native-modal';
 import {RoundedButton} from '../shared/RoundedButton';
 import {RootReducer} from '../reducers/index';
+import ReservationCalendar from './ReservationCalendar';
 
 type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
@@ -45,17 +46,19 @@ class MainView extends Component<Props, State> {
       currentYear: 0,
       textColorChangeActive: false
     };
-    this.toggleSelectedDay = this.toggleSelectedDay.bind(this);
-    this.fetchDataForMonth = this.fetchDataForMonth.bind(this);
+    // this.toggleSelectedDay = this.toggleSelectedDay.bind(this);
+    // this.fetchDataForMonth = this.fetchDataForMonth.bind(this);
     this.toggleReservationModal = this.toggleReservationModal.bind(this);
     this.toggleErrorModal = this.toggleErrorModal.bind(this);
     this.selectParkingSpot = this.selectParkingSpot.bind(this);
     this.reserveParkingSpot = this.reserveParkingSpot.bind(this);
     this.getAvailableParkingSpots = this.getAvailableParkingSpots.bind(this);
     this.blinkSelectedParkingSpotColor = this.blinkSelectedParkingSpotColor.bind(this);
+    this.updateUserSelectedDates = this.updateUserSelectedDates.bind(this);
+    this.setParkingSpot = this.setParkingSpot.bind(this);
   }
 
-  componentDidMount() {
+  /* componentDidMount() {
     const date = new Date();
     this.setState({currentMonth: date.getMonth()+1, currentYear: date.getFullYear()}, () => {
       const dateObject = {
@@ -75,14 +78,13 @@ class MainView extends Component<Props, State> {
           year: this.state.currentYear
         });
       });
-    });
-  }
+    });*/
 
   componentDidUpdate(receivedProps) {
     if (receivedProps.error.postReservationError.message !== '') {
       this.toggleErrorModal();
     }
-    if (receivedProps.reservation.reservations !== this.props.reservation.reservations) {
+    /* if (receivedProps.reservation.reservations !== this.props.reservation.reservations) {
       console.log('new succesful reservation, triggering calendar render');
       const dateObject = {
         dateString: undefined,
@@ -96,22 +98,26 @@ class MainView extends Component<Props, State> {
         userSelectedDates: {},
         selectedSpot: randomSpot
       });
-    }
+    }*/
   }
 
   getAvailableParkingSpots(dates: string[]) {
     this.props.getParkingSpots(dates);
   }
 
-  fetchDataForMonth(calendarDateObject: CalendarDateObject) {
+  setParkingSpot(spot: BasicParkingSpotData) {
+    this.setState({selectedSpot: spot});
+  }
+
+  /* fetchDataForMonth(calendarDateObject: CalendarDateObject) {
     this.setState({currentMonth: calendarDateObject.month, currentYear: calendarDateObject.year});
     const year = calendarDateObject.year;
     const month = calendarDateObject.month-1;
     const urlQuery = getMonthRangeForURL(year, month);
     this.props.getCalendarSpots(urlQuery);
-  }
+  }*/
 
-  toggleSelectedDay(day: CalendarDateObject) {
+  /* toggleSelectedDay(day: CalendarDateObject) {
     if (day.dateString in this.state.userSelectedDates) {
       const newDates = {...this.state.userSelectedDates};
       delete newDates[day.dateString];
@@ -122,7 +128,7 @@ class MainView extends Component<Props, State> {
       const userReservedDates = this.props.calendarList.filter((entry) =>
         entry.date === day.dateString);
       // array length is zero when data has not been loaded yet
-      if (userReservedDates.length > 0) {
+      if (this.props.getMonthLoading) {
         // user cannot click on date which already contains reservation for user
         if (userReservedDates[0].spacesReservedByUser.length === 0) {
           const newDates = {...this.state.userSelectedDates};
@@ -139,6 +145,17 @@ class MainView extends Component<Props, State> {
         });
         this.blinkSelectedParkingSpotColor();
       }
+    }
+  }*/
+
+  updateUserSelectedDates(userSelectedDates: Record<string, any>) {
+    // Reset selected spot to 'Any free spot' if more dates are selected after the spot is selected
+    this.setState({userSelectedDates});
+    if (this.state.selectedSpot.id !== 'random' && Object.keys(userSelectedDates).length > 0) {
+      this.setState({
+        selectedSpot: randomSpot
+      });
+      this.blinkSelectedParkingSpotColor();
     }
   }
 
@@ -208,27 +225,12 @@ class MainView extends Component<Props, State> {
         {/* Calendar component */}
 
         <View style={{height: '60%', marginBottom: 32}}>
-          <Calendar
-            markingType={this.state.markingType}
-            onDayPress={(day) => {
-              this.toggleSelectedDay(day);
-            }}
-            minDate={new Date()}
-            markedDates={
-              createMarkedDatesObject(this.props.calendarList, this.state.userSelectedDates)
-            }
-            firstDay={1}
-            hideExtraDays={true}
-            onMonthChange={(calendarDateObject) => {
-              this.fetchDataForMonth(calendarDateObject);
-            }}
-            style={styles.calendar}
-            theme={{
-              textDayFontWeight: 'bold',
-              textDayHeaderFontWeight: 'bold',
-              textMonthFontWeight: 'bold',
-              selectedDayTextColor: 'black'
-            }}
+          <ReservationCalendar
+            navigation={this.props.navigation}
+            markingType={Marking.SIMPLE}
+            calendarType={CalendarType.RESERVATION}
+            updateUserSelectedDates={this.updateUserSelectedDates}
+            setParkingSpot={this.setParkingSpot}
           />
         </View>
 
@@ -339,15 +341,16 @@ class MainView extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: RootReducer) => ({
-  calendarList: state.calendar.calendar,
+  // calendarList: state.calendar.calendar,
   reservation: state.reservation,
   parkingSpots: state.parkingSpots,
   error: state.error,
   reserveSpotsLoading: state.loading.reserveSpotsLoading,
-  getParkingSpotsLoading: state.loading.getParkingSpotsLoading
+  getParkingSpotsLoading: state.loading.getParkingSpotsLoading,
+  getMonthLoading: state.loading.getMonthLoading
 });
 
-const mapDispatchToProps = {getCalendarSpots, postReservation, getParkingSpots};
+const mapDispatchToProps = {/* getCalendarSpots,*/ postReservation, getParkingSpots};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 

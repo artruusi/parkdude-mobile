@@ -112,6 +112,11 @@ export enum LoadingType {
   DELETE_RESERVATION = 'deleteReservationLoading'
 }
 
+export enum CalendarType {
+  RESERVATION = 'reservation',
+  RELEASE = 'release'
+}
+
 export type LoadingState = {
   [key in LoadingType]: boolean;
 }

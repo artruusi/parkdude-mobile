@@ -1,5 +1,5 @@
 import {getCookie} from './CookieStorage';
-import {CalendarEntry, CalendarReservations, BasicParkingSpotData} from './types';
+import {CalendarEntry, CalendarReservations, BasicParkingSpotData, ParkingEvent} from './types';
 import {Colors} from '../assets/colors';
 import {HOST} from 'react-native-dotenv';
 
@@ -81,4 +81,8 @@ export const dateShouldBeDisabled = (today: string, date: string) => {
 
 export const prettierDateOutput = (date: string) => {
   return (date.slice(8) + '.' + date.slice(5, 7) + '.' + date.slice(0, 4));
+};
+
+export const parkingEventsToCalendarEntries = (events: ParkingEvent[]) => {
+  return events.map((e) => ({date: e.date, spacesReservedByUser: [e.parkingSpot], availableSpaces: 1}));
 };

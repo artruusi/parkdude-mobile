@@ -9,15 +9,19 @@ import {Calendar} from 'react-native-calendars';
 import {getMyParkings} from '../actions/parkingActions';
 import {postReservation, deleteReservation} from '../actions/reservationActions';
 import {ParkingEvent, ParkingSpotEventType, BasicParkingSpotData,
-  UserParkingItem} from '../types';
+  UserParkingItem,
+  Marking,
+  CalendarDateObject,
+  CalendarType} from '../types';
 import {Colors} from '../../assets/colors';
 import {NavigationScreenProp, ScrollView} from 'react-navigation';
-import {prettierDateOutput} from '../Utils';
+import {prettierDateOutput, createMarkedDatesObject, parkingEventsToCalendarEntries} from '../Utils';
 import Modal from 'react-native-modal';
 import {RootReducer} from '../reducers';
 import {RoundedButton} from '../shared/RoundedButton';
 import {ErrorModal} from '../shared/ErrorModal';
 import {LoadingArea} from '../shared/LoadingArea';
+import ReservationCalendar from './ReservationCalendar';
 
 type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
@@ -30,6 +34,10 @@ interface State {
   parkingItemToDelete: UserParkingItem;
   spotToBeReleased: BasicParkingSpotData;
   errorText: string;
+  userSelectedDates: Record<string, any>;
+  markingType: Marking;
+  currentMonth: number;
+  currentYear: number;
 }
 
 interface ItemProps {
@@ -111,7 +119,11 @@ class MyParkingsView extends Component<Props, State> {
         type: ParkingSpotEventType.PARKING
       },
       spotToBeReleased: {id: '', name: ''},
-      errorText: ''
+      errorText: '',
+      userSelectedDates: {},
+      markingType: Marking.SIMPLE,
+      currentMonth: 0,
+      currentYear: 0,
     };
     this.initDeleteModal = this.initDeleteModal.bind(this);
     this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
@@ -182,6 +194,22 @@ class MyParkingsView extends Component<Props, State> {
       await this.props.postReservation(reservation);
     }
     this.toggleDeleteModal();
+  }
+
+  reserveParkingSpot() {
+    /* const dates = Object.keys(this.state.userSelectedDates);
+    if (this.state.selectedSpot.id === 'random') {
+      const reservation = {
+        dates: dates
+      };
+      this.props.postReservation(reservation);
+    } else {
+      const reservation = {
+        dates: dates,
+        parkingSpotId: this.state.selectedSpot.id
+      };
+      this.props.postReservation(reservation);
+    }*/
   }
 
   render() {
@@ -297,27 +325,11 @@ class MyParkingsView extends Component<Props, State> {
               </View>
 
               <View>
-                <Calendar
-                  markingType={'Simple'}
-                  onDayPress={(day) => {
-                  // this.toggleSelectedDay(day);
-                  }}
-                  minDate={new Date()}
-                  markedDates={
-                    null
-                  }
-                  firstDay={1}
-                  hideExtraDays={true}
-                  /* onMonthChange={(calendarDateObject) => {
-                  this.fetchDataForMonth(calendarDateObject);
-                }}*/
-                  // style={styles.calendar}
-                  theme={{
-                    textDayFontWeight: 'bold',
-                    textDayHeaderFontWeight: 'bold',
-                    textMonthFontWeight: 'bold',
-                    selectedDayTextColor: 'black'
-                  }}
+                <ReservationCalendar
+                  navigation={this.props.navigation}
+                  markingType={Marking.SIMPLE}
+                  calendarType={CalendarType.RELEASE}
+                  calendarData={parkingEventsToCalendarEntries(this.props.myReservations.releases)}
                 />
               </View>
 
