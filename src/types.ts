@@ -5,6 +5,7 @@ export interface LoginState {
   userRole?: UserRole;
   name?: string;
   loading: boolean;
+  email?: string;
 }
 
 export interface ErrorState{
