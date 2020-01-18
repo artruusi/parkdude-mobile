@@ -66,6 +66,12 @@ export const SELECT_PARKING_SPOT = 'Select parking spot';
 export const ALREADY_BOOKED = 'It seems like your selected parking spot is already ' +
                               'booked for the following days';
 
+// Profile
+
+export const PROFILE_TITLE = 'Your account';
+export const YOUR_EMAIL = 'Your e-mail';
+export const CHANGE_PASSWORD = 'Change password';
+
 // About
 
 export const ABOUT_TITLE = 'About Parkdude';
