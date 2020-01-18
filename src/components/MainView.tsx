@@ -1,16 +1,14 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator} from 'react-native';
 import {NavigationScreenProp, ScrollView} from 'react-navigation';
-import {Calendar} from 'react-native-calendars';
 import {Colors} from '../../assets/colors';
-import {Marking, CalendarDateObject, BasicParkingSpotData, CalendarType} from '../types';
+import {Marking, BasicParkingSpotData, CalendarType} from '../types';
 import {CALENDAR_TITLE, BOOK_NOW, BACK, SELECT_PARKING_SPOT, ALREADY_BOOKED,
   SPOT, OK, TRY_AGAIN, ERROR} from '../Constants';
 import {connect, ConnectedProps} from 'react-redux';
-// import {getCalendarSpots} from '../actions/calendarActions';
 import {postReservation} from '../actions/reservationActions';
 import {getParkingSpots} from '../actions/parkingActions';
-import {createMarkedDatesObject, getMonthRangeForURL, prettierDateOutput} from '../Utils';
+import {prettierDateOutput} from '../Utils';
 import Modal from 'react-native-modal';
 import {RoundedButton} from '../shared/RoundedButton';
 import {RootReducer} from '../reducers/index';
@@ -22,12 +20,9 @@ type Props = ConnectedProps<typeof connector> & {
 
 interface State {
   userSelectedDates: Record<string, any>;
-  markingType: Marking;
   reservationModalVisible: boolean;
   errorModalVisible: boolean;
   selectedSpot: BasicParkingSpotData;
-  currentMonth: number;
-  currentYear: number;
   textColorChangeActive: boolean;
 }
 
@@ -38,16 +33,11 @@ class MainView extends Component<Props, State> {
     super(props);
     this.state = {
       userSelectedDates: {},
-      markingType: Marking.SIMPLE, // simple/period
       reservationModalVisible: false,
       errorModalVisible: false,
       selectedSpot: randomSpot,
-      currentMonth: 0,
-      currentYear: 0,
       textColorChangeActive: false
     };
-    // this.toggleSelectedDay = this.toggleSelectedDay.bind(this);
-    // this.fetchDataForMonth = this.fetchDataForMonth.bind(this);
     this.toggleReservationModal = this.toggleReservationModal.bind(this);
     this.toggleErrorModal = this.toggleErrorModal.bind(this);
     this.selectParkingSpot = this.selectParkingSpot.bind(this);
@@ -58,47 +48,10 @@ class MainView extends Component<Props, State> {
     this.setParkingSpot = this.setParkingSpot.bind(this);
   }
 
-  /* componentDidMount() {
-    const date = new Date();
-    this.setState({currentMonth: date.getMonth()+1, currentYear: date.getFullYear()}, () => {
-      const dateObject = {
-        dateString: undefined,
-        day: undefined,
-        month: this.state.currentMonth,
-        timestamp: undefined,
-        year: this.state.currentYear
-      };
-      this.fetchDataForMonth(dateObject);
-      this.props.navigation.addListener('willFocus', () => {
-        this.fetchDataForMonth({
-          dateString: undefined,
-          day: undefined,
-          month: this.state.currentMonth,
-          timestamp: undefined,
-          year: this.state.currentYear
-        });
-      });
-    });*/
-
   componentDidUpdate(receivedProps) {
     if (receivedProps.error.postReservationError.message !== '') {
       this.toggleErrorModal();
     }
-    /* if (receivedProps.reservation.reservations !== this.props.reservation.reservations) {
-      console.log('new succesful reservation, triggering calendar render');
-      const dateObject = {
-        dateString: undefined,
-        day: undefined,
-        month: this.state.currentMonth,
-        timestamp: undefined,
-        year: this.state.currentYear
-      };
-      this.fetchDataForMonth(dateObject);
-      this.setState({
-        userSelectedDates: {},
-        selectedSpot: randomSpot
-      });
-    }*/
   }
 
   getAvailableParkingSpots(dates: string[]) {
@@ -108,45 +61,6 @@ class MainView extends Component<Props, State> {
   setParkingSpot(spot: BasicParkingSpotData) {
     this.setState({selectedSpot: spot});
   }
-
-  /* fetchDataForMonth(calendarDateObject: CalendarDateObject) {
-    this.setState({currentMonth: calendarDateObject.month, currentYear: calendarDateObject.year});
-    const year = calendarDateObject.year;
-    const month = calendarDateObject.month-1;
-    const urlQuery = getMonthRangeForURL(year, month);
-    this.props.getCalendarSpots(urlQuery);
-  }*/
-
-  /* toggleSelectedDay(day: CalendarDateObject) {
-    if (day.dateString in this.state.userSelectedDates) {
-      const newDates = {...this.state.userSelectedDates};
-      delete newDates[day.dateString];
-      this.setState({
-        userSelectedDates: newDates,
-      });
-    } else {
-      const userReservedDates = this.props.calendarList.filter((entry) =>
-        entry.date === day.dateString);
-      // array length is zero when data has not been loaded yet
-      if (this.props.getMonthLoading) {
-        // user cannot click on date which already contains reservation for user
-        if (userReservedDates[0].spacesReservedByUser.length === 0) {
-          const newDates = {...this.state.userSelectedDates};
-          newDates[day.dateString] = {selected: true, selectedColor: Colors.YELLOW};
-          this.setState({
-            userSelectedDates: newDates,
-          });
-        }
-      }
-      // Reset selected spot to 'Any free spot' if more dates are selected after the spot is selected
-      if (this.state.selectedSpot.id !== 'random' && Object.keys(this.state.userSelectedDates).length > 0) {
-        this.setState({
-          selectedSpot: randomSpot
-        });
-        this.blinkSelectedParkingSpotColor();
-      }
-    }
-  }*/
 
   updateUserSelectedDates(userSelectedDates: Record<string, any>) {
     // Reset selected spot to 'Any free spot' if more dates are selected after the spot is selected
@@ -208,7 +122,6 @@ class MainView extends Component<Props, State> {
       </TouchableOpacity>
     ));
 
-    const bookButtonColor = Object.keys(this.state.userSelectedDates).length === 0 ? Colors.DISABLED : Colors.YELLOW;
     const dropdownButtonColor = Object.keys(this.state.userSelectedDates).length === 0 ? Colors.DISABLED : Colors.WHITE;
 
     const errorDates = this.props.error.postReservationError.dates.map((date, key) => (
@@ -341,7 +254,6 @@ class MainView extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: RootReducer) => ({
-  // calendarList: state.calendar.calendar,
   reservation: state.reservation,
   parkingSpots: state.parkingSpots,
   error: state.error,
@@ -350,7 +262,7 @@ const mapStateToProps = (state: RootReducer) => ({
   getMonthLoading: state.loading.getMonthLoading
 });
 
-const mapDispatchToProps = {/* getCalendarSpots,*/ postReservation, getParkingSpots};
+const mapDispatchToProps = {postReservation, getParkingSpots};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 

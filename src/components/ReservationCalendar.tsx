@@ -2,23 +2,23 @@ import React, {Component} from 'react';
 import {Calendar} from 'react-native-calendars';
 import {ConnectedProps, connect} from 'react-redux';
 import {NavigationScreenProp} from 'react-navigation';
-import {Marking, CalendarDateObject, CalendarType, BasicParkingSpotData} from '../types';
+import {Marking, CalendarDateObject, CalendarType, BasicParkingSpotData, CalendarEntry} from '../types';
 import {RootReducer} from '../reducers';
 import {Colors} from '../../assets/colors';
-import {createMarkedDatesObject, getMonthRangeForURL} from '../Utils';
+import {createMarkedDatesObject, getMonthRangeForURL, parkingEventsToCalendarEntries} from '../Utils';
 import {getCalendarSpots} from '../actions/calendarActions';
 
 type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
   markingType: Marking;
   calendarType: CalendarType;
-  updateUserSelectedDates?: (userSelectedDates: Record<string, any>) => void;
+  updateUserSelectedDates: (userSelectedDates: Record<string, any>) => void;
   setParkingSpot?: (spot: BasicParkingSpotData) => void;
-  calendarData?: any;
+  calendarData?: CalendarEntry[];
 }
 
 interface CalendarState {
-  calendarData: any; // ******************** !!
+  calendarData: CalendarEntry[];
   userSelectedDates: Record<string, any>;
   currentMonth: number;
   currentYear: number;
@@ -33,6 +33,7 @@ class ReservationCalendar extends Component<Props, CalendarState> {
       currentMonth: 0,
       currentYear: 0
     };
+    this.fetchDataForMonth = this.fetchDataForMonth.bind(this);
     this.toggleSelectedDay = this.toggleSelectedDay.bind(this);
   }
 
@@ -83,6 +84,12 @@ class ReservationCalendar extends Component<Props, CalendarState> {
     if (nextProps.calendarList !== this.props.calendarList) {
       this.setState({calendarData: this.props.calendarList});
     }
+    if (this.props.calendarData !== undefined) {
+      if (nextProps.myReservations.releases !== this.props.myReservations.releases) {
+        console.log('new succesful release, triggering calendar render');
+        this.setState({calendarData: parkingEventsToCalendarEntries(this.props.myReservations.releases)});
+      }
+    }
   }
 
   fetchDataForMonth(calendarDateObject: CalendarDateObject) {
@@ -99,16 +106,9 @@ class ReservationCalendar extends Component<Props, CalendarState> {
     if (day.dateString in this.state.userSelectedDates) {
       const newDates = {...this.state.userSelectedDates};
       delete newDates[day.dateString];
-      if (this.props.calendarType === CalendarType.RESERVATION) {
-        this.setState({
-          userSelectedDates: newDates
-        }, () => this.props.updateUserSelectedDates(this.state.userSelectedDates));
-      }
-      if (this.props.calendarType === CalendarType.RELEASE) {
-        this.setState({
-          userSelectedDates: newDates
-        });
-      }
+      this.setState({
+        userSelectedDates: newDates
+      }, () => this.props.updateUserSelectedDates(this.state.userSelectedDates));
     } else {
       if (this.props.calendarType === CalendarType.RESERVATION) {
         const userReservedDates = this.props.calendarList.filter((entry) =>
@@ -128,7 +128,9 @@ class ReservationCalendar extends Component<Props, CalendarState> {
       if (this.props.calendarType === CalendarType.RELEASE) {
         const newDates = {...this.state.userSelectedDates};
         newDates[day.dateString] = {selected: true, selectedColor: Colors.YELLOW};
-        this.setState({userSelectedDates: newDates});
+        this.setState({
+          userSelectedDates: newDates
+        }, () => this.props.updateUserSelectedDates(this.state.userSelectedDates));
       }
     }
   }
@@ -142,14 +144,13 @@ class ReservationCalendar extends Component<Props, CalendarState> {
         }}
         minDate={new Date()}
         markedDates={
-          createMarkedDatesObject(this.state.calendarData, this.state.userSelectedDates)
+          createMarkedDatesObject(this.state.calendarData, this.state.userSelectedDates, this.props.calendarType)
         }
         firstDay={1}
         hideExtraDays={true}
         onMonthChange={(calendarDateObject) => {
           this.fetchDataForMonth(calendarDateObject);
         }}
-        // style={styles.calendar}
         theme={{
           textDayFontWeight: 'bold',
           textDayHeaderFontWeight: 'bold',
@@ -164,6 +165,7 @@ class ReservationCalendar extends Component<Props, CalendarState> {
 const mapStateToProps = (state: RootReducer) => ({
   calendarList: state.calendar.calendar,
   reservation: state.reservation,
+  myReservations: state.myReservations,
   error: state.error,
   reserveSpotsLoading: state.loading.reserveSpotsLoading,
   getMonthLoading: state.loading.getMonthLoading

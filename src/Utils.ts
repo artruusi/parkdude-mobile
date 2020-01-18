@@ -1,5 +1,5 @@
 import {getCookie} from './CookieStorage';
-import {CalendarEntry, CalendarReservations, BasicParkingSpotData, ParkingEvent} from './types';
+import {CalendarEntry, ParkingEvent, CalendarType} from './types';
 import {Colors} from '../assets/colors';
 import {HOST} from 'react-native-dotenv';
 
@@ -33,7 +33,9 @@ function padZero(number: number) {
   return number < 10 ? '0' + number : number.toString();
 }
 
-export const createMarkedDatesObject = (entries: CalendarEntry[], userSelectedDates: Record<string, any>) => {
+export const createMarkedDatesObject = (entries: CalendarEntry[],
+  userSelectedDates: Record<string, any>, type: CalendarType) => {
+  const selectionColor = type === CalendarType.RESERVATION ? Colors.GREEN : Colors.RED;
   const today = toDateString(new Date());
   const result = {};
   // Go through date entries got from API
@@ -49,7 +51,7 @@ export const createMarkedDatesObject = (entries: CalendarEntry[], userSelectedDa
       if (userHasOwnReservations) {
         result[entry.date] = {
           selected: true,
-          selectedColor: Colors.GREEN,
+          selectedColor: selectionColor,
           disabled: true
         };
       } else {

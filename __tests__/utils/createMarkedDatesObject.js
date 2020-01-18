@@ -1,5 +1,6 @@
 import {createMarkedDatesObject, toDateString} from '../../src/Utils';
 import {Colors} from '../../assets/colors';
+import {CalendarType} from '../../src/types';
 
 const todayDate = new Date();
 const testDay = toDateString(todayDate);
@@ -25,7 +26,8 @@ describe('createMarkedDatesObject function', () => {
     };
     const actualResult = createMarkedDatesObject(
       [{date: testDay, spacesReservedByUser: [], availableSpaces: 2}],
-      {}
+      {},
+      CalendarType.RESERVATION
     );
     expect(actualResult).toEqual(expectedResult);
   });
@@ -40,7 +42,8 @@ describe('createMarkedDatesObject function', () => {
     };
     const actualResult = createMarkedDatesObject(
       [{date: testDay, spacesReservedByUser: testUserReservations, availableSpaces: 2}],
-      {}
+      {},
+      CalendarType.RESERVATION
     );
     expect(actualResult).toEqual(expectedResult);
   });
@@ -55,7 +58,8 @@ describe('createMarkedDatesObject function', () => {
     };
     const actualResult = createMarkedDatesObject(
       [{date: testDay, spacesReservedByUser: [], availableSpaces: 0}],
-      {}
+      {},
+      CalendarType.RESERVATION
     );
     expect(actualResult).toEqual(expectedResult);
   });
@@ -70,7 +74,8 @@ describe('createMarkedDatesObject function', () => {
     };
     const actualResult = createMarkedDatesObject(
       [{date: testDay, spacesReservedByUser: testUserReservations, availableSpaces: 0}],
-      {}
+      {},
+      CalendarType.RESERVATION
     );
     expect(actualResult).toEqual(expectedResult);
   });
@@ -85,7 +90,8 @@ describe('createMarkedDatesObject function', () => {
     };
     const actualResult = createMarkedDatesObject(
       [],
-      {[testDay]: {selected: true, selectedColor: Colors.YELLOW}}
+      {[testDay]: {selected: true, selectedColor: Colors.YELLOW}},
+      CalendarType.RESERVATION
     );
     expect(actualResult).toEqual(expectedResult);
   });
@@ -105,7 +111,8 @@ describe('createMarkedDatesObject function', () => {
     };
     const actualResult = createMarkedDatesObject(
       [{date: testDay, spacesReservedByUser: testUserReservations, availableSpaces: 3}],
-      {[testDay2]: {selected: true, selectedColor: Colors.YELLOW}}
+      {[testDay2]: {selected: true, selectedColor: Colors.YELLOW}},
+      CalendarType.RESERVATION
     );
     expect(actualResult).toEqual(expectedResult);
   });
@@ -120,7 +127,8 @@ describe('createMarkedDatesObject function', () => {
     };
     const actualResult = createMarkedDatesObject(
       [{date: testDay, spacesReservedByUser: testUserReservations, availableSpaces: 3}],
-      {[testDay]: {selected: true, selectedColor: Colors.YELLOW}}
+      {[testDay]: {selected: true, selectedColor: Colors.YELLOW}},
+      CalendarType.RESERVATION
     );
     expect(actualResult).toEqual(expectedResult);
   });
@@ -135,7 +143,8 @@ describe('createMarkedDatesObject function', () => {
     };
     const actualResult = createMarkedDatesObject(
       [{date: testDay, spacesReservedByUser: [], availableSpaces: 0}],
-      {[testDay]: {selected: true, selectedColor: Colors.YELLOW}}
+      {[testDay]: {selected: true, selectedColor: Colors.YELLOW}},
+      CalendarType.RESERVATION
     );
     expect(actualResult).toEqual(expectedResult);
   });

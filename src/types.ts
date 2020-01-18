@@ -42,6 +42,11 @@ export interface UserParkingItem {
   type: ParkingSpotEventType;
 }
 
+export interface NewRelease {
+  dates: string[];
+  parkingSpotId: string;
+}
+
 export interface CalendarReservations {
   calendar: CalendarEntry[];
   ownedSpots: BasicParkingSpotData[];

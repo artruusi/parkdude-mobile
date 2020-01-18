@@ -5,17 +5,15 @@ import {YOUR_PARKINGS, NO_PARKINGS_TITLE, NO_PARKINGS_TEXT, PERMANENT_SPOT,
   DELETE, DELETE_PARKING, CANCEL, DELETE_FAILED, GENERAL_ERROR_MESSAGE,
   CONNECTION_ERROR, RELEASE_SPOT} from '../Constants';
 import {connect, ConnectedProps} from 'react-redux';
-import {Calendar} from 'react-native-calendars';
 import {getMyParkings} from '../actions/parkingActions';
-import {postReservation, deleteReservation} from '../actions/reservationActions';
+import {postReservation, postRelease, deleteReservation} from '../actions/reservationActions';
 import {ParkingEvent, ParkingSpotEventType, BasicParkingSpotData,
   UserParkingItem,
   Marking,
-  CalendarDateObject,
   CalendarType} from '../types';
 import {Colors} from '../../assets/colors';
 import {NavigationScreenProp, ScrollView} from 'react-navigation';
-import {prettierDateOutput, createMarkedDatesObject, parkingEventsToCalendarEntries} from '../Utils';
+import {prettierDateOutput, parkingEventsToCalendarEntries} from '../Utils';
 import Modal from 'react-native-modal';
 import {RootReducer} from '../reducers';
 import {RoundedButton} from '../shared/RoundedButton';
@@ -35,9 +33,6 @@ interface State {
   spotToBeReleased: BasicParkingSpotData;
   errorText: string;
   userSelectedDates: Record<string, any>;
-  markingType: Marking;
-  currentMonth: number;
-  currentYear: number;
 }
 
 interface ItemProps {
@@ -121,15 +116,14 @@ class MyParkingsView extends Component<Props, State> {
       spotToBeReleased: {id: '', name: ''},
       errorText: '',
       userSelectedDates: {},
-      markingType: Marking.SIMPLE,
-      currentMonth: 0,
-      currentYear: 0,
     };
     this.initDeleteModal = this.initDeleteModal.bind(this);
     this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
     this.toggleErrorModal = this.toggleErrorModal.bind(this);
     this.toggleNewReleaseModal = this.toggleNewReleaseModal.bind(this);
     this.delete = this.delete.bind(this);
+    this.updateUserSelectedDates = this.updateUserSelectedDates.bind(this);
+    this.releaseParkingSpot = this.releaseParkingSpot.bind(this);
   }
 
   static navigationOptions = {
@@ -196,23 +190,22 @@ class MyParkingsView extends Component<Props, State> {
     this.toggleDeleteModal();
   }
 
-  reserveParkingSpot() {
-    /* const dates = Object.keys(this.state.userSelectedDates);
-    if (this.state.selectedSpot.id === 'random') {
-      const reservation = {
-        dates: dates
-      };
-      this.props.postReservation(reservation);
-    } else {
-      const reservation = {
-        dates: dates,
-        parkingSpotId: this.state.selectedSpot.id
-      };
-      this.props.postReservation(reservation);
-    }*/
+  updateUserSelectedDates(userSelectedDates: Record<string, any>) {
+    this.setState({userSelectedDates});
+  }
+
+  releaseParkingSpot() {
+    const dates = Object.keys(this.state.userSelectedDates);
+    const release = {
+      dates: dates,
+      parkingSpotId: this.state.spotToBeReleased.id
+    };
+    this.props.postRelease(release);
   }
 
   render() {
+    const releaseButtonColor = Object.keys(this.state.userSelectedDates).length === 0 ? Colors.DISABLED : Colors.RED;
+
     const ownedSpots = this.props.myReservations.ownedSpots.map((spot: BasicParkingSpotData, keyIndex: number) => (
       <PermanentSpotItem
         key={keyIndex}
@@ -316,28 +309,28 @@ class MyParkingsView extends Component<Props, State> {
             useNativeDriver={true}
             hideModalContentWhileAnimating={true}>
             <View style={styles.newReleaseModal}>
-
               <View style={{alignItems: 'center'}}>
                 <Text style={{fontFamily: 'Exo2-bold', fontSize: 25}}>{NEW_RELEASE}</Text>
                 <Text style={{fontFamily: 'Exo2-bold', fontSize: 20}}>
                   {SPOT}: {this.state.spotToBeReleased.name}
                 </Text>
               </View>
-
               <View>
                 <ReservationCalendar
                   navigation={this.props.navigation}
                   markingType={Marking.SIMPLE}
                   calendarType={CalendarType.RELEASE}
+                  updateUserSelectedDates={this.updateUserSelectedDates}
                   calendarData={parkingEventsToCalendarEntries(this.props.myReservations.releases)}
                 />
               </View>
-
               <View style={{alignItems: 'center'}}>
                 <RoundedButton
-                  onPress={null}
+                  onPress={this.releaseParkingSpot}
+                  isLoading={this.props.deleteReservationLoading}
+                  disabled={Object.keys(this.state.userSelectedDates).length === 0}
                   buttonText={RELEASE_SPOT}
-                  buttonStyle={{...styles.modalButton, backgroundColor: Colors.RED}}
+                  buttonStyle={{...styles.modalButton, backgroundColor: releaseButtonColor}}
                 />
                 <RoundedButton
                   onPress={this.toggleNewReleaseModal}
@@ -384,7 +377,7 @@ const mapStateToProps = (state: RootReducer) => ({
   removeReleaseLoading: state.loading.reserveSpotsLoading
 });
 
-const mapDispatchToProps = {getMyParkings, deleteReservation, postReservation};
+const mapDispatchToProps = {getMyParkings, deleteReservation, postReservation, postRelease};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
