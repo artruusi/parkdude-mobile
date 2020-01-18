@@ -5,7 +5,8 @@ import {UserRole} from '../../src/types';
 const serverResultAuthenticated = {
   isAuthenticated: true,
   userRole: UserRole.VERIFIED,
-  name: 'testUser'
+  name: 'testUser',
+  email: 'test@example.com'
 };
 
 const serverResultUnAuthenticated = {
@@ -20,7 +21,8 @@ describe('authReducer', () => {
       isAuthenticated: false,
       userRole: undefined,
       name: undefined,
-      loading: true
+      loading: true,
+      email: undefined
     });
   });
 
@@ -32,7 +34,8 @@ describe('authReducer', () => {
       isAuthenticated: true,
       userRole: UserRole.VERIFIED,
       name: 'testUser',
-      loading: false
+      loading: false,
+      email: 'test@example.com'
     });
   });
 
@@ -44,7 +47,8 @@ describe('authReducer', () => {
       isAuthenticated: false,
       userRole: UserRole.UNVERIFIED,
       name: undefined,
-      loading: false
+      loading: false,
+      email: undefined
     });
   });
 
@@ -56,7 +60,8 @@ describe('authReducer', () => {
       isAuthenticated: false,
       userRole: null,
       name: null,
-      loading: true
+      loading: true,
+      email: null
     });
   });
 });
