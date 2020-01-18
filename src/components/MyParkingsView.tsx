@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView, AdSupportIOS} from 'react-native';
 import {YOUR_PARKINGS, NO_PARKINGS_TITLE, NO_PARKINGS_TEXT, PERMANENT_SPOT,
   NEW_RELEASE, SPOT, ARE_YOU_SURE, DATE, DELETE_RELEASE,
   DELETE, DELETE_PARKING, CANCEL, DELETE_FAILED, GENERAL_ERROR_MESSAGE,
@@ -7,13 +7,14 @@ import {YOUR_PARKINGS, NO_PARKINGS_TITLE, NO_PARKINGS_TEXT, PERMANENT_SPOT,
 import {connect, ConnectedProps} from 'react-redux';
 import {getMyParkings} from '../actions/parkingActions';
 import {postReservation, postRelease, deleteReservation} from '../actions/reservationActions';
-import {ParkingEvent, ParkingSpotEventType, BasicParkingSpotData,
+import {ParkingSpotEventType, BasicParkingSpotData,
   UserParkingItem,
   Marking,
-  CalendarType} from '../types';
+  CalendarType,
+  ParkingEvent} from '../types';
 import {Colors} from '../../assets/colors';
 import {NavigationScreenProp, ScrollView} from 'react-navigation';
-import {prettierDateOutput, parkingEventsToCalendarEntries} from '../Utils';
+import {prettierDateOutput, parkingEventsToCalendarEntries, dateShouldBeDisabled} from '../Utils';
 import Modal from 'react-native-modal';
 import {RootReducer} from '../reducers';
 import {RoundedButton} from '../shared/RoundedButton';
@@ -215,33 +216,25 @@ class MyParkingsView extends Component<Props, State> {
       />
     ));
 
-    const reservations = this.props.myReservations.reservations.map((reservation: ParkingEvent, keyIndex: number) => (
-      <ParkingItem
-        key={keyIndex}
-        color={Colors.GREEN}
-        item={{
-          parkingEvent: {
-            date: reservation.date,
-            parkingSpot: reservation.parkingSpot
-          },
-          type: ParkingSpotEventType.PARKING}}
-        initDeleteModal={this.initDeleteModal}
-      />
-    ));
-
-    const releases = this.props.myReservations.releases.map((release: ParkingEvent, keyIndex: number) => (
-      <ParkingItem
-        key={keyIndex}
-        color={Colors.RED}
-        item={{
-          parkingEvent: {
-            date: release.date,
-            parkingSpot: release.parkingSpot
-          },
-          type: ParkingSpotEventType.RELEASE}}
-        initDeleteModal={this.initDeleteModal}
-      />
-    ));
+    // Concat reservations and releases arrays, sort by date and map to ParkingItems
+    const reservationsAndReleases = [...this.props.myReservations.reservations.map((reservation: ParkingEvent) =>
+      ({date: reservation.date, parkingSpot: reservation.parkingSpot, type: ParkingSpotEventType.PARKING})),
+    ...this.props.myReservations.releases.map((release: ParkingEvent) =>
+      ({date: release.date, parkingSpot: release.parkingSpot, type: ParkingSpotEventType.RELEASE}))]
+      .sort((a, b) => a.date.localeCompare(b.date))
+      .map((item: Record<string, any>, keyIndex: number) => (
+        <ParkingItem
+          key={keyIndex}
+          color={item.type === ParkingSpotEventType.PARKING ? Colors.GREEN : Colors.RED}
+          item={{
+            parkingEvent: {
+              date: item.date,
+              parkingSpot: item.parkingSpot
+            },
+            type: item.type}}
+          initDeleteModal={this.initDeleteModal}
+        />
+      ));
 
     if (this.props.myReservations.reservations.length > 0 ||
       this.props.myReservations.releases.length > 0 ||
@@ -254,8 +247,7 @@ class MyParkingsView extends Component<Props, State> {
               <Text style={styles.title}>{YOUR_PARKINGS}</Text>
             </View>
             {ownedSpots}
-            {reservations}
-            {releases}
+            {reservationsAndReleases}
           </ScrollView>
 
           {/* Delete reservation/release modal */}
