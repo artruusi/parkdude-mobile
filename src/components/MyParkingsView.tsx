@@ -192,7 +192,7 @@ class MyParkingsView extends Component<Props, State> {
     this.toggleDeleteModal();
   }
 
-  updateUserSelectedDates(userSelectedDates: Record<string, any>) {
+  updateUserSelectedDates(userSelectedDates: any) {
     this.setState({userSelectedDates});
   }
 
@@ -203,6 +203,7 @@ class MyParkingsView extends Component<Props, State> {
       parkingSpotId: this.state.spotToBeReleased.id
     };
     this.props.postRelease(release);
+    this.setState({userSelectedDates: {}});
   }
 
   render() {
@@ -333,6 +334,7 @@ class MyParkingsView extends Component<Props, State> {
                   calendarType={CalendarType.RELEASE}
                   updateUserSelectedDates={this.updateUserSelectedDates}
                   calendarData={parkingEventsToCalendarEntries(this.props.myReservations.releases)}
+                  userSelectedDates={this.state.userSelectedDates}
                 />
               </View>
               <View style={{alignItems: 'center'}}>

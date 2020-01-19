@@ -62,7 +62,7 @@ class MainView extends Component<Props, State> {
     this.setState({selectedSpot: spot});
   }
 
-  updateUserSelectedDates(userSelectedDates: Record<string, any>) {
+  updateUserSelectedDates(userSelectedDates: any) {
     // Reset selected spot to 'Any free spot' if more dates are selected after the spot is selected
     this.setState({userSelectedDates});
     if (this.state.selectedSpot.id !== 'random' && Object.keys(userSelectedDates).length > 0) {
@@ -97,6 +97,7 @@ class MainView extends Component<Props, State> {
       };
       this.props.postReservation(reservation);
     }
+    this.updateUserSelectedDates({});
   }
 
   toggleReservationModal() {
@@ -144,6 +145,7 @@ class MainView extends Component<Props, State> {
             calendarType={CalendarType.RESERVATION}
             updateUserSelectedDates={this.updateUserSelectedDates}
             setParkingSpot={this.setParkingSpot}
+            userSelectedDates={this.state.userSelectedDates}
           />
         </View>
 
