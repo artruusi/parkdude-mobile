@@ -55,6 +55,12 @@ export const NO_PARKINGS_TEXT = 'Reservations made from the Park-tab will appear
 export const PERMANENT_SPOT = 'Permanent spot';
 export const NEW_RELEASE = 'New release';
 
+// Release
+
+export const RELEASE_SPOT = 'Release spot';
+export const CANT_DELETE_RELEASE = 'Can\'t delete release. Someone has already reserved this parking' +
+                                   ' spot for this day.';
+
 // Calendar
 
 export const CALENDAR_TITLE = 'Book your parking';

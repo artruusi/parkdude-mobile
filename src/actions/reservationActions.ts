@@ -4,7 +4,7 @@ import {gotNetworkError, reservationFailed, clearErrorState,
   generalError, deleteReservationFailed} from './errorActions';
 import {CONNECTION_ERROR, GENERAL_ERROR_MESSAGE} from '../Constants';
 import {apiFetch} from '../Utils';
-import {HttpMethod, PostReservation, UserParkingItem, LoadingType} from '../types';
+import {HttpMethod, PostReservation, UserParkingItem, LoadingType, NewRelease} from '../types';
 import {getMyParkings} from './parkingActions';
 import {setLoadingState, removeLoadingState} from './loadingActions';
 
@@ -22,6 +22,7 @@ export const postReservation = (reservation: PostReservation) => {
       if (postReservationResponse.status === 200) {
         dispatch(clearErrorState());
         dispatch(createPostReservationAction(result));
+        getMyParkings()(dispatch);
       } else if (postReservationResponse.status === 400) {
         dispatch(reservationFailed(result));
       } else {
@@ -69,3 +70,28 @@ export const deleteReservation = (item: UserParkingItem) => {
   };
 };
 
+export const postRelease = (item: NewRelease) => {
+  return async (dispatch) => {
+    dispatch(setLoadingState(LoadingType.DELETE_RESERVATION));
+    try {
+      const id = item.parkingSpotId;
+      const response = await apiFetch(
+        `${DELETE_SPOTS_URL}/${id}?dates=${item.dates.join(',')}`,
+        {method: HttpMethod.DELETE}
+      );
+      const result = await response.json();
+      if (response.status === 200) {
+        dispatch(clearErrorState());
+        getMyParkings()(dispatch);
+      } else if (response.status === 400) {
+        dispatch(deleteReservationFailed(result));
+      } else {
+        // HTTP Status 500 or something else unexpected
+        dispatch(generalError(GENERAL_ERROR_MESSAGE));
+      }
+    } catch (error) {
+      dispatch(gotNetworkError(CONNECTION_ERROR));
+    }
+    dispatch(removeLoadingState(LoadingType.DELETE_RESERVATION));
+  };
+};

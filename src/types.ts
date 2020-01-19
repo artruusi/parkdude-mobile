@@ -35,11 +35,17 @@ export interface MyReservations {
 export interface ParkingEvent {
   date: string;
   parkingSpot: BasicParkingSpotData;
+  reservation?: Record<string, any>;
 }
 
 export interface UserParkingItem {
   parkingEvent: ParkingEvent;
   type: ParkingSpotEventType;
+}
+
+export interface NewRelease {
+  dates: string[];
+  parkingSpotId: string;
 }
 
 export interface CalendarReservations {
@@ -110,6 +116,11 @@ export enum LoadingType {
   GET_PARKING_SPOTS = 'getParkingSpotsLoading',
   RESERVE_SPOTS = 'reserveSpotsLoading',
   DELETE_RESERVATION = 'deleteReservationLoading'
+}
+
+export enum CalendarType {
+  RESERVATION = 'reservation',
+  RELEASE = 'release'
 }
 
 export type LoadingState = {

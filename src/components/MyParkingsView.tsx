@@ -2,20 +2,25 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView} from 'react-native';
 import {YOUR_PARKINGS, NO_PARKINGS_TITLE, NO_PARKINGS_TEXT, PERMANENT_SPOT,
   NEW_RELEASE, SPOT, ARE_YOU_SURE, DATE, DELETE_RELEASE,
-  DELETE, DELETE_PARKING, CANCEL, DELETE_FAILED, GENERAL_ERROR_MESSAGE, CONNECTION_ERROR} from '../Constants';
+  DELETE, DELETE_PARKING, CANCEL, DELETE_FAILED, GENERAL_ERROR_MESSAGE,
+  CONNECTION_ERROR, RELEASE_SPOT, CANT_DELETE_RELEASE} from '../Constants';
 import {connect, ConnectedProps} from 'react-redux';
 import {getMyParkings} from '../actions/parkingActions';
-import {postReservation, deleteReservation} from '../actions/reservationActions';
-import {ParkingEvent, ParkingSpotEventType, BasicParkingSpotData,
-  UserParkingItem} from '../types';
+import {postReservation, postRelease, deleteReservation} from '../actions/reservationActions';
+import {ParkingSpotEventType, BasicParkingSpotData,
+  UserParkingItem,
+  Marking,
+  CalendarType,
+  ParkingEvent} from '../types';
 import {Colors} from '../../assets/colors';
 import {NavigationScreenProp, ScrollView} from 'react-navigation';
-import {prettierDateOutput} from '../Utils';
+import {prettierDateOutput, parkingEventsToCalendarEntries} from '../Utils';
 import Modal from 'react-native-modal';
 import {RootReducer} from '../reducers';
 import {RoundedButton} from '../shared/RoundedButton';
 import {ErrorModal} from '../shared/ErrorModal';
 import {LoadingArea} from '../shared/LoadingArea';
+import ReservationCalendar from './ReservationCalendar';
 
 type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
@@ -24,8 +29,11 @@ type Props = ConnectedProps<typeof connector> & {
 interface State {
   deleteModalVisible: boolean;
   errorModalVisible: boolean;
+  newReleaseModalVisible: boolean;
   parkingItemToDelete: UserParkingItem;
+  spotToBeReleased: BasicParkingSpotData;
   errorText: string;
+  userSelectedDates: Record<string, any>;
 }
 
 interface ItemProps {
@@ -37,6 +45,7 @@ interface ItemProps {
 
 interface PermanentSpotProps extends BasicParkingSpotData {
   key: number;
+  toggle: (BasicParkingSpotData) => void;
 }
 
 class ParkingItem extends Component<ItemProps> {
@@ -82,7 +91,7 @@ class PermanentSpotItem extends Component<PermanentSpotProps> {
         <Text style={{fontFamily: 'Exo2-bold', fontSize: 25}}>{PERMANENT_SPOT}</Text>
         <Text style={{fontFamily: 'Exo2-bold', fontSize: 25}}>{this.props.name}</Text>
         <RoundedButton
-          onPress={/* TODO */ null}
+          onPress={() => this.props.toggle({id: this.props.id, name: this.props.name})}
           buttonText={NEW_RELEASE}
           buttonStyle={styles.releaseButton}
         />
@@ -97,19 +106,26 @@ class MyParkingsView extends Component<Props, State> {
     this.state = {
       deleteModalVisible: false,
       errorModalVisible: false,
+      newReleaseModalVisible: false,
       parkingItemToDelete: {
         parkingEvent: {
           date: '',
-          parkingSpot: {id: '', name: ''}
+          parkingSpot: {id: '', name: ''},
+          reservation: null
         },
         type: ParkingSpotEventType.PARKING
       },
-      errorText: ''
+      spotToBeReleased: {id: '', name: ''},
+      errorText: '',
+      userSelectedDates: {},
     };
     this.initDeleteModal = this.initDeleteModal.bind(this);
     this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
     this.toggleErrorModal = this.toggleErrorModal.bind(this);
+    this.toggleNewReleaseModal = this.toggleNewReleaseModal.bind(this);
     this.delete = this.delete.bind(this);
+    this.updateUserSelectedDates = this.updateUserSelectedDates.bind(this);
+    this.releaseParkingSpot = this.releaseParkingSpot.bind(this);
   }
 
   static navigationOptions = {
@@ -154,6 +170,13 @@ class MyParkingsView extends Component<Props, State> {
     this.setState({errorModalVisible: !this.state.errorModalVisible, errorText: ''});
   }
 
+  toggleNewReleaseModal(spot?: BasicParkingSpotData) {
+    if (spot !== undefined) {
+      this.setState({spotToBeReleased: spot});
+    }
+    this.setState({newReleaseModalVisible: !this.state.newReleaseModalVisible});
+  }
+
   async delete() {
     if (this.state.parkingItemToDelete.type === ParkingSpotEventType.PARKING) {
       await this.props.deleteReservation(this.state.parkingItemToDelete);
@@ -169,42 +192,56 @@ class MyParkingsView extends Component<Props, State> {
     this.toggleDeleteModal();
   }
 
+  updateUserSelectedDates(userSelectedDates: any) {
+    this.setState({userSelectedDates});
+  }
+
+  releaseParkingSpot() {
+    const dates = Object.keys(this.state.userSelectedDates);
+    const release = {
+      dates: dates,
+      parkingSpotId: this.state.spotToBeReleased.id
+    };
+    this.props.postRelease(release);
+    this.setState({userSelectedDates: {}});
+  }
+
   render() {
+    const releaseButtonColor = Object.keys(this.state.userSelectedDates).length === 0 ? Colors.DISABLED : Colors.RED;
+    const deleteButtonColor = this.state.parkingItemToDelete.type === ParkingSpotEventType.RELEASE &&
+    this.state.parkingItemToDelete.parkingEvent.reservation !== null ? Colors.DISABLED : Colors.RED;
+
     const ownedSpots = this.props.myReservations.ownedSpots.map((spot: BasicParkingSpotData, keyIndex: number) => (
       <PermanentSpotItem
         key={keyIndex}
         id={spot.id}
         name={spot.name}
+        toggle={this.toggleNewReleaseModal}
       />
     ));
 
-    const reservations = this.props.myReservations.reservations.map((reservation: ParkingEvent, keyIndex: number) => (
-      <ParkingItem
-        key={keyIndex}
-        color={Colors.GREEN}
-        item={{
-          parkingEvent: {
-            date: reservation.date,
-            parkingSpot: reservation.parkingSpot
-          },
-          type: ParkingSpotEventType.PARKING}}
-        initDeleteModal={this.initDeleteModal}
-      />
-    ));
-
-    const releases = this.props.myReservations.releases.map((release: ParkingEvent, keyIndex: number) => (
-      <ParkingItem
-        key={keyIndex}
-        color={Colors.RED}
-        item={{
-          parkingEvent: {
-            date: release.date,
-            parkingSpot: release.parkingSpot
-          },
-          type: ParkingSpotEventType.RELEASE}}
-        initDeleteModal={this.initDeleteModal}
-      />
-    ));
+    // Concat reservations and releases arrays, sort by date and map to ParkingItems
+    const reservationsAndReleases = [...this.props.myReservations.reservations.map((reservation: ParkingEvent) =>
+      ({date: reservation.date, parkingSpot: reservation.parkingSpot, reservation: null,
+        type: ParkingSpotEventType.PARKING})),
+    ...this.props.myReservations.releases.map((release: ParkingEvent) =>
+      ({date: release.date, parkingSpot: release.parkingSpot, reservation: release.reservation,
+        type: ParkingSpotEventType.RELEASE}))]
+      .sort((a, b) => a.date.localeCompare(b.date))
+      .map((item: Record<string, any>, keyIndex: number) => (
+        <ParkingItem
+          key={keyIndex}
+          color={item.type === ParkingSpotEventType.PARKING ? Colors.GREEN : Colors.RED}
+          item={{
+            parkingEvent: {
+              date: item.date,
+              parkingSpot: item.parkingSpot,
+              reservation: item.reservation
+            },
+            type: item.type}}
+          initDeleteModal={this.initDeleteModal}
+        />
+      ));
 
     if (this.props.myReservations.reservations.length > 0 ||
       this.props.myReservations.releases.length > 0 ||
@@ -217,8 +254,7 @@ class MyParkingsView extends Component<Props, State> {
               <Text style={styles.title}>{YOUR_PARKINGS}</Text>
             </View>
             {ownedSpots}
-            {reservations}
-            {releases}
+            {reservationsAndReleases}
           </ScrollView>
 
           {/* Delete reservation/release modal */}
@@ -234,23 +270,33 @@ class MyParkingsView extends Component<Props, State> {
             hideModalContentWhileAnimating={true}>
             <View style={styles.modal}>
               <View style={{margin: 30}}>
-                <Text style={{fontSize: 25, fontWeight: 'bold'}}>{ARE_YOU_SURE}</Text>
-                <Text style={{fontSize: 20, fontWeight: 'bold'}}>
-                  {this.state.parkingItemToDelete.type === ParkingSpotEventType.PARKING ?
-                    DELETE_PARKING : DELETE_RELEASE}
-                </Text>
-                <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-                  {SPOT}: {this.state.parkingItemToDelete.parkingEvent.parkingSpot.name}
-                </Text>
-                <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-                  {DATE}: {prettierDateOutput(this.state.parkingItemToDelete.parkingEvent.date)}
-                </Text>
+
+                { (this.state.parkingItemToDelete.type === ParkingSpotEventType.RELEASE &&
+                  this.state.parkingItemToDelete.parkingEvent.reservation !== null) ?
+
+                  <Text style={{fontSize: 22, fontFamily: 'Exo2-bold'}}>{CANT_DELETE_RELEASE}</Text> :
+
+                  <View>
+                    <Text style={{fontSize: 25, fontFamily: 'Exo2-bold'}}>{ARE_YOU_SURE}</Text>
+                    <Text style={{fontSize: 20, fontFamily: 'Exo2-bold'}}>
+                      {this.state.parkingItemToDelete.type === ParkingSpotEventType.PARKING ?
+                        DELETE_PARKING : DELETE_RELEASE}
+                    </Text>
+                    <Text style={{fontSize: 18, fontFamily: 'Exo2-bold'}}>
+                      {SPOT}: {this.state.parkingItemToDelete.parkingEvent.parkingSpot.name}
+                    </Text>
+                    <Text style={{fontSize: 18, fontFamily: 'Exo2-bold'}}>
+                      {DATE}: {prettierDateOutput(this.state.parkingItemToDelete.parkingEvent.date)}
+                    </Text>
+                  </View>
+                }
               </View>
               <RoundedButton
                 onPress={this.delete}
                 buttonText={DELETE}
+                disabled={this.state.parkingItemToDelete.parkingEvent.reservation !== null}
                 isLoading={this.props.deleteReservationLoading || this.props.removeReleaseLoading}
-                buttonStyle={{...styles.modalButton, backgroundColor: Colors.RED}}
+                buttonStyle={{...styles.modalButton, backgroundColor: deleteButtonColor}}
               />
               <RoundedButton
                 onPress={this.toggleDeleteModal}
@@ -258,6 +304,53 @@ class MyParkingsView extends Component<Props, State> {
                 disabled={this.props.deleteReservationLoading || this.props.removeReleaseLoading}
                 buttonStyle={{...styles.modalButton, backgroundColor: Colors.WHITE}}
               />
+            </View>
+          </Modal>
+
+          {/* New release modal */}
+
+          <Modal
+            isVisible={this.state.newReleaseModalVisible}
+            onBackdropPress={this.toggleNewReleaseModal}
+            onBackButtonPress={this.toggleNewReleaseModal}
+            animationInTiming={500}
+            animationOutTiming={100}
+            useNativeDriver={true}
+            hideModalContentWhileAnimating={true}>
+            <View style={styles.newReleaseModal}>
+              <View style={{alignItems: 'center', marginBottom: 15}}>
+                <Text style={{fontFamily: 'Exo2-bold', fontSize: 25, color: Colors.RED}}>
+                  {this.state.errorText}
+                </Text>
+                <Text style={{fontFamily: 'Exo2-bold', fontSize: 30}}>{NEW_RELEASE}</Text>
+                <Text style={{fontFamily: 'Exo2-bold', fontSize: 25}}>
+                  {SPOT} {this.state.spotToBeReleased.name}
+                </Text>
+              </View>
+              <View style={{height: '60%'}}>
+                <ReservationCalendar
+                  navigation={this.props.navigation}
+                  markingType={Marking.SIMPLE}
+                  calendarType={CalendarType.RELEASE}
+                  updateUserSelectedDates={this.updateUserSelectedDates}
+                  calendarData={parkingEventsToCalendarEntries(this.props.myReservations.releases)}
+                  userSelectedDates={this.state.userSelectedDates}
+                />
+              </View>
+              <View style={{alignItems: 'center'}}>
+                <RoundedButton
+                  onPress={this.releaseParkingSpot}
+                  isLoading={this.props.deleteReservationLoading}
+                  disabled={Object.keys(this.state.userSelectedDates).length === 0}
+                  buttonText={RELEASE_SPOT}
+                  buttonStyle={{...styles.modalButton, backgroundColor: releaseButtonColor}}
+                />
+                <RoundedButton
+                  onPress={this.toggleNewReleaseModal}
+                  buttonText={CANCEL}
+                  buttonStyle={{...styles.modalButton, backgroundColor: Colors.WHITE}}
+                />
+              </View>
             </View>
           </Modal>
 
@@ -297,7 +390,7 @@ const mapStateToProps = (state: RootReducer) => ({
   removeReleaseLoading: state.loading.reserveSpotsLoading
 });
 
-const mapDispatchToProps = {getMyParkings, deleteReservation, postReservation};
+const mapDispatchToProps = {getMyParkings, deleteReservation, postReservation, postRelease};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -412,15 +505,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  simbutton: {
-    width: 327,
-    height: 43,
-    borderRadius: 21.7,
-    backgroundColor: Colors.YELLOW,
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 20
-  },
   releaseButton: {
     width: 327,
     height: 43,
@@ -444,5 +528,15 @@ const styles = StyleSheet.create({
     borderRadius: 21.7,
     margin: 24,
     paddingBottom: 8
+  },
+  newReleaseModal: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: Colors.APP_BACKGROUND,
+    borderRadius: 21.7
+  },
+  calendar: {
+    backgroundColor: Colors.APP_BACKGROUND,
+    alignSelf: 'stretch'
   }
 });
