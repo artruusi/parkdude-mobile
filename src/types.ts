@@ -38,10 +38,6 @@ export interface ParkingEvent {
   reservation?: Record<string, any>;
 }
 
-export interface ReleaseEvent extends ParkingEvent {
-  reservation: Record<string, any>;
-}
-
 export interface UserParkingItem {
   parkingEvent: ParkingEvent;
   type: ParkingSpotEventType;
