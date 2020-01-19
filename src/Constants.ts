@@ -58,6 +58,8 @@ export const NEW_RELEASE = 'New release';
 // Release
 
 export const RELEASE_SPOT = 'Release spot';
+export const CANT_DELETE_RELEASE = 'Can\'t delete release. Someone has already reserved this parking' +
+                                   ' spot for this day.';
 
 // Calendar
 

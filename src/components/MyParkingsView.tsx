@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView, AdSupportIOS} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView} from 'react-native';
 import {YOUR_PARKINGS, NO_PARKINGS_TITLE, NO_PARKINGS_TEXT, PERMANENT_SPOT,
   NEW_RELEASE, SPOT, ARE_YOU_SURE, DATE, DELETE_RELEASE,
   DELETE, DELETE_PARKING, CANCEL, DELETE_FAILED, GENERAL_ERROR_MESSAGE,
-  CONNECTION_ERROR, RELEASE_SPOT} from '../Constants';
+  CONNECTION_ERROR, RELEASE_SPOT, CANT_DELETE_RELEASE} from '../Constants';
 import {connect, ConnectedProps} from 'react-redux';
 import {getMyParkings} from '../actions/parkingActions';
 import {postReservation, postRelease, deleteReservation} from '../actions/reservationActions';
@@ -14,7 +14,7 @@ import {ParkingSpotEventType, BasicParkingSpotData,
   ParkingEvent} from '../types';
 import {Colors} from '../../assets/colors';
 import {NavigationScreenProp, ScrollView} from 'react-navigation';
-import {prettierDateOutput, parkingEventsToCalendarEntries, dateShouldBeDisabled} from '../Utils';
+import {prettierDateOutput, parkingEventsToCalendarEntries} from '../Utils';
 import Modal from 'react-native-modal';
 import {RootReducer} from '../reducers';
 import {RoundedButton} from '../shared/RoundedButton';
@@ -110,7 +110,8 @@ class MyParkingsView extends Component<Props, State> {
       parkingItemToDelete: {
         parkingEvent: {
           date: '',
-          parkingSpot: {id: '', name: ''}
+          parkingSpot: {id: '', name: ''},
+          reservation: null
         },
         type: ParkingSpotEventType.PARKING
       },
@@ -206,6 +207,8 @@ class MyParkingsView extends Component<Props, State> {
 
   render() {
     const releaseButtonColor = Object.keys(this.state.userSelectedDates).length === 0 ? Colors.DISABLED : Colors.RED;
+    const deleteButtonColor = this.state.parkingItemToDelete.type === ParkingSpotEventType.RELEASE &&
+    this.state.parkingItemToDelete.parkingEvent.reservation !== null ? Colors.DISABLED : Colors.RED;
 
     const ownedSpots = this.props.myReservations.ownedSpots.map((spot: BasicParkingSpotData, keyIndex: number) => (
       <PermanentSpotItem
@@ -218,9 +221,11 @@ class MyParkingsView extends Component<Props, State> {
 
     // Concat reservations and releases arrays, sort by date and map to ParkingItems
     const reservationsAndReleases = [...this.props.myReservations.reservations.map((reservation: ParkingEvent) =>
-      ({date: reservation.date, parkingSpot: reservation.parkingSpot, type: ParkingSpotEventType.PARKING})),
+      ({date: reservation.date, parkingSpot: reservation.parkingSpot, reservation: null,
+        type: ParkingSpotEventType.PARKING})),
     ...this.props.myReservations.releases.map((release: ParkingEvent) =>
-      ({date: release.date, parkingSpot: release.parkingSpot, type: ParkingSpotEventType.RELEASE}))]
+      ({date: release.date, parkingSpot: release.parkingSpot, reservation: release.reservation,
+        type: ParkingSpotEventType.RELEASE}))]
       .sort((a, b) => a.date.localeCompare(b.date))
       .map((item: Record<string, any>, keyIndex: number) => (
         <ParkingItem
@@ -229,7 +234,8 @@ class MyParkingsView extends Component<Props, State> {
           item={{
             parkingEvent: {
               date: item.date,
-              parkingSpot: item.parkingSpot
+              parkingSpot: item.parkingSpot,
+              reservation: item.reservation
             },
             type: item.type}}
           initDeleteModal={this.initDeleteModal}
@@ -263,23 +269,33 @@ class MyParkingsView extends Component<Props, State> {
             hideModalContentWhileAnimating={true}>
             <View style={styles.modal}>
               <View style={{margin: 30}}>
-                <Text style={{fontSize: 25, fontWeight: 'bold'}}>{ARE_YOU_SURE}</Text>
-                <Text style={{fontSize: 20, fontWeight: 'bold'}}>
-                  {this.state.parkingItemToDelete.type === ParkingSpotEventType.PARKING ?
-                    DELETE_PARKING : DELETE_RELEASE}
-                </Text>
-                <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-                  {SPOT}: {this.state.parkingItemToDelete.parkingEvent.parkingSpot.name}
-                </Text>
-                <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-                  {DATE}: {prettierDateOutput(this.state.parkingItemToDelete.parkingEvent.date)}
-                </Text>
+
+                { (this.state.parkingItemToDelete.type === ParkingSpotEventType.RELEASE &&
+                  this.state.parkingItemToDelete.parkingEvent.reservation !== null) ?
+
+                  <Text style={{fontSize: 22, fontWeight: 'bold'}}>{CANT_DELETE_RELEASE}</Text> :
+
+                  <View>
+                    <Text style={{fontSize: 25, fontWeight: 'bold'}}>{ARE_YOU_SURE}</Text>
+                    <Text style={{fontSize: 20, fontWeight: 'bold'}}>
+                      {this.state.parkingItemToDelete.type === ParkingSpotEventType.PARKING ?
+                        DELETE_PARKING : DELETE_RELEASE}
+                    </Text>
+                    <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+                      {SPOT}: {this.state.parkingItemToDelete.parkingEvent.parkingSpot.name}
+                    </Text>
+                    <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+                      {DATE}: {prettierDateOutput(this.state.parkingItemToDelete.parkingEvent.date)}
+                    </Text>
+                  </View>
+                }
               </View>
               <RoundedButton
                 onPress={this.delete}
                 buttonText={DELETE}
+                disabled={this.state.parkingItemToDelete.parkingEvent.reservation !== null}
                 isLoading={this.props.deleteReservationLoading || this.props.removeReleaseLoading}
-                buttonStyle={{...styles.modalButton, backgroundColor: Colors.RED}}
+                buttonStyle={{...styles.modalButton, backgroundColor: deleteButtonColor}}
               />
               <RoundedButton
                 onPress={this.toggleDeleteModal}
