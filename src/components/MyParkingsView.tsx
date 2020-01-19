@@ -318,12 +318,15 @@ class MyParkingsView extends Component<Props, State> {
             hideModalContentWhileAnimating={true}>
             <View style={styles.newReleaseModal}>
               <View style={{alignItems: 'center'}}>
-                <Text style={{fontFamily: 'Exo2-bold', fontSize: 25}}>{NEW_RELEASE}</Text>
-                <Text style={{fontFamily: 'Exo2-bold', fontSize: 20}}>
-                  {SPOT}: {this.state.spotToBeReleased.name}
+                <Text style={{fontFamily: 'Exo2-bold', fontSize: 25, color: Colors.RED}}>
+                  {this.state.errorText}
+                </Text>
+                <Text style={{fontFamily: 'Exo2-bold', fontSize: 30}}>{NEW_RELEASE}</Text>
+                <Text style={{fontFamily: 'Exo2-bold', fontSize: 25}}>
+                  {SPOT} {this.state.spotToBeReleased.name}
                 </Text>
               </View>
-              <View>
+              <View style={{height: '60%'}}>
                 <ReservationCalendar
                   navigation={this.props.navigation}
                   markingType={Marking.SIMPLE}
@@ -525,12 +528,10 @@ const styles = StyleSheet.create({
     paddingBottom: 8
   },
   newReleaseModal: {
-    flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     backgroundColor: Colors.APP_BACKGROUND,
-    borderRadius: 21.7,
-    paddingBottom: 8
+    borderRadius: 21.7
   },
   calendar: {
     backgroundColor: Colors.APP_BACKGROUND,
