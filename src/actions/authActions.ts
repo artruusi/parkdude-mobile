@@ -104,7 +104,8 @@ export const changePassword = (oldPassword: string, newPassword: string) => {
       });
       const result = await changePasswordResponse.json();
       if (changePasswordResponse.status === 200) {
-        dispatch(setChangePasswordError(result.message));
+        dispatch(removeLoadingState(LoadingType.CHANGE_PASSWORD));
+        return true;
       } else {
         dispatch(setChangePasswordError(result.message));
       }
@@ -112,6 +113,7 @@ export const changePassword = (oldPassword: string, newPassword: string) => {
       dispatch(setChangePasswordError(CONNECTION_ERROR));
     }
     dispatch(removeLoadingState(LoadingType.CHANGE_PASSWORD));
+    return false;
   };
 };
 

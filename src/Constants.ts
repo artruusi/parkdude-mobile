@@ -78,6 +78,7 @@ export const CHANGE_PASSWORD_TITLE = 'Change password';
 export const CURRENT_PASSWORD = 'Current password';
 export const NEW_PASSWORD = 'New password';
 export const CONFIRM_NEW_PASSWORD = 'Confirm new password';
+export const PASSWORD_CHANGED = 'Password changed!';
 
 // About
 

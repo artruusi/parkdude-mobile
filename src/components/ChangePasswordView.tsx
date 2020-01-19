@@ -1,15 +1,18 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, ActivityIndicator, KeyboardAvoidingView,
   TextInput} from 'react-native';
-import {changePassword} from '../actions/authActions';
+import {getAuthState, changePassword} from '../actions/authActions';
 import {connect, ConnectedProps} from 'react-redux';
 import {NavigationScreenProp, ScrollView} from 'react-navigation';
 import {RootReducer} from '../reducers/index';
 import {CHANGE_PASSWORD_TITLE, CURRENT_PASSWORD, NEW_PASSWORD,
-  CHANGE_PASSWORD, CONFIRM_NEW_PASSWORD, LOGOUT, LOGGING_OUT, CANCEL} from '../Constants';
+  CHANGE_PASSWORD, CONFIRM_NEW_PASSWORD, LOGOUT, LOGGING_OUT, CANCEL,
+  PASSWORD_CHANGED, OK} from '../Constants';
 import {Colors} from '../../assets/colors';
 import {RoundedButton} from '../shared/RoundedButton';
 import {setChangePasswordError, clearErrorState} from '../actions/errorActions';
+import {Snackbar} from 'react-native-paper';
+
 
 type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
@@ -19,7 +22,8 @@ class ChangePasswordView extends Component<Props> {
   state = {
     oldPassword: '',
     newPassword: '',
-    newPassword2: ''
+    newPassword2: '',
+    passwordChanged: false
   }
 
   private newPasswordInput: TextInput;
@@ -32,6 +36,7 @@ class ChangePasswordView extends Component<Props> {
     this.onOldPasswordChange = this.onOldPasswordChange.bind(this);
     this.onNewPasswordChange = this.onNewPasswordChange.bind(this);
     this.onNewPassword2Change = this.onNewPassword2Change.bind(this);
+    this.onOkPressed = this.onOkPressed.bind(this);
   }
 
   static navigationOptions = {
@@ -39,6 +44,7 @@ class ChangePasswordView extends Component<Props> {
   };
 
   componentDidMount() {
+    this.setState({passwordChanged: false});
     this.componentDidUpdate(this.props);
   }
 
@@ -48,12 +54,13 @@ class ChangePasswordView extends Component<Props> {
     }
   }
 
-  changePassword() {
+  async changePassword() {
     if (this.state.newPassword !== this.state.newPassword2) {
       this.props.setChangePasswordError('Passwords must match');
       return;
     }
-    this.props.changePassword(this.state.oldPassword, this.state.newPassword);
+    const result = await this.props.changePassword(this.state.oldPassword, this.state.newPassword);
+    this.setState({passwordChanged: result});
   }
 
   cancel() {
@@ -73,6 +80,10 @@ class ChangePasswordView extends Component<Props> {
   onNewPassword2Change(newPassword2: string) {
     this.setState({newPassword2});
     clearErrorState();
+  }
+
+  onOkPressed() {
+    this.props.navigation.navigate('Profile');
   }
 
   render() {
@@ -120,8 +131,6 @@ class ChangePasswordView extends Component<Props> {
               blurOnSubmit={false}
               onSubmitEditing={this.changePassword}
             />
-          </View>
-          <View>
             <Text style={styles.errorText}>{this.props.error}</Text>
           </View>
           <View style={styles.buttonContainer}>
@@ -142,6 +151,17 @@ class ChangePasswordView extends Component<Props> {
             />
           </View>
         </ScrollView>
+        <Snackbar
+          visible={this.state.passwordChanged}
+          onDismiss={() => this.setState({visible: false})}
+          style={styles.snackbar}
+          action={{
+            label: 'Ok',
+            onPress: this.onOkPressed,
+          }}
+        >
+          <Text style={{...styles.text, color: Colors.WHITE}}>{PASSWORD_CHANGED}</Text>
+        </Snackbar>
       </KeyboardAvoidingView>
     );
   }
@@ -221,4 +241,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'black'
   },
+  snackbar: {
+    borderRadius: 21.7,
+  }
 });
