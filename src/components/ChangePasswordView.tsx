@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, ActivityIndicator, SafeAreaView,
   TextInput} from 'react-native';
-import {logOut} from '../actions/authActions';
+import {changePassword} from '../actions/authActions';
 import {connect, ConnectedProps} from 'react-redux';
 import {NavigationScreenProp, ScrollView} from 'react-navigation';
 import {RootReducer} from '../reducers/index';
@@ -150,7 +150,7 @@ const mapStateToProps = (state: RootReducer) => ({
   changePasswordLoading: state.loading.changePasswordLoading
 });
 
-const mapDispatchToProps = {setChangePasswordError, clearErrorState};
+const mapDispatchToProps = {setChangePasswordError, changePassword, clearErrorState};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
