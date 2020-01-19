@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, ActivityIndicator, SafeAreaView,
+import {StyleSheet, Text, View, ActivityIndicator, KeyboardAvoidingView,
   TextInput} from 'react-native';
 import {changePassword} from '../actions/authActions';
 import {connect, ConnectedProps} from 'react-redux';
@@ -77,68 +77,72 @@ class ChangePasswordView extends Component<Props> {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={styles.title}>{CHANGE_PASSWORD_TITLE}</Text>
-          <Text style={{...styles.title, fontSize: 20.9}}>{CURRENT_PASSWORD}</Text>
-          <TextInput
-            style={styles.inputField}
-            placeholder={CURRENT_PASSWORD}
-            autoCompleteType='password'
-            secureTextEntry={true}
-            onChangeText={this.onOldPasswordChange}
-            returnKeyType="next"
-            enablesReturnKeyAutomatically={true}
-            blurOnSubmit={false}
-            onSubmitEditing={() => this.newPasswordInput.focus()}
-          />
-          <Text style={{...styles.title, fontSize: 20.9}}>{NEW_PASSWORD}</Text>
-          <TextInput
-            ref={(input) => this.newPasswordInput = input}
-            style={styles.inputField}
-            placeholder={NEW_PASSWORD}
-            autoCompleteType='password'
-            secureTextEntry={true}
-            onChangeText={this.onNewPasswordChange}
-            returnKeyType="next"
-            enablesReturnKeyAutomatically={true}
-            blurOnSubmit={false}
-            onSubmitEditing={() => this.newPassword2Input.focus()}
-          />
-          <TextInput
-            ref={(input) => this.newPassword2Input = input}
-            style={styles.inputField}
-            placeholder={CONFIRM_NEW_PASSWORD}
-            autoCompleteType='password'
-            secureTextEntry={true}
-            onChangeText={this.onNewPassword2Change}
-            returnKeyType="next"
-            enablesReturnKeyAutomatically={true}
-            blurOnSubmit={false}
-            onSubmitEditing={this.changePassword}
-          />
-        </View>
-        <View>
-          <Text style={styles.errorText}>{this.props.error}</Text>
-        </View>
-        <View style={styles.buttonContainer}>
-          <RoundedButton
-            onPress={this.changePassword}
-            buttonText={CHANGE_PASSWORD}
-            buttonStyle={styles.yellowButton}
-            isLoading={this.props.changePasswordLoading}
-            disabled={
-              !this.state.oldPassword || !this.state.newPassword || !this.state.newPassword2
-            }
-          />
-          <RoundedButton
-            onPress={this.cancel}
-            buttonText={CANCEL}
-            buttonStyle={{...styles.yellowButton, backgroundColor: Colors.APP_BACKGROUND}}
-            disabled={this.props.changePasswordLoading}
-          />
-        </View>
-      </SafeAreaView>
+      <KeyboardAvoidingView style={styles.outerContainer} behaviour='padding' enabled>
+        <ScrollView
+          contentContainerStyle={styles.scrollViewContent}
+          keyboardShouldPersistTaps="handled" >
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <Text style={styles.title}>{CHANGE_PASSWORD_TITLE}</Text>
+            <Text style={{...styles.title, fontSize: 20.9}}>{CURRENT_PASSWORD}</Text>
+            <TextInput
+              style={styles.inputField}
+              placeholder={CURRENT_PASSWORD}
+              autoCompleteType='password'
+              secureTextEntry={true}
+              onChangeText={this.onOldPasswordChange}
+              returnKeyType="next"
+              enablesReturnKeyAutomatically={true}
+              blurOnSubmit={false}
+              onSubmitEditing={() => this.newPasswordInput.focus()}
+            />
+            <Text style={{...styles.title, fontSize: 20.9}}>{NEW_PASSWORD}</Text>
+            <TextInput
+              ref={(input) => this.newPasswordInput = input}
+              style={styles.inputField}
+              placeholder={NEW_PASSWORD}
+              autoCompleteType='password'
+              secureTextEntry={true}
+              onChangeText={this.onNewPasswordChange}
+              returnKeyType="next"
+              enablesReturnKeyAutomatically={true}
+              blurOnSubmit={false}
+              onSubmitEditing={() => this.newPassword2Input.focus()}
+            />
+            <TextInput
+              ref={(input) => this.newPassword2Input = input}
+              style={styles.inputField}
+              placeholder={CONFIRM_NEW_PASSWORD}
+              autoCompleteType='password'
+              secureTextEntry={true}
+              onChangeText={this.onNewPassword2Change}
+              returnKeyType="next"
+              enablesReturnKeyAutomatically={true}
+              blurOnSubmit={false}
+              onSubmitEditing={this.changePassword}
+            />
+          </View>
+          <View>
+            <Text style={styles.errorText}>{this.props.error}</Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <RoundedButton
+              onPress={this.changePassword}
+              buttonText={CHANGE_PASSWORD}
+              buttonStyle={styles.yellowButton}
+              isLoading={this.props.changePasswordLoading}
+              disabled={
+                !this.state.oldPassword || !this.state.newPassword || !this.state.newPassword2
+              }
+            />
+            <RoundedButton
+              onPress={this.cancel}
+              buttonText={CANCEL}
+              buttonStyle={{...styles.yellowButton, backgroundColor: Colors.APP_BACKGROUND}}
+              disabled={this.props.changePasswordLoading}
+            />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -157,6 +161,12 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 export default connector(ChangePasswordView);
 
 const styles = StyleSheet.create({
+  outerContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fbfbfb',
@@ -169,6 +179,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     marginBottom: '5%',
+  },
+  scrollViewContent: {
+    flexGrow: 1
   },
   title: {
     fontFamily: 'Exo2-bold',
