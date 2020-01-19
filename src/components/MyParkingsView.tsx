@@ -274,18 +274,18 @@ class MyParkingsView extends Component<Props, State> {
                 { (this.state.parkingItemToDelete.type === ParkingSpotEventType.RELEASE &&
                   this.state.parkingItemToDelete.parkingEvent.reservation !== null) ?
 
-                  <Text style={{fontSize: 22, fontWeight: 'bold'}}>{CANT_DELETE_RELEASE}</Text> :
+                  <Text style={{fontSize: 22, fontFamily: 'Exo2-bold'}}>{CANT_DELETE_RELEASE}</Text> :
 
                   <View>
-                    <Text style={{fontSize: 25, fontWeight: 'bold'}}>{ARE_YOU_SURE}</Text>
-                    <Text style={{fontSize: 20, fontWeight: 'bold'}}>
+                    <Text style={{fontSize: 25, fontFamily: 'Exo2-bold'}}>{ARE_YOU_SURE}</Text>
+                    <Text style={{fontSize: 20, fontFamily: 'Exo2-bold'}}>
                       {this.state.parkingItemToDelete.type === ParkingSpotEventType.PARKING ?
                         DELETE_PARKING : DELETE_RELEASE}
                     </Text>
-                    <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+                    <Text style={{fontSize: 18, fontFamily: 'Exo2-bold'}}>
                       {SPOT}: {this.state.parkingItemToDelete.parkingEvent.parkingSpot.name}
                     </Text>
-                    <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+                    <Text style={{fontSize: 18, fontFamily: 'Exo2-bold'}}>
                       {DATE}: {prettierDateOutput(this.state.parkingItemToDelete.parkingEvent.date)}
                     </Text>
                   </View>
@@ -318,7 +318,7 @@ class MyParkingsView extends Component<Props, State> {
             useNativeDriver={true}
             hideModalContentWhileAnimating={true}>
             <View style={styles.newReleaseModal}>
-              <View style={{alignItems: 'center'}}>
+              <View style={{alignItems: 'center', marginBottom: 15}}>
                 <Text style={{fontFamily: 'Exo2-bold', fontSize: 25, color: Colors.RED}}>
                   {this.state.errorText}
                 </Text>
