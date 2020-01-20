@@ -2,6 +2,7 @@ import {getCookie} from './CookieStorage';
 import {CalendarEntry, ParkingEvent, CalendarType} from './types';
 import {Colors} from '../assets/colors';
 import {HOST} from 'react-native-dotenv';
+import {logOut} from './actions/authActions';
 
 export async function apiFetch(url: string, params: RequestInit = {}) {
   const cookie = await getCookie();

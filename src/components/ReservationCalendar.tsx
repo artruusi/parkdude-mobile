@@ -65,6 +65,9 @@ class ReservationCalendar extends Component<Props, CalendarState> {
   }
 
   componentDidUpdate(nextProps) {
+    if (!this.props.auth.isAuthenticated) {
+      this.props.navigation.navigate('Auth');
+    }
     if (nextProps.reservation.reservations !== this.props.reservation.reservations) {
       console.log('new succesful reservation, triggering calendar render');
       const dateObject = {
@@ -159,6 +162,7 @@ class ReservationCalendar extends Component<Props, CalendarState> {
 }
 
 const mapStateToProps = (state: RootReducer) => ({
+  auth: state.auth,
   calendarList: state.calendar.calendar,
   reservation: state.reservation,
   myReservations: state.myReservations,

@@ -97,3 +97,13 @@ export const setLogOutState = () => {
     type: LOG_OUT
   };
 };
+
+// This is not an action creator, but if this in put on Utils.ts, Expo will create
+// a new  unnecessary error about "Require cycle"
+export async function verifiedUser(statusCode: number, dispatch: any) {
+  if (statusCode === 401) {
+    await logOut()(dispatch);
+    return false;
+  }
+  return true;
+}

@@ -49,6 +49,9 @@ class MainView extends Component<Props, State> {
   }
 
   componentDidUpdate(receivedProps) {
+    if (!this.props.auth.isAuthenticated) {
+      this.props.navigation.navigate('Auth');
+    }
     if (receivedProps.error.postReservationError.message !== '') {
       this.toggleErrorModal();
     }
@@ -256,6 +259,7 @@ class MainView extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: RootReducer) => ({
+  auth: state.auth,
   reservation: state.reservation,
   parkingSpots: state.parkingSpots,
   error: state.error,
