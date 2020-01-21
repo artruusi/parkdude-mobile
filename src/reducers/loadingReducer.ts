@@ -9,7 +9,8 @@ const initialState: LoadingState = {
   getReservationsLoading: false,
   getParkingSpotsLoading: false,
   reserveSpotsLoading: false,
-  deleteReservationLoading: false
+  deleteReservationLoading: false,
+  authLoading: false
 };
 
 type Action = ReturnType<typeof setLoadingState|typeof removeLoadingState>
