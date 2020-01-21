@@ -44,7 +44,6 @@ class ChangePasswordView extends Component<Props> {
   };
 
   componentDidMount() {
-    this.setState({passwordChanged: false});
     this.componentDidUpdate(this.props);
   }
 
@@ -88,7 +87,7 @@ class ChangePasswordView extends Component<Props> {
 
   render() {
     return (
-      <KeyboardAvoidingView style={styles.outerContainer} behaviour='padding' enabled>
+      <KeyboardAvoidingView style={styles.outerContainer} behavior='padding' enabled>
         <ScrollView
           contentContainerStyle={styles.scrollViewContent}
           keyboardShouldPersistTaps="handled" >
@@ -117,7 +116,7 @@ class ChangePasswordView extends Component<Props> {
               returnKeyType="next"
               enablesReturnKeyAutomatically={true}
               blurOnSubmit={false}
-              onSubmitEditing={() => this.newPassword2Input.focus()}
+              onSubmitEditing={() => this.newPasswordInput2.focus()}
             />
             <TextInput
               ref={(input) => this.newPassword2Input = input}
@@ -126,7 +125,6 @@ class ChangePasswordView extends Component<Props> {
               autoCompleteType='password'
               secureTextEntry={true}
               onChangeText={this.onNewPassword2Change}
-              returnKeyType="next"
               enablesReturnKeyAutomatically={true}
               blurOnSubmit={false}
               onSubmitEditing={this.changePassword}
