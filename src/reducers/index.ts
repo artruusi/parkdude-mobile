@@ -6,6 +6,7 @@ import {calendarReducer} from './calendarReducer';
 import {reservationReducer} from './reservationReducer';
 import {parkingSpotReducer} from './parkingSpotReducer';
 import {loadingReducer} from './loadingReducer';
+import {cookieReducer} from './cookieReducer';
 
 
 export const rootReducer = combineReducers({
@@ -15,7 +16,8 @@ export const rootReducer = combineReducers({
   myReservations: myReservationsReducer,
   calendar: calendarReducer,
   reservation: reservationReducer,
-  parkingSpots: parkingSpotReducer
+  parkingSpots: parkingSpotReducer,
+  cookie: cookieReducer
 });
 
 export type RootReducer = ReturnType<typeof rootReducer>

@@ -30,7 +30,7 @@ class WaitForConfirmationView extends Component<Props> {
       (receivedProps.userRole === UserRole.VERIFIED || receivedProps.userRole === UserRole.ADMIN)) {
       this.props.navigation.navigate('App');
     } else if (receivedProps.isAuthenticated === false) {
-      this.restart();
+      this.props.navigation.navigate('OnboardingView');
     }
   }
 

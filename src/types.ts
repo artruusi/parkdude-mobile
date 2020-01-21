@@ -18,6 +18,10 @@ export interface ErrorState{
   changePasswordError: string;
 }
 
+export interface CookieState {
+  hasCookies: boolean;
+}
+
 export interface ReservationFailed{
   message: string;
   dates: string[];

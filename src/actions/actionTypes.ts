@@ -2,6 +2,9 @@
 export const GET_AUTHSTATE = 'GET_AUTHSTATE';
 export const LOG_OUT = 'LOG_OUT';
 
+// Cookies
+export const HAS_COOKIES = 'HAS_COOKIES';
+
 // Calendar
 export const GET_CALENDAR_DATA = 'GET_CALENDAR_DATA';
 
