@@ -118,7 +118,8 @@ export enum LoadingType {
   GET_PARKING_SPOTS = 'getParkingSpotsLoading',
   RESERVE_SPOTS = 'reserveSpotsLoading',
   DELETE_RESERVATION = 'deleteReservationLoading',
-  CHANGE_PASSWORD = 'changePasswordLoading'
+  CHANGE_PASSWORD = 'changePasswordLoading',
+  AUTH = 'authLoading'
 }
 
 export enum CalendarType {
