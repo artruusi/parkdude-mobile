@@ -15,6 +15,7 @@ export interface ErrorState{
   passwordLoginError: string;
   signupError: string;
   deleteReservationError: ReservationFailed;
+  changePasswordError: string;
 }
 
 export interface ReservationFailed{
