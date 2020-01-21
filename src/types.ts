@@ -16,6 +16,10 @@ export interface ErrorState{
   deleteReservationError: ReservationFailed;
 }
 
+export interface CookieState {
+  hasCookies: boolean;
+}
+
 export interface ReservationFailed{
   message: string;
   dates: string[];

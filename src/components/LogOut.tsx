@@ -25,6 +25,7 @@ class LogOut extends Component<Props> {
       this.props.navigation.navigate('Auth');
     } else {
       // Log out will cause isAuthenticated to turn false, which will trigger naviation to Auth
+      console.log('FFF');
       this.props.logOut();
     }
   }
