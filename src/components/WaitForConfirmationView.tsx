@@ -57,7 +57,6 @@ class WaitForConfirmationView extends Component<Props> {
           </View>
           <View style={styles.textContainer}>
             <Text style={styles.text}>{WAITING_CONFIRMATION_TEXT1}</Text>
-            <Text style={styles.text}>{WAITING_CONFIRMATION_TEXT2}</Text>
           </View>
           <RoundedButton
             onPress={this.refresh}
