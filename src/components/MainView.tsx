@@ -48,11 +48,11 @@ class MainView extends Component<Props, State> {
     this.setParkingSpot = this.setParkingSpot.bind(this);
   }
 
-  componentDidUpdate(receivedProps) {
+  componentDidUpdate(prevProps) {
     if (!this.props.auth.isAuthenticated) {
       this.props.navigation.navigate('Auth');
     }
-    if (receivedProps.error.postReservationError.message !== '') {
+    if (prevProps.error.postReservationError.message !== '') {
       this.toggleErrorModal();
     }
   }
@@ -137,6 +137,7 @@ class MainView extends Component<Props, State> {
         <View style={{...styles.centerContent}}>
           <Text style={styles.title}>{CALENDAR_TITLE}</Text>
           <Text style={styles.error}>{this.props.error.networkError}</Text>
+          <Text style={styles.error}>{this.props.error.generalError}</Text>
         </View>
 
         {/* Calendar component */}
