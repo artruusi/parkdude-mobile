@@ -13,6 +13,9 @@ const store = mockStore({
   auth: {
     isAuthenticated: true,
     userRole: UserRole.VERIFIED
+  },
+  loading: {
+    authLoading: false
   }
 });
 
