@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-end',
-    marginBottom: '5%',
+    marginBottom: 64,
   },
   scrollViewContent: {
     flexGrow: 1
@@ -222,14 +222,12 @@ const styles = StyleSheet.create({
   errorText: {
     fontSize: 16,
     fontFamily: 'Exo2',
-    marginTop: '1%',
-    marginBottom: '1%',
     color: Colors.RED
   },
   yellowButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: '5%'
+    marginBottom: 16
   },
   inputField: {
     margin: '2%',

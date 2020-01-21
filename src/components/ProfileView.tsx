@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-end',
-    marginBottom: '5%',
+    marginBottom: 64,
   },
   title: {
     fontFamily: 'Exo2-bold',
@@ -114,6 +114,6 @@ const styles = StyleSheet.create({
   yellowButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: '5%'
+    marginBottom: 16
   },
 });
