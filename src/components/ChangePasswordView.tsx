@@ -223,7 +223,8 @@ const styles = StyleSheet.create({
   errorText: {
     fontSize: 16,
     fontFamily: 'Exo2',
-    color: Colors.RED
+    color: Colors.RED,
+    textAlign: 'center',
   },
   yellowButton: {
     alignItems: 'center',
