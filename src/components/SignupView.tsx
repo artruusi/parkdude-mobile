@@ -62,22 +62,22 @@ class SignupView extends Component<Props> {
 
   onEmailChange(email: string) {
     this.setState({email});
-    clearErrorState();
+    this.props.clearErrorState();
   }
 
   onNameChange(name: string) {
     this.setState({name});
-    clearErrorState();
+    this.props.clearErrorState();
   }
 
   onPasswordChange(password: string) {
     this.setState({password});
-    clearErrorState();
+    this.props.clearErrorState();
   }
 
   onPassword2Change(password2: string) {
     this.setState({password2});
-    clearErrorState();
+    this.props.clearErrorState();
   }
 
   back() {

@@ -63,22 +63,23 @@ class ChangePasswordView extends Component<Props> {
   }
 
   cancel() {
+    this.props.clearErrorState();
     this.props.navigation.navigate('Profile');
   }
 
   onOldPasswordChange(oldPassword: string) {
     this.setState({oldPassword});
-    clearErrorState();
+    this.props.clearErrorState();
   }
 
   onNewPasswordChange(newPassword: string) {
     this.setState({newPassword});
-    clearErrorState();
+    this.props.clearErrorState();
   }
 
   onNewPassword2Change(newPassword2: string) {
     this.setState({newPassword2});
-    clearErrorState();
+    this.props.clearErrorState();
   }
 
   onOkPressed() {
