@@ -1,24 +1,27 @@
 import {CALENDAR_URL} from 'react-native-dotenv';
 import {apiFetch} from '../Utils';
 import {HttpMethod, LoadingType} from '../types';
-import {gotNetworkError, clearErrorState} from './errorActions';
-import {CONNECTION_ERROR} from '../Constants';
+import {gotNetworkError, clearErrorState, generalError} from './errorActions';
+import {CONNECTION_ERROR, GENERAL_ERROR_MESSAGE} from '../Constants';
 import {GET_CALENDAR_DATA} from './actionTypes';
 import {setLoadingState, removeLoadingState} from './loadingActions';
+import {verifiedUser} from './authActions';
 
 export const getCalendarSpots = (dateRangeParams: string) => {
   return async (dispatch) => {
     try {
       dispatch(setLoadingState(LoadingType.GET_MONTH));
       const url = `${CALENDAR_URL}${dateRangeParams}`;
-      const calendarResponse = await apiFetch(url, {method: HttpMethod.GET});
-      if (calendarResponse.status === 200) {
-        const result = await calendarResponse.json();
-        dispatch(clearErrorState());
-        dispatch(setCalendarState(result));
-      } else {
-        // TODO: Better error handling
-        throw new Error();
+      const response = await apiFetch(url, {method: HttpMethod.GET});
+      if (await verifiedUser(response.status, dispatch)) {
+        if (response.status === 200) {
+          const result = await response.json();
+          dispatch(clearErrorState());
+          dispatch(setCalendarState(result));
+        } else {
+          // HTTP Status 500 or something else unexpected
+          dispatch(generalError(GENERAL_ERROR_MESSAGE));
+        }
       }
     } catch (error) {
       dispatch(gotNetworkError(CONNECTION_ERROR));

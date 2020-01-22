@@ -64,8 +64,11 @@ class ReservationCalendar extends Component<Props, CalendarState> {
     }
   }
 
-  componentDidUpdate(nextProps) {
-    if (nextProps.reservation.reservations !== this.props.reservation.reservations) {
+  componentDidUpdate(prevProps) {
+    if (!this.props.auth.isAuthenticated) {
+      this.props.navigation.navigate('Auth');
+    }
+    if (prevProps.reservation.reservations !== this.props.reservation.reservations) {
       console.log('new succesful reservation, triggering calendar render');
       const dateObject = {
         dateString: undefined,
@@ -77,11 +80,11 @@ class ReservationCalendar extends Component<Props, CalendarState> {
       this.fetchDataForMonth(dateObject);
       this.props.setParkingSpot({id: 'random', name: 'Any free spot'});
     }
-    if (nextProps.calendarList !== this.props.calendarList) {
+    if (prevProps.calendarList !== this.props.calendarList) {
       this.setState({calendarData: this.props.calendarList});
     }
     if (this.props.calendarData !== undefined) {
-      if (nextProps.myReservations.releases !== this.props.myReservations.releases) {
+      if (prevProps.myReservations.releases !== this.props.myReservations.releases) {
         console.log('new succesful release, triggering calendar render');
         this.setState({calendarData: parkingEventsToCalendarEntries(this.props.myReservations.releases)});
       }
@@ -110,7 +113,7 @@ class ReservationCalendar extends Component<Props, CalendarState> {
         // data still loading
         if (!this.props.getMonthLoading) {
           // user cannot click on date which already contains reservation for user
-          if (userReservedDates[0].spacesReservedByUser.length === 0) {
+          if (userReservedDates[0] !== undefined && userReservedDates[0].spacesReservedByUser.length === 0) {
             const newDates = {...this.props.userSelectedDates};
             newDates[day.dateString] = {selected: true, selectedColor: Colors.YELLOW};
             this.props.updateUserSelectedDates(newDates);
@@ -159,6 +162,7 @@ class ReservationCalendar extends Component<Props, CalendarState> {
 }
 
 const mapStateToProps = (state: RootReducer) => ({
+  auth: state.auth,
   calendarList: state.calendar.calendar,
   reservation: state.reservation,
   myReservations: state.myReservations,

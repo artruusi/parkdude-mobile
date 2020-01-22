@@ -5,16 +5,19 @@ import {CONNECTION_ERROR} from '../Constants';
 import {apiFetch, toDateString} from '../Utils';
 import {HttpMethod, LoadingType} from '../types';
 import {setLoadingState, removeLoadingState} from './loadingActions';
+import {verifiedUser} from './authActions';
 
 export const getParkingSpots = (dates: string[]) => {
   return async (dispatch) => {
     try {
       dispatch(setLoadingState(LoadingType.GET_PARKING_SPOTS));
       const url = `${GET_PARKING_SPOTS_URL}?availableOnDates=${dates.join(',')}`;
-      const getSpotsResponse = await apiFetch(url, {method: HttpMethod.GET});
-      const result = await getSpotsResponse.json();
-      dispatch(clearErrorState());
-      dispatch(setParkingSpots(result.data));
+      const response = await apiFetch(url, {method: HttpMethod.GET});
+      if (await verifiedUser(response.status, dispatch)) {
+        const result = await response.json();
+        dispatch(clearErrorState());
+        dispatch(setParkingSpots(result.data));
+      }
     } catch (error) {
       dispatch(gotNetworkError(CONNECTION_ERROR));
     }
@@ -37,10 +40,12 @@ export const getMyParkings = () => {
       date.setFullYear(date.getFullYear()+1);
       const endDate = toDateString(date);
       const url = `${GET_OWN_RESERVATIONS}?endDate=${endDate}`;
-      const getMyParkingsResponse = await apiFetch(url, {method: HttpMethod.GET});
-      const result = await getMyParkingsResponse.json();
-      dispatch(clearErrorState());
-      dispatch(setMyParkings(result));
+      const response = await apiFetch(url, {method: HttpMethod.GET});
+      if (await verifiedUser(response.status, dispatch)) {
+        const result = await response.json();
+        dispatch(clearErrorState());
+        dispatch(setMyParkings(result));
+      }
     } catch (error) {
       console.log(error);
       dispatch(gotNetworkError(CONNECTION_ERROR));

@@ -7,27 +7,30 @@ import {apiFetch} from '../Utils';
 import {HttpMethod, PostReservation, UserParkingItem, LoadingType, NewRelease} from '../types';
 import {getMyParkings} from './parkingActions';
 import {setLoadingState, removeLoadingState} from './loadingActions';
+import {verifiedUser} from './authActions';
 
 export const postReservation = (reservation: PostReservation) => {
   return async (dispatch) => {
     try {
       dispatch(setLoadingState(LoadingType.RESERVE_SPOTS));
-      const postReservationResponse = await apiFetch(
+      const response = await apiFetch(
         POST_RESERVATION_URL,
         {method: HttpMethod.POST,
           body: JSON.stringify(reservation),
           headers: {'Content-Type': 'application/json'}
         });
-      const result = await postReservationResponse.json();
-      if (postReservationResponse.status === 200) {
-        dispatch(clearErrorState());
-        dispatch(createPostReservationAction(result));
-        getMyParkings()(dispatch);
-      } else if (postReservationResponse.status === 400) {
-        dispatch(reservationFailed(result));
-      } else {
-        // HTTP Status 500 or something else unexpected
-        dispatch(generalError(GENERAL_ERROR_MESSAGE));
+      if (await verifiedUser(response.status, dispatch)) {
+        const result = await response.json();
+        if (response.status === 200) {
+          dispatch(clearErrorState());
+          dispatch(createPostReservationAction(result));
+          getMyParkings()(dispatch);
+        } else if (response.status === 400) {
+          dispatch(reservationFailed(result));
+        } else {
+          // HTTP Status 500 or something else unexpected
+          dispatch(generalError(GENERAL_ERROR_MESSAGE));
+        }
       }
     } catch (error) {
       dispatch(gotNetworkError(CONNECTION_ERROR));
@@ -53,15 +56,17 @@ export const deleteReservation = (item: UserParkingItem) => {
         `${DELETE_SPOTS_URL}/${id}?dates=${date}`,
         {method: HttpMethod.DELETE}
       );
-      const result = await response.json();
-      if (response.status === 200) {
-        dispatch(clearErrorState());
-        getMyParkings()(dispatch);
-      } else if (response.status === 400) {
-        dispatch(deleteReservationFailed(result));
-      } else {
-        // HTTP Status 500 or something else unexpected
-        dispatch(generalError(GENERAL_ERROR_MESSAGE));
+      if (await verifiedUser(response.status, dispatch)) {
+        const result = await response.json();
+        if (response.status === 200) {
+          dispatch(clearErrorState());
+          getMyParkings()(dispatch);
+        } else if (response.status === 400) {
+          dispatch(deleteReservationFailed(result));
+        } else {
+          // HTTP Status 500 or something else unexpected
+          dispatch(generalError(GENERAL_ERROR_MESSAGE));
+        }
       }
     } catch (error) {
       dispatch(gotNetworkError(CONNECTION_ERROR));
@@ -79,15 +84,17 @@ export const postRelease = (item: NewRelease) => {
         `${DELETE_SPOTS_URL}/${id}?dates=${item.dates.join(',')}`,
         {method: HttpMethod.DELETE}
       );
-      const result = await response.json();
-      if (response.status === 200) {
-        dispatch(clearErrorState());
-        getMyParkings()(dispatch);
-      } else if (response.status === 400) {
-        dispatch(deleteReservationFailed(result));
-      } else {
-        // HTTP Status 500 or something else unexpected
-        dispatch(generalError(GENERAL_ERROR_MESSAGE));
+      if (await verifiedUser(response.status, dispatch)) {
+        const result = await response.json();
+        if (response.status === 200) {
+          dispatch(clearErrorState());
+          getMyParkings()(dispatch);
+        } else if (response.status === 400) {
+          dispatch(deleteReservationFailed(result));
+        } else {
+          // HTTP Status 500 or something else unexpected
+          dispatch(generalError(GENERAL_ERROR_MESSAGE));
+        }
       }
     } catch (error) {
       dispatch(gotNetworkError(CONNECTION_ERROR));
