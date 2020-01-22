@@ -97,6 +97,15 @@ describe('Action Creators', () => {
     expect(errorActions.setSignupError(mockPayload)).toEqual(expectedAction);
   });
 
+  it('should create CHANGE_PASSWORD_ERROR action', () => {
+    const mockPayload = 'errorString';
+    const expectedAction = {
+      type: types.CHANGE_PASSWORD_ERROR,
+      payload: mockPayload
+    };
+    expect(errorActions.setChangePasswordError(mockPayload)).toEqual(expectedAction);
+  });
+
   it('should create CLEAR_ERRORS action', () => {
     const expectedAction = {
       type: types.CLEAR_ERRORS

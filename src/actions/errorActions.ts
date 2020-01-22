@@ -1,6 +1,7 @@
 import {
   NETWORK_ERROR, RESERVATION_FAILED, CLEAR_ERRORS,
-  GENERAL_ERROR, PASSWORD_LOGIN_ERROR, SIGNUP_ERROR, DELETE_RESERVATION_FAILED
+  GENERAL_ERROR, PASSWORD_LOGIN_ERROR, SIGNUP_ERROR,
+  CHANGE_PASSWORD_ERROR, DELETE_RESERVATION_FAILED
 } from './actionTypes';
 
 export const generalError = (errorString: string) => {
@@ -20,6 +21,13 @@ export const setPasswordLoginError = (errorString: string) => {
 export const setSignupError = (errorString: string) => {
   return {
     type: SIGNUP_ERROR,
+    payload: errorString
+  };
+};
+
+export const setChangePasswordError = (errorString: string) => {
+  return {
+    type: CHANGE_PASSWORD_ERROR,
     payload: errorString
   };
 };

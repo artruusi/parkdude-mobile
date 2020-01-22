@@ -5,6 +5,7 @@ export interface LoginState {
   userRole?: UserRole;
   name?: string;
   loading: boolean;
+  email?: string;
 }
 
 export interface ErrorState{
@@ -14,6 +15,7 @@ export interface ErrorState{
   passwordLoginError: string;
   signupError: string;
   deleteReservationError: ReservationFailed;
+  changePasswordError: string;
 }
 
 export interface CookieState {
@@ -120,7 +122,8 @@ export enum LoadingType {
   GET_PARKING_SPOTS = 'getParkingSpotsLoading',
   RESERVE_SPOTS = 'reserveSpotsLoading',
   DELETE_RESERVATION = 'deleteReservationLoading',
-  AUTH = 'authLoading'
+  AUTH = 'authLoading',
+  CHANGE_PASSWORD = 'changePasswordLoading'
 }
 
 export enum CalendarType {

@@ -1,6 +1,7 @@
 import {
   NETWORK_ERROR, RESERVATION_FAILED, CLEAR_ERRORS,
-  GENERAL_ERROR, PASSWORD_LOGIN_ERROR, SIGNUP_ERROR, DELETE_RESERVATION_FAILED
+  GENERAL_ERROR, PASSWORD_LOGIN_ERROR, SIGNUP_ERROR,
+  CHANGE_PASSWORD_ERROR, DELETE_RESERVATION_FAILED
 } from '../actions/actionTypes';
 import {ErrorState} from '../types';
 
@@ -10,6 +11,7 @@ const initialState: ErrorState = {
   postReservationError: {message: '', dates: []},
   passwordLoginError: '',
   signupError: '',
+  changePasswordError: '',
   deleteReservationError: {message: '', dates: []}
 };
 
@@ -46,6 +48,12 @@ export const errorReducer = (state = initialState, action ) => {
       ...state,
       networkError: '',
       signupError: action.payload
+    };
+  case CHANGE_PASSWORD_ERROR:
+    return {
+      ...state,
+      networkError: '',
+      changePasswordError: action.payload
     };
   case DELETE_RESERVATION_FAILED:
     return {

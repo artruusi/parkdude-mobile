@@ -9,6 +9,7 @@ describe('errorReducer', () => {
       'postReservationError': {message: '', dates: []},
       'passwordLoginError': '',
       'signupError': '',
+      'changePasswordError': '',
       'deleteReservationError': {message: '', dates: []}
     });
   });
@@ -24,6 +25,7 @@ describe('errorReducer', () => {
       postReservationError: {message: '', dates: []},
       passwordLoginError: '',
       signupError: '',
+      changePasswordError: '',
       deleteReservationError: {message: '', dates: []}
     });
   });

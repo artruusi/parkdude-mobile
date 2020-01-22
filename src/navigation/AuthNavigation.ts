@@ -5,6 +5,7 @@ import OnboardingView from '../components/OnboardingView';
 import WaitForConfirmationView from '../components/WaitForConfirmationView';
 import PasswordLoginView from '../components/PasswordLoginView';
 import SignupView from '../components/SignupView';
+import LogOut from '../components/LogOut';
 
 const AuthNavigation = createStackNavigator(
   {
@@ -13,7 +14,8 @@ const AuthNavigation = createStackNavigator(
     Login: {screen: LoginView},
     PasswordLoginView: {screen: PasswordLoginView},
     SignUpView: {screen: SignupView},
-    WaitForConfirmationView: {screen: WaitForConfirmationView}
+    WaitForConfirmationView: {screen: WaitForConfirmationView},
+    LogOut: {screen: LogOut}
   },
   {
     initialRouteName: 'OnboardingView',
