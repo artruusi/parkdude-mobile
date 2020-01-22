@@ -6,12 +6,12 @@ import {
   WAITING_CONFIRMATION_TITLE,
   WAITING_CONFIRMATION_TEXT1,
   WAITING_CONFIRMATION_TEXT2,
-  RESTART, LOGOUT
+  REFRESH, LOGOUT
 } from '../Constants';
 import {Colors} from '../../assets/colors';
 import {NavigationScreenProp} from 'react-navigation';
 import {RoundedButton} from '../shared/RoundedButton';
-import {logOut} from '../actions/authActions';
+import {getAuthState, logOut} from '../actions/authActions';
 import {RootReducer} from '../reducers/index';
 
 type Props = ConnectedProps<typeof connector> & {
@@ -21,7 +21,7 @@ type Props = ConnectedProps<typeof connector> & {
 class WaitForConfirmationView extends Component<Props> {
   constructor(props: Props) {
     super(props);
-    this.restart = this.restart.bind(this);
+    this.refresh = this.refresh.bind(this);
     this.logOut = this.logOut.bind(this);
   }
 
@@ -30,12 +30,12 @@ class WaitForConfirmationView extends Component<Props> {
       (receivedProps.userRole === UserRole.VERIFIED || receivedProps.userRole === UserRole.ADMIN)) {
       this.props.navigation.navigate('App');
     } else if (receivedProps.isAuthenticated === false) {
-      this.restart();
+      this.props.navigation.navigate('OnboardingView');
     }
   }
 
-  restart() {
-    this.props.navigation.navigate('OnboardingView');
+  refresh() {
+    this.props.getAuthState();
   }
 
   logOut() {
@@ -57,12 +57,12 @@ class WaitForConfirmationView extends Component<Props> {
           </View>
           <View style={styles.textContainer}>
             <Text style={styles.text}>{WAITING_CONFIRMATION_TEXT1}</Text>
-            <Text style={styles.text}>{WAITING_CONFIRMATION_TEXT2}</Text>
           </View>
           <RoundedButton
-            onPress={this.restart}
-            buttonText={RESTART}
+            onPress={this.refresh}
+            buttonText={REFRESH}
             buttonStyle={styles.button}
+            isLoading={this.props.authLoading}
           />
           <RoundedButton
             onPress={this.logOut}
@@ -77,10 +77,11 @@ class WaitForConfirmationView extends Component<Props> {
 
 const mapStateToProps = (state: RootReducer) => ({
   isAuthenticated: state.auth.isAuthenticated,
-  userRole: state.auth.userRole
+  userRole: state.auth.userRole,
+  authLoading: state.loading.authLoading
 });
 
-const mapDispatchToProps = {logOut};
+const mapDispatchToProps = {getAuthState, logOut};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
