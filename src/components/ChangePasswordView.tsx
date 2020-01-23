@@ -120,7 +120,7 @@ class ChangePasswordView extends Component<Props> {
               onSubmitEditing={() => this.newPasswordInput2.focus()}
             />
             <TextInput
-              ref={(input) => this.newPassword2Input = input}
+              ref={(input) => this.newPasswordInput2 = input}
               style={styles.inputField}
               placeholder={CONFIRM_NEW_PASSWORD}
               autoCompleteType='password'
