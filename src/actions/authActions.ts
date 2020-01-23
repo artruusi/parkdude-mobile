@@ -45,10 +45,11 @@ export const logOut = () => {
 export const loginWithPassword = (email: string, password: string) => {
   return async (dispatch) => {
     try {
+      const client = 'mobile';
       dispatch(setLoadingState(LoadingType.PASSWORD_LOGIN));
       const loginResponse = await apiFetch(PASSWORD_LOGIN_URL, {
         method: HttpMethod.POST,
-        body: JSON.stringify({email, password}),
+        body: JSON.stringify({email, password, client}),
         // Empty cookie to ensure that new cookie is given in headers
         headers: {'Content-Type': 'application/json', 'cookie': ''}
       });
