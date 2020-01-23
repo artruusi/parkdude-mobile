@@ -225,6 +225,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Exo2',
     color: Colors.RED,
     textAlign: 'center',
+    paddingHorizontal: 8
   },
   yellowButton: {
     alignItems: 'center',
