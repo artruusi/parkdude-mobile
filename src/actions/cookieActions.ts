@@ -1,10 +1,9 @@
-import {HAS_COOKIES} from './actionTypes';
+import {SET_HAS_COOKIES} from './actionTypes';
 
 
 export const setHasCookies = (hasCookies: boolean) => {
-  console.log(hasCookies);
   return {
-    type: HAS_COOKIES,
+    type: SET_HAS_COOKIES,
     payload: hasCookies
   };
 };

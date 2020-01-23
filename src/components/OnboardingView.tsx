@@ -17,7 +17,7 @@ export default class OnboardingView extends Component<Props> {
     this.continue = this.continue.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const {navigation} = this.props;
     this.focusListener = navigation.addListener('didFocus', () => {
       if (this.props.hasCookies) {

@@ -1,4 +1,4 @@
-import {HAS_COOKIES} from '../actions/actionTypes';
+import {SET_HAS_COOKIES} from '../actions/actionTypes';
 import {CookieState} from '../types';
 
 const initialState: CookieState = {
@@ -7,7 +7,7 @@ const initialState: CookieState = {
 
 export const cookieReducer = (state = initialState, action ) => {
   switch (action.type) {
-  case HAS_COOKIES:
+  case SET_HAS_COOKIES:
     return {
       hasCookies: action.payload
     };
