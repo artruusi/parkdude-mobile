@@ -1,8 +1,9 @@
 import {GET_AUTHSTATE, LOG_OUT} from './actionTypes';
 import {
-  LOGIN_STATE_URL, LOGOUT_URL, PASSWORD_LOGIN_URL, SIGNUP_URL
-} from 'react-native-dotenv';
-import {gotNetworkError, clearErrorState, setPasswordLoginError, setSignupError} from './errorActions';
+  LOGIN_STATE_URL, LOGOUT_URL, PASSWORD_LOGIN_URL, SIGNUP_URL,
+  PASSWORD_CHANGE_URL} from 'react-native-dotenv';
+import {gotNetworkError, clearErrorState, setPasswordLoginError,
+  setSignupError, setChangePasswordError} from './errorActions';
 import {CONNECTION_ERROR} from '../Constants';
 import {apiFetch} from '../Utils';
 import {removeCookie, setCookie} from '../CookieStorage';
@@ -89,6 +90,30 @@ export const signup = (email: string, name: string, password: string) => {
       dispatch(setSignupError(CONNECTION_ERROR));
     }
     dispatch(removeLoadingState(LoadingType.SIGNUP));
+  };
+};
+
+export const changePassword = (oldPassword: string, newPassword: string) => {
+  return async (dispatch) => {
+    try {
+      dispatch(setLoadingState(LoadingType.CHANGE_PASSWORD));
+      const changePasswordResponse = await apiFetch(PASSWORD_CHANGE_URL, {
+        method: HttpMethod.PUT,
+        body: JSON.stringify({password: newPassword, oldPassword}),
+        headers: {'Content-Type': 'application/json'}
+      });
+      const result = await changePasswordResponse.json();
+      if (changePasswordResponse.status === 200) {
+        dispatch(removeLoadingState(LoadingType.CHANGE_PASSWORD));
+        return true;
+      } else {
+        dispatch(setChangePasswordError(result.message));
+      }
+    } catch (error) {
+      dispatch(setChangePasswordError(CONNECTION_ERROR));
+    }
+    dispatch(removeLoadingState(LoadingType.CHANGE_PASSWORD));
+    return false;
   };
 };
 
