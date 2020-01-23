@@ -140,6 +140,9 @@ class MyParkingsView extends Component<Props, State> {
   }
 
   componentDidUpdate(prevProps) {
+    if (!this.props.auth.isAuthenticated) {
+      this.props.navigation.navigate('Auth');
+    }
     if (prevProps.error.deleteReservationError.message !== this.props.error.deleteReservationError.message) {
       if (this.props.error.deleteReservationError.message !== '') {
         this.setState({errorText: DELETE_FAILED});
@@ -383,6 +386,7 @@ class MyParkingsView extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: RootReducer) => ({
+  auth: state.auth,
   myReservations: state.myReservations,
   error: state.error,
   reservationsLoading: state.loading.getReservationsLoading,
