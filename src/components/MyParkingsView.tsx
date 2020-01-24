@@ -143,20 +143,17 @@ class MyParkingsView extends Component<Props, State> {
     if (!this.props.auth.isAuthenticated) {
       this.props.navigation.navigate('Auth');
     }
-    if (prevProps.error.deleteReservationError.message !== this.props.error.deleteReservationError.message) {
-      if (this.props.error.deleteReservationError.message !== '') {
-        this.setState({errorText: DELETE_FAILED});
-      }
+    if (prevProps.error.deleteReservationError.message !== this.props.error.deleteReservationError.message &&
+      this.props.error.deleteReservationError.message !== '') {
+      this.setState({errorText: DELETE_FAILED});
     }
-    if (prevProps.error.generalError !== this.props.error.generalError) {
-      if (this.props.error.generalError !== '') {
-        this.setState({errorText: GENERAL_ERROR_MESSAGE});
-      }
+    if (prevProps.error.generalError !== this.props.error.generalError &&
+      this.props.error.generalError !== '') {
+      this.setState({errorText: GENERAL_ERROR_MESSAGE});
     }
-    if (prevProps.error.networkError !== this.props.error.networkError) {
-      if (this.props.error.networkError !== '') {
-        this.setState({errorText: CONNECTION_ERROR});
-      }
+    if (prevProps.error.networkError !== this.props.error.networkError &&
+      this.props.error.networkError !== '') {
+      this.setState({errorText: CONNECTION_ERROR});
     }
   }
 

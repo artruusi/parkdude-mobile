@@ -110,14 +110,14 @@ class ReservationCalendar extends Component<Props, CalendarState> {
       if (this.props.calendarType === CalendarType.RESERVATION) {
         const userReservedDates = this.props.calendarList.filter((entry) =>
           entry.date === day.dateString);
-        // data still loading
-        if (!this.props.getMonthLoading) {
-          // user cannot click on date which already contains reservation for user
-          if (userReservedDates[0] !== undefined && userReservedDates[0].spacesReservedByUser.length === 0) {
-            const newDates = {...this.props.userSelectedDates};
-            newDates[day.dateString] = {selected: true, selectedColor: Colors.YELLOW};
-            this.props.updateUserSelectedDates(newDates);
-          }
+        // Checking if data is still loading.
+        // User cannot click on date which already contains reservation for user
+        if (!this.props.getMonthLoading && userReservedDates[0] !== undefined &&
+          userReservedDates[0].spacesReservedByUser.length === 0 &&
+          userReservedDates[0].availableSpaces !== 0) {
+          const newDates = {...this.props.userSelectedDates};
+          newDates[day.dateString] = {selected: true, selectedColor: Colors.YELLOW};
+          this.props.updateUserSelectedDates(newDates);
         }
       }
       if (this.props.calendarType === CalendarType.RELEASE) {

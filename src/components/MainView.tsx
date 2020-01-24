@@ -52,7 +52,8 @@ class MainView extends Component<Props, State> {
     if (!this.props.auth.isAuthenticated) {
       this.props.navigation.navigate('Auth');
     }
-    if (prevProps.error.postReservationError.message !== '') {
+    if (prevProps.error.postReservationError.message !== this.props.error.postReservationError.message &&
+      this.props.error.postReservationError.message !== '') {
       this.toggleErrorModal();
     }
   }
