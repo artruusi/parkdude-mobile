@@ -7,6 +7,8 @@ import {RootReducer} from '../reducers';
 import {Colors} from '../../assets/colors';
 import {createMarkedDatesObject, parkingEventsToCalendarEntries} from '../Utils';
 import {getCalendarSpots} from '../actions/calendarActions';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {Platform} from 'react-native';
 
 type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
@@ -171,10 +173,34 @@ class ReservationCalendar extends Component<Props, CalendarState> {
           this.fetchDataForMonth(calendarDateObject);
         }}
         theme={{
-          textDayFontFamily: 'Exo2-bold',
-          textMonthFontFamily: 'Exo2-bold',
-          textDayHeaderFontFamily: 'Exo2-bold',
-          selectedDayTextColor: 'black'
+          'textDayFontFamily': 'Exo2-bold',
+          'textMonthFontFamily': 'Exo2-bold',
+          'textDayHeaderFontFamily': 'Exo2-bold',
+          'selectedDayTextColor': 'black',
+          'stylesheet.day.basic': {
+            base: {
+              // Original: 32
+              width: 34,
+              height: 34,
+              alignItems: 'center',
+              justifyContent: 'center',
+              // paddingBottom needed to counter text's default topMargin for centering
+              // (https://github.com/wix/react-native-calendars/blob/master/src/calendar/day/basic/style.js#L15)
+              paddingBottom: Platform.OS === 'android' ? 4 : 6
+            },
+            selected: {
+              borderRadius: 17
+            },
+          },
+          'stylesheet.calendar.main': {
+            week: {
+              // If base size is increased, these may need to be lowered
+              marginTop: 6,
+              marginBottom: 6,
+              flexDirection: 'row',
+              justifyContent: 'space-around'
+            }
+          }
         }}
       />
     );
