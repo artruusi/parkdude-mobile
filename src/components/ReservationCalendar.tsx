@@ -27,10 +27,11 @@ interface CalendarState {
 class ReservationCalendar extends Component<Props, CalendarState> {
   constructor(props: Props) {
     super(props);
+    const date = new Date();
     this.state = {
       calendarData: [],
-      currentMonth: 0,
-      currentYear: 0
+      currentMonth: date.getMonth()+1,
+      currentYear: date.getFullYear()
     };
     this.fetchDataForMonth = this.fetchDataForMonth.bind(this);
     this.toggleSelectedDay = this.toggleSelectedDay.bind(this);
@@ -39,8 +40,6 @@ class ReservationCalendar extends Component<Props, CalendarState> {
   private focusListener: NavigationEventSubscription;
 
   componentDidMount() {
-    const date = new Date();
-    this.setState({currentMonth: date.getMonth()+1, currentYear: date.getFullYear()}, () => {
       if (this.props.calendarType === CalendarType.RESERVATION) {
         const dateObject = {
           dateString: undefined,
@@ -60,7 +59,6 @@ class ReservationCalendar extends Component<Props, CalendarState> {
           });
         });
       }
-    });
     if (this.props.calendarType === CalendarType.RELEASE) {
       this.setState({calendarData: this.props.calendarData});
     }
