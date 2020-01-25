@@ -24,7 +24,9 @@ export const postReservation = (reservation: PostReservation) => {
         if (response.status === 200) {
           dispatch(clearErrorState());
           dispatch(createPostReservationAction(result));
-          getMyParkings()(dispatch);
+          dispatch(removeLoadingState(LoadingType.RESERVE_SPOTS));
+          await getMyParkings()(dispatch);
+          return;
         } else if (response.status === 400) {
           dispatch(reservationFailed(result));
         } else {
@@ -60,7 +62,7 @@ export const deleteReservation = (item: UserParkingItem) => {
         const result = await response.json();
         if (response.status === 200) {
           dispatch(clearErrorState());
-          getMyParkings()(dispatch);
+          await getMyParkings()(dispatch);
         } else if (response.status === 400) {
           dispatch(deleteReservationFailed(result));
         } else {
@@ -88,7 +90,7 @@ export const postRelease = (item: NewRelease) => {
         const result = await response.json();
         if (response.status === 200) {
           dispatch(clearErrorState());
-          getMyParkings()(dispatch);
+          await getMyParkings()(dispatch);
         } else if (response.status === 400) {
           dispatch(deleteReservationFailed(result));
         } else {
