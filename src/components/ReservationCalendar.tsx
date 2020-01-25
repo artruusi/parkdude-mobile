@@ -5,7 +5,7 @@ import {NavigationScreenProp} from 'react-navigation';
 import {Marking, CalendarDateObject, CalendarType, BasicParkingSpotData, CalendarEntry} from '../types';
 import {RootReducer} from '../reducers';
 import {Colors} from '../../assets/colors';
-import {createMarkedDatesObject, getMonthRangeForURL, parkingEventsToCalendarEntries} from '../Utils';
+import {createMarkedDatesObject, parkingEventsToCalendarEntries} from '../Utils';
 import {getCalendarSpots} from '../actions/calendarActions';
 
 type Props = ConnectedProps<typeof connector> & {
@@ -96,8 +96,7 @@ class ReservationCalendar extends Component<Props, CalendarState> {
       this.setState({currentMonth: calendarDateObject.month, currentYear: calendarDateObject.year});
       const year = calendarDateObject.year;
       const month = calendarDateObject.month-1;
-      const urlQuery = getMonthRangeForURL(year, month);
-      this.props.getCalendarSpots(urlQuery);
+      this.props.getCalendarSpots(year, month);
     }
   }
 

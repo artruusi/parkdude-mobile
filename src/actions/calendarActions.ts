@@ -1,5 +1,5 @@
 import {CALENDAR_URL} from 'react-native-dotenv';
-import {apiFetch} from '../Utils';
+import {apiFetch, getMonthRangeForURL} from '../Utils';
 import {HttpMethod, LoadingType} from '../types';
 import {gotNetworkError, clearErrorState, generalError} from './errorActions';
 import {CONNECTION_ERROR, GENERAL_ERROR_MESSAGE} from '../Constants';
@@ -7,11 +7,12 @@ import {GET_CALENDAR_DATA} from './actionTypes';
 import {setLoadingState, removeLoadingState} from './loadingActions';
 import {verifiedUser} from './authActions';
 
-export const getCalendarSpots = (dateRangeParams: string) => {
+export const getCalendarSpots = (year: number, month: number) => {
   return async (dispatch) => {
     try {
+      const urlQuery = getMonthRangeForURL(year, month);
       dispatch(setLoadingState(LoadingType.GET_MONTH));
-      const url = `${CALENDAR_URL}${dateRangeParams}`;
+      const url = `${CALENDAR_URL}${urlQuery}`;
       const response = await apiFetch(url, {method: HttpMethod.GET});
       if (await verifiedUser(response.status, dispatch)) {
         if (response.status === 200) {
