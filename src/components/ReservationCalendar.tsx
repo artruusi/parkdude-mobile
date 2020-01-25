@@ -171,9 +171,9 @@ class ReservationCalendar extends Component<Props, CalendarState> {
           this.fetchDataForMonth(calendarDateObject);
         }}
         theme={{
-          textDayFontWeight: 'bold',
-          textDayHeaderFontWeight: 'bold',
-          textMonthFontWeight: 'bold',
+          textDayFontFamily: 'Exo2-bold',
+          textMonthFontFamily: 'Exo2-bold',
+          textDayHeaderFontFamily: 'Exo2-bold',
           selectedDayTextColor: 'black'
         }}
       />
