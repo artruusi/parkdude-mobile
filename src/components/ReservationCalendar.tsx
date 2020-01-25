@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Calendar} from 'react-native-calendars';
 import {ConnectedProps, connect} from 'react-redux';
-import {NavigationScreenProp} from 'react-navigation';
+import {NavigationScreenProp, NavigationEventSubscription} from 'react-navigation';
 import {Marking, CalendarDateObject, CalendarType, BasicParkingSpotData, CalendarEntry} from '../types';
 import {RootReducer} from '../reducers';
 import {Colors} from '../../assets/colors';
@@ -36,6 +36,8 @@ class ReservationCalendar extends Component<Props, CalendarState> {
     this.toggleSelectedDay = this.toggleSelectedDay.bind(this);
   }
 
+  private focusListener: NavigationEventSubscription;
+
   componentDidMount() {
     const date = new Date();
     this.setState({currentMonth: date.getMonth()+1, currentYear: date.getFullYear()}, () => {
@@ -48,7 +50,7 @@ class ReservationCalendar extends Component<Props, CalendarState> {
           year: this.state.currentYear
         };
         this.fetchDataForMonth(dateObject);
-        this.props.navigation.addListener('willFocus', () => {
+        this.focusListener = this.props.navigation.addListener('willFocus', () => {
           this.fetchDataForMonth({
             dateString: undefined,
             day: undefined,
@@ -61,6 +63,12 @@ class ReservationCalendar extends Component<Props, CalendarState> {
     });
     if (this.props.calendarType === CalendarType.RELEASE) {
       this.setState({calendarData: this.props.calendarData});
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.focusListener) {
+      this.focusListener.remove();
     }
   }
 
