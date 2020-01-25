@@ -40,25 +40,25 @@ class ReservationCalendar extends Component<Props, CalendarState> {
   private focusListener: NavigationEventSubscription;
 
   componentDidMount() {
-      if (this.props.calendarType === CalendarType.RESERVATION) {
-        const dateObject = {
+    if (this.props.calendarType === CalendarType.RESERVATION) {
+      const dateObject = {
+        dateString: undefined,
+        day: undefined,
+        month: this.state.currentMonth,
+        timestamp: undefined,
+        year: this.state.currentYear
+      };
+      this.fetchDataForMonth(dateObject);
+      this.focusListener = this.props.navigation.addListener('willFocus', () => {
+        this.fetchDataForMonth({
           dateString: undefined,
           day: undefined,
           month: this.state.currentMonth,
           timestamp: undefined,
           year: this.state.currentYear
-        };
-        this.fetchDataForMonth(dateObject);
-        this.focusListener = this.props.navigation.addListener('willFocus', () => {
-          this.fetchDataForMonth({
-            dateString: undefined,
-            day: undefined,
-            month: this.state.currentMonth,
-            timestamp: undefined,
-            year: this.state.currentYear
-          });
         });
-      }
+      });
+    }
     if (this.props.calendarType === CalendarType.RELEASE) {
       this.setState({calendarData: this.props.calendarData});
     }
@@ -70,7 +70,7 @@ class ReservationCalendar extends Component<Props, CalendarState> {
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (!this.props.auth.isAuthenticated) {
       this.props.navigation.navigate('Auth');
     }
@@ -98,12 +98,11 @@ class ReservationCalendar extends Component<Props, CalendarState> {
   }
 
   fetchDataForMonth(calendarDateObject: CalendarDateObject) {
+    const {year, month} = calendarDateObject;
     if (this.props.calendarType === CalendarType.RESERVATION) {
-      this.setState({currentMonth: calendarDateObject.month, currentYear: calendarDateObject.year});
-      const year = calendarDateObject.year;
-      const month = calendarDateObject.month-1;
-      this.props.getCalendarSpots(year, month);
+      this.props.getCalendarSpots(year, month-1);
     }
+    this.setState({currentMonth: month, currentYear: year});
   }
 
   toggleSelectedDay(day: CalendarDateObject) {
@@ -139,17 +138,33 @@ class ReservationCalendar extends Component<Props, CalendarState> {
     }
   }
 
+  isLoading() {
+    if (this.props.calendarType === CalendarType.RESERVATION) {
+      return this.props.getMonthLoading;
+    }
+    // Releases are preloaded and not fetched by month, so they don't need to be checked
+    return false;
+  }
+
   render() {
+    // Marked dates must be empty for loading indicator to appear
+    const markedDates = this.isLoading() ? {} : createMarkedDatesObject(
+      this.state.calendarData,
+      this.props.userSelectedDates,
+      this.props.calendarType
+    );
     return (
       <Calendar
         markingType={this.props.markingType}
+        displayLoadingIndicator={this.isLoading()}
         onDayPress={(day) => {
           this.toggleSelectedDay(day);
         }}
+        // Date in current month is required for loading indicator to show
+        // https://github.com/wix/react-native-calendars/issues/460
+        current={new Date(this.state.currentYear, this.state.currentMonth-1, 1)}
         minDate={new Date()}
-        markedDates={
-          createMarkedDatesObject(this.state.calendarData, this.props.userSelectedDates, this.props.calendarType)
-        }
+        markedDates={markedDates}
         firstDay={1}
         hideExtraDays={true}
         onMonthChange={(calendarDateObject) => {
