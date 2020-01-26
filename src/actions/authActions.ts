@@ -13,6 +13,7 @@ import {setLoadingState, removeLoadingState} from './loadingActions';
 export const getAuthState = () => {
   return async (dispatch) => {
     try {
+      dispatch(setLoadingState(LoadingType.AUTH));
       const authResponse = await apiFetch(LOGIN_STATE_URL, {method: HttpMethod.GET});
       const result = await authResponse.json();
       dispatch(clearErrorState());
@@ -20,6 +21,7 @@ export const getAuthState = () => {
     } catch (error) {
       dispatch(gotNetworkError(CONNECTION_ERROR));
     }
+    dispatch(removeLoadingState(LoadingType.AUTH));
   };
 };
 

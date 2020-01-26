@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {connect, ConnectedProps} from 'react-redux';
 import {WELCOME_TITLE, WELCOME_TEXT1, WELCOME_TEXT2, WELCOME_TEXT3} from '../Constants';
 import {Colors} from '../../assets/colors';
 import {NavigationScreenProp} from 'react-navigation';
 import {RoundedButton} from '../shared/RoundedButton';
 import {getCookie} from '../CookieStorage';
 
-interface Props {
+type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
 }
 
@@ -18,9 +19,8 @@ export default class OnboardingView extends Component<Props> {
 
   componentDidMount() {
     const {navigation} = this.props;
-    this.focusListener = navigation.addListener('didFocus', async () => {
-      const cookie = await getCookie();
-      if (cookie != null) {
+    this.focusListener = navigation.addListener('didFocus', () => {
+      if (this.props.hasCookies) {
         this.continue();
       }
     });
@@ -54,6 +54,16 @@ export default class OnboardingView extends Component<Props> {
     );
   }
 }
+
+const mapStateToProps = (state: RootReducer) => ({
+  hasCookies: state.cookie.hasCookies
+});
+
+const mapDispatchToProps = {};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+export default connector(OnboardingView);
 
 const styles = StyleSheet.create({
   container: {

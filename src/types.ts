@@ -18,6 +18,10 @@ export interface ErrorState{
   changePasswordError: string;
 }
 
+export interface CookieState {
+  hasCookies: boolean;
+}
+
 export interface ReservationFailed{
   message: string;
   dates: string[];
@@ -118,7 +122,8 @@ export enum LoadingType {
   GET_PARKING_SPOTS = 'getParkingSpotsLoading',
   RESERVE_SPOTS = 'reserveSpotsLoading',
   DELETE_RESERVATION = 'deleteReservationLoading',
-  CHANGE_PASSWORD = 'changePasswordLoading'
+  CHANGE_PASSWORD = 'changePasswordLoading',
+  AUTH = 'authLoading'
 }
 
 export enum CalendarType {

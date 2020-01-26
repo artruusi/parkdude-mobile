@@ -15,7 +15,8 @@ describe('loadingReducer', () => {
       getReservationsLoading: false,
       getParkingSpotsLoading: false,
       reserveSpotsLoading: false,
-      deleteReservationLoading: false
+      deleteReservationLoading: false,
+      authLoading: false
     });
   });
 
@@ -28,7 +29,8 @@ describe('loadingReducer', () => {
       getReservationsLoading: true,
       getParkingSpotsLoading: false,
       reserveSpotsLoading: false,
-      deleteReservationLoading: false
+      deleteReservationLoading: false,
+      authLoading: false
     }, {
       type: REMOVE_LOADING_STATE,
       payload: loadingType
@@ -39,7 +41,8 @@ describe('loadingReducer', () => {
       getReservationsLoading: true,
       getParkingSpotsLoading: false,
       reserveSpotsLoading: false,
-      deleteReservationLoading: false
+      deleteReservationLoading: false,
+      authLoading: false
     });
   });
 });
