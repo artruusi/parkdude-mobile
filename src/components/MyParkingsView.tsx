@@ -71,6 +71,7 @@ class ParkingItem extends Component<ItemProps> {
         <View style={styles.column3}>
           <View style={styles.row3}>
             <TouchableOpacity
+              style={{padding: 16}}
               onPress={() => {
                 this.props.initDeleteModal(this.props.item);
               }}
