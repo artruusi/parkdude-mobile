@@ -3,19 +3,21 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
 import {WELCOME_TITLE, WELCOME_TEXT1, WELCOME_TEXT2, WELCOME_TEXT3} from '../Constants';
 import {Colors} from '../../assets/colors';
-import {NavigationScreenProp} from 'react-navigation';
+import {NavigationScreenProp, NavigationEventSubscription} from 'react-navigation';
 import {RoundedButton} from '../shared/RoundedButton';
-import {getCookie} from '../CookieStorage';
+import {RootReducer} from '../reducers/index';
 
 type Props = ConnectedProps<typeof connector> & {
   navigation: NavigationScreenProp<any, any>;
 }
 
-export default class OnboardingView extends Component<Props> {
+export class OnboardingView extends Component<Props> {
   constructor(props: Props) {
     super(props);
     this.continue = this.continue.bind(this);
   }
+
+  private focusListener: NavigationEventSubscription;
 
   componentDidMount() {
     const {navigation} = this.props;

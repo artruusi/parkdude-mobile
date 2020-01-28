@@ -16,6 +16,7 @@ describe('loadingReducer', () => {
       getParkingSpotsLoading: false,
       reserveSpotsLoading: false,
       deleteReservationLoading: false,
+      changePasswordLoading: false,
       authLoading: false
     });
   });

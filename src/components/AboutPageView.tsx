@@ -7,11 +7,7 @@ import {ABOUT_TITLE, ABOUT_TEXT1, BACK} from '../Constants';
 import {RoundedButton} from '../shared/RoundedButton';
 
 
-export default class AboutPage extends Component<Props> {
-  constructor(props: Props) {
-    super(props);
-  }
-
+export default class AboutPage extends Component {
   static navigationOptions = {
     drawerLabel: 'About'
   };

@@ -10,6 +10,7 @@ const initialState: LoadingState = {
   getParkingSpotsLoading: false,
   reserveSpotsLoading: false,
   deleteReservationLoading: false,
+  changePasswordLoading: false,
   authLoading: false
 };
 
