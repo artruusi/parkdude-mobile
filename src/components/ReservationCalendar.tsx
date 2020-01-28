@@ -24,6 +24,7 @@ interface CalendarState {
   calendarData: CalendarEntry[];
   currentMonth: number;
   currentYear: number;
+  maxMonth: number;
 }
 
 class ReservationCalendar extends Component<Props, CalendarState> {
@@ -33,10 +34,13 @@ class ReservationCalendar extends Component<Props, CalendarState> {
     this.state = {
       calendarData: [],
       currentMonth: date.getMonth()+1,
-      currentYear: date.getFullYear()
+      currentYear: date.getFullYear(),
+      maxMonth: new Date(date.setMonth(date.getMonth()+6)).getMonth()+1
     };
     this.fetchDataForMonth = this.fetchDataForMonth.bind(this);
     this.toggleSelectedDay = this.toggleSelectedDay.bind(this);
+    this.monthCanBeAdded = this.monthCanBeAdded.bind(this);
+    this.monthCanBeSubstracted = this.monthCanBeSubstracted.bind(this);
   }
 
   private focusListener: NavigationEventSubscription;
@@ -99,6 +103,21 @@ class ReservationCalendar extends Component<Props, CalendarState> {
         this.setState({calendarData: parkingEventsToCalendarEntries(releasesBySpot)});
       }
     }
+  }
+
+  monthCanBeAdded() {
+    if (this.state.currentMonth >= this.state.maxMonth) {
+      return false;
+    }
+    return true;
+  }
+
+  monthCanBeSubstracted() {
+    const currentDate = new Date();
+    if (this.state.currentMonth === currentDate.getMonth()+1) {
+      return false;
+    }
+    return true;
   }
 
   fetchDataForMonth(calendarDateObject: CalendarDateObject) {
@@ -174,6 +193,12 @@ class ReservationCalendar extends Component<Props, CalendarState> {
         onMonthChange={(calendarDateObject) => {
           this.fetchDataForMonth(calendarDateObject);
         }}
+        onPressArrowLeft={
+          (substractMonth) => this.monthCanBeSubstracted() === true ? substractMonth() : undefined
+        }
+        onPressArrowRight={
+          (addMonth) => this.monthCanBeAdded() === true ? addMonth() : undefined
+        }
         theme={{
           'textDayFontFamily': 'Exo2-bold',
           'textMonthFontFamily': 'Exo2-bold',
