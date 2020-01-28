@@ -12,12 +12,10 @@ export interface State {
   appIsReady: boolean;
 }
 
-type Props = ConnectedProps<typeof connector> & {
+type Props = ConnectedProps<typeof connector>;
 
-}
-
-export class App extends Component<{}, State> {
-  constructor(props: {}) {
+export class App extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       appIsReady: false,
