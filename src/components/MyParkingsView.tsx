@@ -6,7 +6,7 @@ import {YOUR_PARKINGS, NO_PARKINGS_TITLE, NO_PARKINGS_TEXT, PERMANENT_SPOT,
   CONNECTION_ERROR, RELEASE_SPOT, CANT_DELETE_RELEASE} from '../Constants';
 import {connect, ConnectedProps} from 'react-redux';
 import {getMyParkings} from '../actions/parkingActions';
-import {postReservation, postRelease, deleteReservation} from '../actions/reservationActions';
+import {postReservation, postRelease, deleteReservation, deleteRelease} from '../actions/reservationActions';
 import {ParkingSpotEventType, BasicParkingSpotData,
   UserParkingItem,
   Marking,
@@ -148,6 +148,10 @@ class MyParkingsView extends Component<Props, State> {
       this.props.error.deleteReservationError.message !== '') {
       this.setState({errorText: DELETE_FAILED});
     }
+    if (prevProps.error.deleteReleaseError.message !== this.props.error.deleteReleaseError.message &&
+      this.props.error.deleteReleaseError.message !== '') {
+      this.setState({errorText: DELETE_FAILED});
+    }
     if (prevProps.error.generalError !== this.props.error.generalError &&
       this.props.error.generalError !== '') {
       this.setState({errorText: GENERAL_ERROR_MESSAGE});
@@ -184,11 +188,11 @@ class MyParkingsView extends Component<Props, State> {
     }
     if (this.state.parkingItemToDelete.type === ParkingSpotEventType.RELEASE) {
       const date = this.state.parkingItemToDelete.parkingEvent.date;
-      const reservation = {
+      const release = {
         dates: [date],
         parkingSpotId: this.state.parkingItemToDelete.parkingEvent.parkingSpot.id
       };
-      await this.props.postReservation(reservation);
+      await this.props.deleteRelease(release);
     }
     this.toggleDeleteModal();
   }
@@ -392,7 +396,7 @@ const mapStateToProps = (state: RootReducer) => ({
   removeReleaseLoading: state.loading.reserveSpotsLoading
 });
 
-const mapDispatchToProps = {getMyParkings, deleteReservation, postReservation, postRelease};
+const mapDispatchToProps = {getMyParkings, deleteReservation, postReservation, postRelease, deleteRelease};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 

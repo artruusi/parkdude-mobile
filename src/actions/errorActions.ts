@@ -1,7 +1,7 @@
 import {
   NETWORK_ERROR, RESERVATION_FAILED, CLEAR_ERRORS,
   GENERAL_ERROR, PASSWORD_LOGIN_ERROR, SIGNUP_ERROR,
-  CHANGE_PASSWORD_ERROR, DELETE_RESERVATION_FAILED, NOT_FOUND_ERROR
+  CHANGE_PASSWORD_ERROR, DELETE_RESERVATION_FAILED, NOT_FOUND_ERROR, DELETE_RELEASE_FAILED
 } from './actionTypes';
 
 export const generalError = (errorString: string) => {
@@ -49,6 +49,13 @@ export const reservationFailed = (result) => {
 export const deleteReservationFailed = (result) => {
   return {
     type: DELETE_RESERVATION_FAILED,
+    payload: result
+  };
+};
+
+export const deleteReleaseFailed = (result) => {
+  return {
+    type: DELETE_RELEASE_FAILED,
     payload: result
   };
 };

@@ -1,7 +1,7 @@
 import {RESERVE_SPOTS} from './actionTypes';
 import {POST_RESERVATION_URL, DELETE_SPOTS_URL} from 'react-native-dotenv';
 import {gotNetworkError, reservationFailed, clearErrorState,
-  generalError, deleteReservationFailed, gotNotFoundError} from './errorActions';
+  generalError, deleteReservationFailed, gotNotFoundError, deleteReleaseFailed} from './errorActions';
 import {CONNECTION_ERROR, GENERAL_ERROR_MESSAGE, ENTITY_NOT_FOUND} from '../Constants';
 import {apiFetch} from '../Utils';
 import {HttpMethod, PostReservation, UserParkingItem, LoadingType, NewRelease} from '../types';
@@ -108,5 +108,39 @@ export const postRelease = (item: NewRelease) => {
       dispatch(gotNetworkError(CONNECTION_ERROR));
     }
     dispatch(removeLoadingState(LoadingType.DELETE_RESERVATION));
+  };
+};
+
+export const deleteRelease = (release: PostReservation) => {
+  return async (dispatch) => {
+    try {
+      dispatch(setLoadingState(LoadingType.DELETE_RELEASE));
+      const response = await apiFetch(
+        POST_RESERVATION_URL,
+        {method: HttpMethod.POST,
+          body: JSON.stringify(release),
+          headers: {'Content-Type': 'application/json'}
+        });
+      if (await verifiedUser(response.status, dispatch)) {
+        const result = await response.json();
+        if (response.status === 200) {
+          dispatch(clearErrorState());
+          dispatch(createPostReservationAction(result));
+          dispatch(removeLoadingState(LoadingType.DELETE_RELEASE));
+          await getMyParkings()(dispatch);
+          return;
+        } else if (response.status === 400) {
+          dispatch(deleteReleaseFailed(result));
+        } else if (response.status === 404) {
+          dispatch(gotNotFoundError(ENTITY_NOT_FOUND));
+        } else {
+          // HTTP Status 500 or something else unexpected
+          dispatch(generalError(GENERAL_ERROR_MESSAGE));
+        }
+      }
+    } catch (error) {
+      dispatch(gotNetworkError(CONNECTION_ERROR));
+    }
+    dispatch(removeLoadingState(LoadingType.DELETE_RELEASE));
   };
 };
