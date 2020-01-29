@@ -15,6 +15,7 @@ export interface ErrorState{
   passwordLoginError: string;
   signupError: string;
   deleteReservationError: ReservationFailed;
+  deleteReleaseError: ReservationFailed;
   changePasswordError: string;
   notFoundError: string;
 }
@@ -123,6 +124,7 @@ export enum LoadingType {
   GET_PARKING_SPOTS = 'getParkingSpotsLoading',
   RESERVE_SPOTS = 'reserveSpotsLoading',
   DELETE_RESERVATION = 'deleteReservationLoading',
+  DELETE_RELEASE = 'deleteReleaseLoading',
   CHANGE_PASSWORD = 'changePasswordLoading',
   AUTH = 'authLoading'
 }
