@@ -148,11 +148,11 @@ class MyParkingsView extends Component<Props, State> {
     }
     if (prevProps.error.deleteReservationError.message !== this.props.error.deleteReservationError.message &&
       this.props.error.deleteReservationError.message !== '') {
-      this.setState({errorText: DELETE_FAILED});
+      setTimeout(() => this.setState({errorText: DELETE_FAILED}), 1500);
     }
     if (prevProps.error.deleteReleaseError.message !== this.props.error.deleteReleaseError.message &&
       this.props.error.deleteReleaseError.message !== '') {
-      this.setState({errorText: DELETE_FAILED});
+      setTimeout(() => this.setState({errorText: DELETE_FAILED}), 1500);
     }
     if (prevProps.error.postReleaseError.message !== this.props.error.postReleaseError.message &&
       this.props.error.postReleaseError.message !== '') {
@@ -160,11 +160,11 @@ class MyParkingsView extends Component<Props, State> {
     }
     if (prevProps.error.networkError !== this.props.error.networkError &&
       this.props.error.networkError !== '') {
-      this.setState({errorText: CONNECTION_ERROR, releaseModalErrorText: CONNECTION_ERROR});
+      setTimeout(() => this.setState({errorText: CONNECTION_ERROR, releaseModalErrorText: CONNECTION_ERROR}), 1500);
     }
     if (prevProps.error.notFoundError !== this.props.error.notFoundError &&
       this.props.error.notFoundError !== '') {
-      this.setState({errorText: this.props.error.notFoundError});
+      setTimeout(() => this.setState({errorText: this.props.error.notFoundError}), 1500);
     }
   }
 
@@ -346,11 +346,12 @@ class MyParkingsView extends Component<Props, State> {
                   updateUserSelectedDates={this.updateUserSelectedDates}
                   calendarData={
                     parkingEventsToCalendarEntries(
-                      this.props.myReservations.releases.filter(r =>
+                      this.props.myReservations.releases.filter((r) =>
                         r.parkingSpot.id == this.state.spotToBeReleased.id)
                     )
                   }
                   userSelectedDates={this.state.userSelectedDates}
+                  parkingSpotId={this.state.spotToBeReleased.id}
                 />
               </View>
               <View style={{alignItems: 'center'}}>
@@ -405,7 +406,7 @@ const mapStateToProps = (state: RootReducer) => ({
   reservationsLoading: state.loading.getReservationsLoading,
   newReleaseLoading: state.loading.newReleaseLoading,
   deleteReservationLoading: state.loading.deleteReservationLoading,
-  removeReleaseLoading: state.loading.reserveSpotsLoading
+  removeReleaseLoading: state.loading.deleteReleaseLoading
 });
 
 const mapDispatchToProps = {getMyParkings, deleteReservation, postReservation, postRelease, deleteRelease};
