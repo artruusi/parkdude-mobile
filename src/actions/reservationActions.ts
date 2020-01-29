@@ -1,8 +1,8 @@
 import {RESERVE_SPOTS} from './actionTypes';
 import {POST_RESERVATION_URL, DELETE_SPOTS_URL} from 'react-native-dotenv';
 import {gotNetworkError, reservationFailed, clearErrorState,
-  generalError, deleteReservationFailed} from './errorActions';
-import {CONNECTION_ERROR, GENERAL_ERROR_MESSAGE} from '../Constants';
+  generalError, deleteReservationFailed, gotNotFoundError} from './errorActions';
+import {CONNECTION_ERROR, GENERAL_ERROR_MESSAGE, ENTITY_NOT_FOUND} from '../Constants';
 import {apiFetch} from '../Utils';
 import {HttpMethod, PostReservation, UserParkingItem, LoadingType, NewRelease} from '../types';
 import {getMyParkings} from './parkingActions';
@@ -29,6 +29,8 @@ export const postReservation = (reservation: PostReservation) => {
           return;
         } else if (response.status === 400) {
           dispatch(reservationFailed(result));
+        } else if (response.status === 404) {
+          dispatch(gotNotFoundError(ENTITY_NOT_FOUND));
         } else {
           // HTTP Status 500 or something else unexpected
           dispatch(generalError(GENERAL_ERROR_MESSAGE));
@@ -65,6 +67,8 @@ export const deleteReservation = (item: UserParkingItem) => {
           await getMyParkings()(dispatch);
         } else if (response.status === 400) {
           dispatch(deleteReservationFailed(result));
+        } else if (response.status === 404) {
+          dispatch(gotNotFoundError(ENTITY_NOT_FOUND));
         } else {
           // HTTP Status 500 or something else unexpected
           dispatch(generalError(GENERAL_ERROR_MESSAGE));
@@ -93,6 +97,8 @@ export const postRelease = (item: NewRelease) => {
           await getMyParkings()(dispatch);
         } else if (response.status === 400) {
           dispatch(deleteReservationFailed(result));
+        } else if (response.status === 404) {
+          dispatch(gotNotFoundError(ENTITY_NOT_FOUND));
         } else {
           // HTTP Status 500 or something else unexpected
           dispatch(generalError(GENERAL_ERROR_MESSAGE));

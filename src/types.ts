@@ -16,6 +16,7 @@ export interface ErrorState{
   signupError: string;
   deleteReservationError: ReservationFailed;
   changePasswordError: string;
+  notFoundError: string;
 }
 
 export interface CookieState {
