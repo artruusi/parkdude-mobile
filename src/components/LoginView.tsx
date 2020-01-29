@@ -27,13 +27,11 @@ class LoginView extends Component<Props> {
 
   async loginGoogle() {
     try {
-      // TODO: Get more static url
-      const redirectUrl = AuthSession.getRedirectUrl();
-      console.log(redirectUrl);
-      console.log(LOGIN_URL);
+      const redirectUrl = AuthSession.getDefaultReturnUrl();
 
       const result = await AuthSession.startAsync({
-        authUrl: HOST + LOGIN_URL + `?redirectUrl=${redirectUrl}`
+        authUrl: HOST + LOGIN_URL + `?redirectUrl=${redirectUrl}`,
+        returnUrl: redirectUrl
       });
 
       console.log('Returned from browser', result);
