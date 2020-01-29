@@ -96,3 +96,4 @@ export const ABOUT_TEXT1 = 'This page will contain licences of used libraries et
 export const CONNECTION_ERROR = 'Parkdude cannot connect to the server';
 export const GENERAL_ERROR_MESSAGE = 'An unexpected error has occured';
 export const DELETE_FAILED = 'Deletion operation failed';
+export const ENTITY_NOT_FOUND = 'Entity not found';
