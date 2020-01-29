@@ -3,7 +3,7 @@ import {StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView} from 'rea
 import {YOUR_PARKINGS, NO_PARKINGS_TITLE, NO_PARKINGS_TEXT, PERMANENT_SPOT,
   NEW_RELEASE, SPOT, ARE_YOU_SURE, DATE, DELETE_RELEASE,
   DELETE, DELETE_PARKING, CANCEL, DELETE_FAILED, GENERAL_ERROR_MESSAGE,
-  CONNECTION_ERROR, RELEASE_SPOT, CANT_DELETE_RELEASE} from '../Constants';
+  CONNECTION_ERROR, RELEASE_SPOT, CANT_DELETE_RELEASE, NEW_RELEASE_FAILED} from '../Constants';
 import {connect, ConnectedProps} from 'react-redux';
 import {getMyParkings} from '../actions/parkingActions';
 import {postReservation, postRelease, deleteReservation, deleteRelease} from '../actions/reservationActions';
@@ -33,6 +33,7 @@ interface State {
   parkingItemToDelete: UserParkingItem;
   spotToBeReleased: BasicParkingSpotData;
   errorText: string;
+  releaseModalErrorText: string;
   userSelectedDates: Record<string, any>;
 }
 
@@ -118,6 +119,7 @@ class MyParkingsView extends Component<Props, State> {
       },
       spotToBeReleased: {id: '', name: ''},
       errorText: '',
+      releaseModalErrorText: '',
       userSelectedDates: {},
     };
     this.initDeleteModal = this.initDeleteModal.bind(this);
@@ -152,13 +154,13 @@ class MyParkingsView extends Component<Props, State> {
       this.props.error.deleteReleaseError.message !== '') {
       this.setState({errorText: DELETE_FAILED});
     }
-    if (prevProps.error.generalError !== this.props.error.generalError &&
-      this.props.error.generalError !== '') {
-      this.setState({errorText: GENERAL_ERROR_MESSAGE});
+    if (prevProps.error.postReleaseError.message !== this.props.error.postReleaseError.message &&
+      this.props.error.postReleaseError.message !== '') {
+      this.setState({releaseModalErrorText: NEW_RELEASE_FAILED});
     }
     if (prevProps.error.networkError !== this.props.error.networkError &&
       this.props.error.networkError !== '') {
-      this.setState({errorText: CONNECTION_ERROR});
+      this.setState({errorText: CONNECTION_ERROR, releaseModalErrorText: CONNECTION_ERROR});
     }
   }
 
@@ -325,7 +327,7 @@ class MyParkingsView extends Component<Props, State> {
             <View style={styles.newReleaseModal}>
               <View style={{alignItems: 'center', marginBottom: 15}}>
                 <Text style={{fontFamily: 'Exo2-bold', fontSize: 25, color: Colors.RED}}>
-                  {this.state.errorText}
+                  {this.state.releaseModalErrorText}
                 </Text>
                 <Text style={{fontFamily: 'Exo2-bold', fontSize: 30}}>{NEW_RELEASE}</Text>
                 <Text style={{fontFamily: 'Exo2-bold', fontSize: 25}}>
@@ -345,7 +347,7 @@ class MyParkingsView extends Component<Props, State> {
               <View style={{alignItems: 'center'}}>
                 <RoundedButton
                   onPress={this.releaseParkingSpot}
-                  isLoading={this.props.deleteReservationLoading}
+                  isLoading={this.props.newReleaseLoading}
                   disabled={Object.keys(this.state.userSelectedDates).length === 0}
                   buttonText={RELEASE_SPOT}
                   buttonStyle={{...styles.modalButton, backgroundColor: releaseButtonColor}}
@@ -392,6 +394,7 @@ const mapStateToProps = (state: RootReducer) => ({
   myReservations: state.myReservations,
   error: state.error,
   reservationsLoading: state.loading.getReservationsLoading,
+  newReleaseLoading: state.loading.newReleaseLoading,
   deleteReservationLoading: state.loading.deleteReservationLoading,
   removeReleaseLoading: state.loading.reserveSpotsLoading
 });

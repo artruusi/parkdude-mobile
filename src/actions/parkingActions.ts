@@ -32,7 +32,7 @@ export const setParkingSpots = (result) => {
   };
 };
 
-export const getMyParkings = () => {
+export const getMyParkings = (skipClearErrorState = false) => {
   return async (dispatch) => {
     try {
       dispatch(setLoadingState(LoadingType.GET_RESERVATIONS));
@@ -43,7 +43,9 @@ export const getMyParkings = () => {
       const response = await apiFetch(url, {method: HttpMethod.GET});
       if (await verifiedUser(response.status, dispatch)) {
         const result = await response.json();
-        dispatch(clearErrorState());
+        if (!skipClearErrorState) {
+          dispatch(clearErrorState());
+        }
         dispatch(setMyParkings(result));
       }
     } catch (error) {

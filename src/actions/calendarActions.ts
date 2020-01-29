@@ -17,6 +17,7 @@ export const getCalendarSpots = (year: number, month: number) => {
     const urlQuery = getMonthRangeForURL(year, month);
     latestCalendarQuery = urlQuery;
     try {
+      dispatch(clearErrorState());
       dispatch(setLoadingState(LoadingType.GET_MONTH));
       const url = `${CALENDAR_URL}${urlQuery}`;
       const response = await apiFetch(url, {method: HttpMethod.GET});
@@ -27,7 +28,6 @@ export const getCalendarSpots = (year: number, month: number) => {
       if (await verifiedUser(response.status, dispatch)) {
         if (response.status === 200) {
           const result = await response.json();
-          dispatch(clearErrorState());
           dispatch(setCalendarState(result));
         } else {
           // HTTP Status 500 or something else unexpected
