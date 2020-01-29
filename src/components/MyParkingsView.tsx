@@ -162,6 +162,10 @@ class MyParkingsView extends Component<Props, State> {
       this.props.error.networkError !== '') {
       this.setState({errorText: CONNECTION_ERROR, releaseModalErrorText: CONNECTION_ERROR});
     }
+    if (prevProps.error.notFoundError !== this.props.error.notFoundError &&
+      this.props.error.notFoundError !== '') {
+      this.setState({errorText: this.props.error.notFoundError});
+    }
   }
 
   initDeleteModal(item: UserParkingItem) {
