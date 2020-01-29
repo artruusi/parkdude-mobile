@@ -340,7 +340,12 @@ class MyParkingsView extends Component<Props, State> {
                   markingType={Marking.SIMPLE}
                   calendarType={CalendarType.RELEASE}
                   updateUserSelectedDates={this.updateUserSelectedDates}
-                  calendarData={parkingEventsToCalendarEntries(this.props.myReservations.releases)}
+                  calendarData={
+                    parkingEventsToCalendarEntries(
+                      this.props.myReservations.releases.filter(r =>
+                        r.parkingSpot.id == this.state.spotToBeReleased.id)
+                    )
+                  }
                   userSelectedDates={this.state.userSelectedDates}
                 />
               </View>
