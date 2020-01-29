@@ -12,6 +12,7 @@ export interface ErrorState{
   generalError: string;
   networkError: string;
   postReservationError: ReservationFailed;
+  postReleaseError: ReservationFailed;
   passwordLoginError: string;
   signupError: string;
   deleteReservationError: ReservationFailed;
@@ -123,6 +124,7 @@ export enum LoadingType {
   GET_RESERVATIONS = 'getReservationsLoading',
   GET_PARKING_SPOTS = 'getParkingSpotsLoading',
   RESERVE_SPOTS = 'reserveSpotsLoading',
+  NEW_RELEASE = 'newReleaseLoading',
   DELETE_RESERVATION = 'deleteReservationLoading',
   DELETE_RELEASE = 'deleteReleaseLoading',
   CHANGE_PASSWORD = 'changePasswordLoading',

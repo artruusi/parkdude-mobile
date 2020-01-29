@@ -9,6 +9,7 @@ const initialState: LoadingState = {
   getReservationsLoading: false,
   getParkingSpotsLoading: false,
   reserveSpotsLoading: false,
+  newReleaseLoading: false,
   deleteReservationLoading: false,
   deleteReleaseLoading: false,
   changePasswordLoading: false,
