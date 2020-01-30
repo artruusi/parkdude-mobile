@@ -125,9 +125,7 @@ export const deleteRelease = (release: PostReservation) => {
         const result = await response.json();
         if (response.status === 200) {
           dispatch(createPostReservationAction(result));
-          dispatch(removeLoadingState(LoadingType.DELETE_RELEASE));
-          getMyParkings()(dispatch);
-          return;
+          await getMyParkings()(dispatch);
         } else if (response.status === 400) {
           dispatch(deleteReleaseFailed(result));
         } else if (response.status === 404) {
