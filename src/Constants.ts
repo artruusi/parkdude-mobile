@@ -89,9 +89,11 @@ export const PASSWORD_CHANGED = 'Password changed!';
 // About
 
 export const ABOUT_TITLE = 'About Parkdude';
+export const PARKDUDE_VERSION = 'Parkdude version ';
 export const PARKDUDE_INFO = 'Parkdude booking system was implemented as part of ' +
                              'Tampere University course TIE-13106 2019-01 Project Work on ' +
                              'Pervasive Systems.';
+export const USED_LIBRARIES = 'Library dependencies:';
 export const PARKDUDE_LICENCE = 'Copyright (c) 2020 Parkdude\n\nMIT License\n\n' +
     'Permission is hereby granted, free of charge, to any person obtaining a copy ' +
     'of this software and associated documentation files (the "Software"), to deal ' +
