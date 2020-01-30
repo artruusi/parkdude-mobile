@@ -127,7 +127,6 @@ class ChangePasswordView extends Component<Props> {
               secureTextEntry={true}
               onChangeText={this.onNewPassword2Change}
               enablesReturnKeyAutomatically={true}
-              blurOnSubmit={false}
               onSubmitEditing={this.changePassword}
             />
             <Text style={styles.errorText}>{this.props.error}</Text>
