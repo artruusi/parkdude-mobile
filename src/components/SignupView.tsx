@@ -239,6 +239,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Exo2',
     marginTop: '1%',
     marginBottom: '1%',
+    marginHorizontal: 16,
     color: Colors.RED
   },
   yellowButton: {
