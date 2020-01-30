@@ -13,7 +13,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/app-icon/app-icon.png",
     "splash": {
-      "image": "./assets/images/parkdude-logo/drawable-xxhdpi/parkdude.png",
+      "image": "./assets/images/splash-screen/drawable-xxhdpi/splash-screen.png",
       "backgroundColor": "#ffffff",
       "resizeMode": "contain"
     },
