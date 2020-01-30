@@ -68,7 +68,8 @@ const styles = StyleSheet.create({
     letterSpacing: 0,
     textAlign: 'center',
     color: Colors.BLACK,
-    marginBottom: 16
+    marginBottom: 16,
+    marginHorizontal: 8
   },
   text: {
     fontFamily: 'Exo2',
@@ -77,10 +78,11 @@ const styles = StyleSheet.create({
     letterSpacing: 0,
     textAlign: 'center',
     color: Colors.BLACK,
-    marginBottom: 32
+    marginBottom: 32,
+    marginHorizontal: 8
   },
   scrollViewContent: {
     flexGrow: 1,
-    marginHorizontal: 16,
+    marginHorizontal: 8,
   },
 });
