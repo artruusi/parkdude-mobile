@@ -206,10 +206,10 @@ class ReservationCalendar extends Component<Props, CalendarState> {
           this.fetchDataForMonth(calendarDateObject);
         }}
         onPressArrowLeft={
-          (substractMonth) => this.monthCanBeSubstracted() === true ? substractMonth() : undefined
+          (substractMonth) => this.monthCanBeSubstracted() ? substractMonth() : undefined
         }
         onPressArrowRight={
-          (addMonth) => this.monthCanBeAdded() === true ? addMonth() : undefined
+          (addMonth) => this.monthCanBeAdded() ? addMonth() : undefined
         }
         theme={{
           'textDayFontFamily': 'Exo2-bold',
