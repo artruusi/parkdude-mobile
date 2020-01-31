@@ -7,10 +7,13 @@ describe('errorReducer', () => {
       'generalError': '',
       'networkError': '',
       'postReservationError': {message: '', dates: []},
+      'postReleaseError': {message: '', dates: []},
       'passwordLoginError': '',
       'signupError': '',
       'changePasswordError': '',
-      'deleteReservationError': {message: '', dates: []}
+      'deleteReservationError': {message: '', dates: []},
+      'deleteReleaseError': {message: '', dates: []},
+      'notFoundError': ''
     });
   });
 
@@ -23,10 +26,13 @@ describe('errorReducer', () => {
       generalError: '',
       networkError: errorString,
       postReservationError: {message: '', dates: []},
+      postReleaseError: {message: '', dates: []},
       passwordLoginError: '',
       signupError: '',
       changePasswordError: '',
-      deleteReservationError: {message: '', dates: []}
+      deleteReservationError: {message: '', dates: []},
+      deleteReleaseError: {message: '', dates: []},
+      notFoundError: ''
     });
   });
 });

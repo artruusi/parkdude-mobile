@@ -7,7 +7,6 @@ import {RootReducer} from '../reducers';
 import {Colors} from '../../assets/colors';
 import {createMarkedDatesObject, parkingEventsToCalendarEntries} from '../Utils';
 import {getCalendarSpots} from '../actions/calendarActions';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Platform} from 'react-native';
 
 type Props = ConnectedProps<typeof connector> & {
@@ -18,6 +17,7 @@ type Props = ConnectedProps<typeof connector> & {
   setParkingSpot?: (spot: BasicParkingSpotData) => void;
   calendarData?: CalendarEntry[];
   userSelectedDates: Record<string, any>;
+  parkingSpotId?: string;
 }
 
 interface CalendarState {
@@ -94,7 +94,9 @@ class ReservationCalendar extends Component<Props, CalendarState> {
     if (this.props.calendarData !== undefined) {
       if (prevProps.myReservations.releases !== this.props.myReservations.releases) {
         console.log('new succesful release, triggering calendar render');
-        this.setState({calendarData: parkingEventsToCalendarEntries(this.props.myReservations.releases)});
+        const releasesBySpot = this.props.myReservations.releases.filter((r) =>
+          r.parkingSpot.id == this.props.parkingSpotId);
+        this.setState({calendarData: parkingEventsToCalendarEntries(releasesBySpot)});
       }
     }
   }

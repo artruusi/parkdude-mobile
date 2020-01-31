@@ -12,10 +12,13 @@ export interface ErrorState{
   generalError: string;
   networkError: string;
   postReservationError: ReservationFailed;
+  postReleaseError: ReservationFailed;
   passwordLoginError: string;
   signupError: string;
   deleteReservationError: ReservationFailed;
+  deleteReleaseError: ReservationFailed;
   changePasswordError: string;
+  notFoundError: string;
 }
 
 export interface CookieState {
@@ -121,7 +124,9 @@ export enum LoadingType {
   GET_RESERVATIONS = 'getReservationsLoading',
   GET_PARKING_SPOTS = 'getParkingSpotsLoading',
   RESERVE_SPOTS = 'reserveSpotsLoading',
+  NEW_RELEASE = 'newReleaseLoading',
   DELETE_RESERVATION = 'deleteReservationLoading',
+  DELETE_RELEASE = 'deleteReleaseLoading',
   CHANGE_PASSWORD = 'changePasswordLoading',
   AUTH = 'authLoading'
 }
