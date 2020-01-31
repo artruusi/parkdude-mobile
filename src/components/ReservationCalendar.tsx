@@ -24,18 +24,25 @@ interface CalendarState {
   calendarData: CalendarEntry[];
   currentMonth: number;
   currentYear: number;
-  maxMonth: number;
+  maxDate: Date;
 }
 
 class ReservationCalendar extends Component<Props, CalendarState> {
   constructor(props: Props) {
     super(props);
-    const date = new Date();
+    const currentDate = new Date();
+    const initMaxDate = new Date();
+    const maxDate = new Date(initMaxDate.setMonth(initMaxDate.getMonth()+11));
+    // Adding (full) months to dates have different outcomes based on which is
+    // the day parameter of the Date object. The day is set to middle of the
+    // month to eliminate that. The date does not matter because we are only
+    // interested about the month.
+    maxDate.setDate(15);
     this.state = {
       calendarData: [],
-      currentMonth: date.getMonth()+1,
-      currentYear: date.getFullYear(),
-      maxMonth: new Date(date.setMonth(date.getMonth()+6)).getMonth()+1
+      currentMonth: currentDate.getMonth()+1,
+      currentYear: currentDate.getFullYear(),
+      maxDate: maxDate
     };
     this.fetchDataForMonth = this.fetchDataForMonth.bind(this);
     this.toggleSelectedDay = this.toggleSelectedDay.bind(this);
@@ -106,7 +113,9 @@ class ReservationCalendar extends Component<Props, CalendarState> {
   }
 
   monthCanBeAdded() {
-    if (this.state.currentMonth >= this.state.maxMonth) {
+    // Calendar range is set on (current month + 11), meaning that every month is
+    // represented only once for user
+    if (this.state.currentMonth === this.state.maxDate.getMonth()+1) {
       return false;
     }
     return true;
@@ -114,6 +123,9 @@ class ReservationCalendar extends Component<Props, CalendarState> {
 
   monthCanBeSubstracted() {
     const currentDate = new Date();
+    // Calendar range is set in a way that user can't navigate to the same month next year.
+    // So the month can't be same in other situations than when calendar state is on the
+    // current month.
     if (this.state.currentMonth === currentDate.getMonth()+1) {
       return false;
     }
