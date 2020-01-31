@@ -18,6 +18,10 @@ type Props = ConnectedProps<typeof connector> & {
 }
 
 class LoginView extends Component<Props> {
+  state = {
+    loginError: ''
+  };
+
   constructor(props: Props) {
     super(props);
     this.loginGoogle = this.loginGoogle.bind(this);
@@ -38,22 +42,28 @@ class LoginView extends Component<Props> {
       console.log('Returned from browser', result);
 
       if (result.type === 'success') {
+        if (result.params.error) {
+          this.setState({loginError: result.params.error});
+          return;
+        }
         const sessionId = result.params.sessionId;
         await setCookie(`sessionId=${sessionId}`);
         this.props.getAuthState();
+      } else if (result.type === 'error') {
+        this.setState({loginError: 'Unknown login error. Try again.'});
       }
     } catch (error) {
-      // TODO: when will this situation happen?
+      // Should not happen...
       console.log(error);
     }
   }
 
-  componentWillReceiveProps(receivedProps: Props) {
-    if (receivedProps.isAuthenticated) {
-      if ([UserRole.ADMIN, UserRole.VERIFIED].includes(receivedProps.userRole)) {
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.isAuthenticated) {
+      if ([UserRole.ADMIN, UserRole.VERIFIED].includes(this.props.userRole)) {
         this.props.navigation.navigate('App');
       }
-      if (receivedProps.userRole === UserRole.UNVERIFIED) {
+      if (this.props.userRole === UserRole.UNVERIFIED) {
         this.props.navigation.navigate('WaitForConfirmationView');
       }
     }
@@ -77,6 +87,7 @@ class LoginView extends Component<Props> {
           />
         </View>
         <View style={styles.buttonContainer}>
+          <Text style={styles.errorText}>{this.state.loginError}</Text>
           <View style={styles.googleButton}>
             <Icon.Button
               name="google"
@@ -137,6 +148,14 @@ const styles = StyleSheet.create({
   },
   parkdudeLogoContainer: {
     flexDirection: 'row',
+  },
+  errorText: {
+    fontSize: 16,
+    fontFamily: 'Exo2',
+    color: Colors.RED,
+    textAlign: 'center',
+    paddingHorizontal: 8,
+    paddingVertical: 16
   },
   googleButton: {
     width: 200,
