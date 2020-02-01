@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Image, Text} from 'react-native';
+import {StyleSheet, View, Image, Text, BackHandler} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {AuthSession} from 'expo';
 import {HOST, LOGIN_URL} from 'react-native-dotenv';
@@ -58,6 +58,14 @@ class LoginView extends Component<Props> {
     }
   }
 
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
   componentDidUpdate(prevProps: Props) {
     if (this.props.isAuthenticated) {
       if ([UserRole.ADMIN, UserRole.VERIFIED].includes(this.props.userRole)) {
@@ -67,6 +75,10 @@ class LoginView extends Component<Props> {
         this.props.navigation.navigate('WaitForConfirmationView');
       }
     }
+  }
+
+  handleBackButton() {
+    return true;
   }
 
   emailLogin() {
