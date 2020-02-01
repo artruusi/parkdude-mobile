@@ -8,7 +8,7 @@ import renderer from 'react-test-renderer';
 import {Provider} from 'react-redux';
 
 const mockStore = configureStore([]);
-const store = mockStore({auth: {isAuthenticated: false}});
+const store = mockStore({auth: {isAuthenticated: false}, cookie: {hasCookies: false}});
 
 describe('LoginView tests', () => {
   it('renders correctly', () => {
