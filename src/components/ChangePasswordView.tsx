@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, ActivityIndicator, KeyboardAvoidingView,
-  TextInput} from 'react-native';
+  TextInput, BackHandler} from 'react-native';
 import {getAuthState, changePassword} from '../actions/authActions';
 import {connect, ConnectedProps} from 'react-redux';
 import {NavigationScreenProp, ScrollView} from 'react-navigation';
@@ -45,6 +45,11 @@ class ChangePasswordView extends Component<Props> {
 
   componentDidMount() {
     this.componentDidUpdate(this.props);
+    BackHandler.addEventListener('hardwareBackPress', this.cancel);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.cancel);
   }
 
   componentDidUpdate(prevProps) {
@@ -65,6 +70,7 @@ class ChangePasswordView extends Component<Props> {
   cancel() {
     this.props.clearErrorState();
     this.props.navigation.navigate('Profile');
+    return true;
   }
 
   onOldPasswordChange(oldPassword: string) {
