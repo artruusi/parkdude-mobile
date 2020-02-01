@@ -27,6 +27,7 @@ class LoginView extends Component<Props> {
     this.loginGoogle = this.loginGoogle.bind(this);
     this.emailLogin = this.emailLogin.bind(this);
     this.signUp = this.signUp.bind(this);
+    this.handleBackButton = this.handleBackButton.bind(this);
   }
 
   async loginGoogle() {
@@ -78,6 +79,9 @@ class LoginView extends Component<Props> {
   }
 
   handleBackButton() {
+    if (!this.props.hasCookies) {
+      this.props.navigation.pop();
+    }
     return true;
   }
 
@@ -131,7 +135,8 @@ class LoginView extends Component<Props> {
 
 const mapStateToProps = (state: RootReducer) => ({
   isAuthenticated: state.auth.isAuthenticated,
-  userRole: state.auth.userRole
+  userRole: state.auth.userRole,
+  hasCookies: state.cookie.hasCookies
 });
 
 const mapDispatchToProps = {getAuthState};
