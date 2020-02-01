@@ -31,13 +31,13 @@ class ReservationCalendar extends Component<Props, CalendarState> {
   constructor(props: Props) {
     super(props);
     const currentDate = new Date();
-    const initMaxDate = new Date();
-    const maxDate = new Date(initMaxDate.setMonth(initMaxDate.getMonth()+11));
+    const maxDate = new Date();
     // Adding (full) months to dates have different outcomes based on which is
     // the day parameter of the Date object. The day is set to middle of the
     // month to eliminate that. The date does not matter because we are only
     // interested about the month.
     maxDate.setDate(15);
+    maxDate.setMonth(currentDate.getMonth()+11);
     this.state = {
       calendarData: [],
       currentMonth: currentDate.getMonth()+1,
