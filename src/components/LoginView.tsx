@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Image, Text} from 'react-native';
+import {StyleSheet, View, Image, Text, BackHandler} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {AuthSession} from 'expo';
 import {HOST, LOGIN_URL} from 'react-native-dotenv';
@@ -27,6 +27,7 @@ class LoginView extends Component<Props> {
     this.loginGoogle = this.loginGoogle.bind(this);
     this.emailLogin = this.emailLogin.bind(this);
     this.signUp = this.signUp.bind(this);
+    this.handleBackButton = this.handleBackButton.bind(this);
   }
 
   async loginGoogle() {
@@ -58,6 +59,14 @@ class LoginView extends Component<Props> {
     }
   }
 
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
   componentDidUpdate(prevProps: Props) {
     if (this.props.isAuthenticated) {
       if ([UserRole.ADMIN, UserRole.VERIFIED].includes(this.props.userRole)) {
@@ -67,6 +76,13 @@ class LoginView extends Component<Props> {
         this.props.navigation.navigate('WaitForConfirmationView');
       }
     }
+  }
+
+  handleBackButton() {
+    if (!this.props.hasCookies) {
+      this.props.navigation.pop();
+    }
+    return true;
   }
 
   emailLogin() {
@@ -119,7 +135,8 @@ class LoginView extends Component<Props> {
 
 const mapStateToProps = (state: RootReducer) => ({
   isAuthenticated: state.auth.isAuthenticated,
-  userRole: state.auth.userRole
+  userRole: state.auth.userRole,
+  hasCookies: state.cookie.hasCookies
 });
 
 const mapDispatchToProps = {getAuthState};

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Image, TextInput, Text, KeyboardAvoidingView} from 'react-native';
+import {StyleSheet, View, Image, TextInput, Text,
+  KeyboardAvoidingView, BackHandler} from 'react-native';
 import {getAuthState, signup} from '../actions/authActions';
 import {connect, ConnectedProps} from 'react-redux';
 import {EMAIL, PASSWORD, SIGNUP, CONFIRM_PASSWORD, NAME, BACK} from '../Constants';
@@ -47,6 +48,11 @@ class SignupView extends Component<Props> {
 
   componentDidMount() {
     this.componentDidUpdate(this.props);
+    BackHandler.addEventListener('hardwareBackPress', this.back);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.back);
   }
 
   componentDidUpdate(prevProps) {
@@ -81,7 +87,9 @@ class SignupView extends Component<Props> {
   }
 
   back() {
+    this.props.clearErrorState();
     this.props.navigation.navigate('Login');
+    return true;
   }
 
   render() {

@@ -273,7 +273,8 @@ class MyParkingsView extends Component<Props, State> {
           <Modal
             isVisible={this.state.deleteModalVisible}
             onBackdropPress={this.toggleDeleteModal}
-            onBackButtonPress={this.toggleDeleteModal}
+            onBackButtonPress={((this.props.deleteReservationLoading || this.props.removeReleaseLoading) ?
+              null : this.toggleDeleteModal)}
             style={{padding: 10}}
             animationInTiming={500}
             animationOutTiming={100}

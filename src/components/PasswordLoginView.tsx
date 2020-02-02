@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Image, TextInput, Text, KeyboardAvoidingView} from 'react-native';
+import {StyleSheet, View, Image, TextInput, Text,
+  KeyboardAvoidingView, BackHandler} from 'react-native';
 import {getAuthState, loginWithPassword} from '../actions/authActions';
 import {connect, ConnectedProps} from 'react-redux';
 import {LOG_IN, EMAIL, PASSWORD} from '../Constants';
@@ -37,6 +38,11 @@ class PasswordLoginView extends Component<Props> {
 
   componentDidMount() {
     this.componentDidUpdate();
+    BackHandler.addEventListener('hardwareBackPress', this.back);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.back);
   }
 
   componentDidUpdate() {
@@ -52,16 +58,18 @@ class PasswordLoginView extends Component<Props> {
 
   onEmailChange(email: string) {
     this.setState({email});
-    clearErrorState();
+    this.props.clearErrorState();
   }
 
   onPasswordChange(password: string) {
     this.setState({password});
-    clearErrorState();
+    this.props.clearErrorState();
   }
 
   back() {
+    this.props.clearErrorState();
     this.props.navigation.navigate('Login');
+    return true;
   }
 
   render() {
