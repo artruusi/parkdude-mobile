@@ -181,7 +181,7 @@ class MyParkingsView extends Component<Props, State> {
 
   toggleErrorModal() {
     this.setState((prevState) => ({
-      deleteModalVisible: !prevState.errorModalVisible,
+      errorModalVisible: !prevState.errorModalVisible,
       errorText: ''
     }));
   }
