@@ -109,11 +109,15 @@ class MainView extends Component<Props, State> {
       const dates = Object.keys(this.state.userSelectedDates);
       this.getAvailableParkingSpots(dates);
     }
-    this.setState({reservationModalVisible: !this.state.reservationModalVisible});
+    this.setState((prevState) => ({
+      reservationModalVisible: !prevState.reservationModalVisible
+    }));
   }
 
   toggleErrorModal() {
-    this.setState({errorModalVisible: !this.state.errorModalVisible});
+    this.setState((prevState) => ({
+      errorModalVisible: !prevState.errorModalVisible
+    }));
   }
 
   render() {

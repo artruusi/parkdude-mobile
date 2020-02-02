@@ -174,18 +174,26 @@ class MyParkingsView extends Component<Props, State> {
   }
 
   toggleDeleteModal() {
-    this.setState({deleteModalVisible: !this.state.deleteModalVisible});
+    this.setState((prevState) => ({
+      deleteModalVisible: !prevState.deleteModalVisible
+    }));
   }
 
   toggleErrorModal() {
-    this.setState({errorModalVisible: !this.state.errorModalVisible, errorText: ''});
+    this.setState((prevState) => ({
+      deleteModalVisible: !prevState.errorModalVisible,
+      errorText: ''
+    }));
   }
 
   toggleNewReleaseModal(spot?: BasicParkingSpotData) {
     if (spot !== undefined) {
       this.setState({spotToBeReleased: spot});
     }
-    this.setState({newReleaseModalVisible: !this.state.newReleaseModalVisible});
+    this.setState((prevState) => ({
+      newReleaseModalVisible: !prevState.newReleaseModalVisible,
+      releaseModalErrorText: prevState.newReleaseModalVisible ? '' : prevState.releaseModalErrorText
+    }));
   }
 
   async delete() {
