@@ -24,19 +24,30 @@ interface CalendarState {
   calendarData: CalendarEntry[];
   currentMonth: number;
   currentYear: number;
+  maxDate: Date;
 }
 
 class ReservationCalendar extends Component<Props, CalendarState> {
   constructor(props: Props) {
     super(props);
-    const date = new Date();
+    const currentDate = new Date();
+    const maxDate = new Date();
+    // Adding (full) months to dates have different outcomes based on which is
+    // the day parameter of the Date object. The day is set to middle of the
+    // month to eliminate that. The date does not matter because we are only
+    // interested about the month.
+    maxDate.setDate(15);
+    maxDate.setMonth(currentDate.getMonth()+11);
     this.state = {
       calendarData: [],
-      currentMonth: date.getMonth()+1,
-      currentYear: date.getFullYear()
+      currentMonth: currentDate.getMonth()+1,
+      currentYear: currentDate.getFullYear(),
+      maxDate: maxDate
     };
     this.fetchDataForMonth = this.fetchDataForMonth.bind(this);
     this.toggleSelectedDay = this.toggleSelectedDay.bind(this);
+    this.monthCanBeAdded = this.monthCanBeAdded.bind(this);
+    this.monthCanBeSubstracted = this.monthCanBeSubstracted.bind(this);
   }
 
   private focusListener: NavigationEventSubscription;
@@ -99,6 +110,26 @@ class ReservationCalendar extends Component<Props, CalendarState> {
         this.setState({calendarData: parkingEventsToCalendarEntries(releasesBySpot)});
       }
     }
+  }
+
+  monthCanBeAdded() {
+    // Calendar range is set on (current month + 11), meaning that every month is
+    // represented only once for user
+    if (this.state.currentMonth === this.state.maxDate.getMonth()+1) {
+      return false;
+    }
+    return true;
+  }
+
+  monthCanBeSubstracted() {
+    const currentDate = new Date();
+    // Calendar range is set in a way that user can't navigate to the same month next year.
+    // So the month can't be same in other situations than when calendar state is on the
+    // current month.
+    if (this.state.currentMonth === currentDate.getMonth()+1) {
+      return false;
+    }
+    return true;
   }
 
   fetchDataForMonth(calendarDateObject: CalendarDateObject) {
@@ -174,6 +205,12 @@ class ReservationCalendar extends Component<Props, CalendarState> {
         onMonthChange={(calendarDateObject) => {
           this.fetchDataForMonth(calendarDateObject);
         }}
+        onPressArrowLeft={
+          (substractMonth) => this.monthCanBeSubstracted() ? substractMonth() : undefined
+        }
+        onPressArrowRight={
+          (addMonth) => this.monthCanBeAdded() ? addMonth() : undefined
+        }
         theme={{
           'textDayFontFamily': 'Exo2-bold',
           'textMonthFontFamily': 'Exo2-bold',
