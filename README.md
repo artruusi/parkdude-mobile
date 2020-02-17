@@ -1,5 +1,7 @@
 # parkdude-mobile-client
 
+[![Known Vulnerabilities](https://snyk.io/test/github/artruusi/parkdude-backend/badge.svg)](https://snyk.io/test/github/artruusi/parkdude-backend)
+
 ## Setup instructions
 
 ### Required:
